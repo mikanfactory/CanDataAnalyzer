@@ -36,7 +36,7 @@ func (s *Server) Init() {
 
 // Route setting router for this app.
 func (s *Server) Route() {
-	controller.AddUserRoutes(s.Engine)
+	controller.AddGoogleMapRoutes(s.Engine)
 }
 
 func main() {
