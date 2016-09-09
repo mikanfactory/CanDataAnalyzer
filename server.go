@@ -3,10 +3,10 @@ package main
 import (
 	"html/template"
 
-	"./src/controller"
-
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
+	"github.com/mikanfactory/CanDataAnalyzer/src/config"
+	"github.com/mikanfactory/CanDataAnalyzer/src/controller"
 )
 
 const addr = ":1323"
@@ -15,6 +15,7 @@ const addr = ":1323"
 // This holds router settings based on echo.
 type Server struct {
 	Engine *echo.Echo
+	Config *config.Config
 }
 
 // New returns server object.
@@ -26,6 +27,8 @@ func New() *Server {
 // Init initialize server state. Read Config files, compiling templates,
 // and apply middleware.
 func (s *Server) Init() {
+	s.Config = config.LoadConfig()
+
 	s.Engine.Static("/static", "public")
 
 	t := &controller.TemplateController{
@@ -36,7 +39,8 @@ func (s *Server) Init() {
 
 // Route setting router for this app.
 func (s *Server) Route() {
-	controller.AddGoogleMapRoutes(s.Engine)
+	googleMap := &controller.GoogleMap{Key: s.Config.GoogleMap.Key}
+	s.Engine.GET("/", googleMap.Get)
 }
 
 func main() {
