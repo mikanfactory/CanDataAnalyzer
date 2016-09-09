@@ -5,6 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
+	"github.com/labstack/echo/middleware"
 	"github.com/mikanfactory/CanDataAnalyzer/src/config"
 	"github.com/mikanfactory/CanDataAnalyzer/src/controller"
 )
@@ -28,6 +29,9 @@ func New() *Server {
 // and apply middleware.
 func (s *Server) Init() {
 	s.Config = config.LoadConfig()
+
+	s.Engine.Use(middleware.Logger())
+	s.Engine.Use(middleware.Recover())
 
 	s.Engine.Static("/static", "public")
 
