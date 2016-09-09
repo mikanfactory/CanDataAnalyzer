@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CommentBox from './app/GoogleMap';
+import AnalysisToolBox from './app/AnalysisToolBox';
 
 ReactDOM.render(
-  <GoogleMap />,
+  <AnalysisToolBox />,
   document.getElementById('app')
 );

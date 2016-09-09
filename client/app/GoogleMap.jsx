@@ -1,6 +1,4 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import classNames from 'classnames';
+import React from 'react';
 
 export default class GoogleMap extends React.Component {
   constructor(props) {
@@ -9,7 +7,7 @@ export default class GoogleMap extends React.Component {
 
   render() {
     return (
-      <div className="googleMap">
+      <div className="GoogleMap">
       </div>
     )
   }
