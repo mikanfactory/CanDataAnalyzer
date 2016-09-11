@@ -3,7 +3,6 @@ import React from 'react'
 const HeaderStyle = {
   color: "#FFF",
   backgroundColor: "#00BCD4",
-  fontSize: "24px",
   fontWeight: "200",
   lineHeight: "64px",
   paddingLeft: "20px",
@@ -12,13 +11,11 @@ const HeaderStyle = {
 }
 
 const StringStyle = {
-  float: "left"
+  float: "left",
+  fontSize: "24px"
 }
 
-const GlyphiconStyle = {
-  fontSize: "smaller",
-  padding: "0 10px"
-}
+const GlyphiconStyle = { padding: "0 10px" }
 
 export default class ATBHeader extends React.Component {
   constructor(props) {

@@ -1,19 +1,27 @@
 import React from 'react'
-import Immutable from 'immutable'
 
 const MarkerStyle = {
   color: "#1F1F1F",
   backgroundColor: "#FFF",
-  fontSize: "18px",
   fontWeight: "200",
   lineHeight: "46px",
+  paddingLeft: "20px",
+  paddingRight: "10px",
+  textAlign: "right"
 }
 
 const StringStyle = {
-  paddingLeft: "20px"
+  float: "left",
+  fontSize: "18px"
 }
 
-const HoveredMarkerStyle = Object.assign({}, MarkerStyle, {backgroundColor: "#E8E8E8"})
+const GlyphiconStyle = {
+  padding: "0 10px",
+  visibility: "hidden"
+}
+
+const HoveredMarkerStyle = Object.assign({}, MarkerStyle, { backgroundColor: "#E8E8E8" })
+const HoveredGlyphiconStyle = Object.assign({}, GlyphiconStyle, { visibility: "visible" })
 
 export default class Marker extends React.Component {
   constructor(props) {
@@ -23,27 +31,29 @@ export default class Marker extends React.Component {
       hover: false
     }
 
-    this.mouseOver = this.mouseOver.bind(this)
-    this.mouseOut = this.mouseOut.bind(this)
+    this.handleMouseOver = this.handleMouseOver.bind(this)
+    this.handleMouseOut = this.handleMouseOut.bind(this)
   }
 
-  mouseOver() {
+  handleMouseOver() {
     this.setState({ hover: true })
   }
 
-  mouseOut() {
+  handleMouseOut() {
     this.setState({ hover: false })
   }
 
   render() {
-    let markerStyle = this.state.hover ? HoveredMarkerStyle : MarkerStyle
+    const markerStyle = this.state.hover ? HoveredMarkerStyle : MarkerStyle
+    const glyphiconStyle = this.state.hover ? HoveredGlyphiconStyle : GlyphiconStyle
 
     return (
       <div className="Marker"
            style={markerStyle}
-           onMouseOver={this.mouseOver}
-           onMouseOut={this.mouseOut}>
+           onMouseOver={this.handleMouseOver}
+           onMouseOut={this.handleMouseOut}>
         <span style={StringStyle}>{this.props.children}</span>
+        <span className="glyphicon glyphicon-remove" style={glyphiconStyle}></span>
       </div>
     )
   }
