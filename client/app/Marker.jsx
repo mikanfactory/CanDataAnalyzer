@@ -33,6 +33,7 @@ export default class Marker extends React.Component {
 
     this.handleMouseOver = this.handleMouseOver.bind(this)
     this.handleMouseOut = this.handleMouseOut.bind(this)
+    this.handleRemove = this.handleRemove.bind(this)
   }
 
   handleMouseOver() {
@@ -41,6 +42,12 @@ export default class Marker extends React.Component {
 
   handleMouseOut() {
     this.setState({ hover: false })
+  }
+
+  handleRemove() {
+    const key = this.props.name
+    const value = this.props.children
+    this.props.onRemoveMarker({ key: key, value: value })
   }
 
   render() {
@@ -52,8 +59,11 @@ export default class Marker extends React.Component {
            style={markerStyle}
            onMouseOver={this.handleMouseOver}
            onMouseOut={this.handleMouseOut}>
-        <span style={StringStyle}>{this.props.children}</span>
-        <span className="glyphicon glyphicon-remove" style={glyphiconStyle}></span>
+            <span style={StringStyle}>{this.props.children}</span>
+            <span className="glyphicon glyphicon-remove"
+                  style={glyphiconStyle}
+                  onClick={this.handleRemove}>
+            </span>
       </div>
     )
   }

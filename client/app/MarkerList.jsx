@@ -35,6 +35,8 @@ export default class MarkerList extends React.Component {
 
     this.handleEmbedMarker = this.handleEmbedMarker.bind(this)
     this.handleEjectMarker = this.handleEjectMarker.bind(this)
+
+    this.handleRemoveMarker = this.handleRemoveMarker.bind(this)
   }
 
   handleOpenList() {
@@ -77,9 +79,14 @@ export default class MarkerList extends React.Component {
            </span>
   }
 
+  handleRemoveMarker(marker) {
+    const markerExt = Object.assign({}, marker, { target: this.props.children })
+    this.props.onRemoveMarker(markerExt)
+  }
+
   render() {
-    const values = this.props.data.map((value) => {
-      return <Marker>{value}</Marker>
+    const values = this.props.data.map((kv) => {
+      return <Marker key={kv.key} name={kv.key} onRemoveMarker={this.handleRemoveMarker}>{kv.value}</Marker>
     })
 
     const openOrCloseIcon = this.getOpenOrCloseIcon()
