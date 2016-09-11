@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import GoogleMap from './app/GoogleMap';
-import AnalysisToolBox from './app/AnalysisToolBox';
+import Container from './app/Container';
+
+const style = {
+  width: '100%',
+  height: '100%',
+  position: 'relative'
+}
 
 ReactDOM.render(
-  <GoogleMap />,
-  document.getElementById('gmap')
+  <Container style={style} />,
+  document.getElementById('app')
 )
-
-ReactDOM.render(
-  <AnalysisToolBox />,
-  document.getElementById('content')
-);

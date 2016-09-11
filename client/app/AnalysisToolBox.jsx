@@ -9,7 +9,7 @@ export default class AnalysisToolBox extends React.Component {
 
   render() {
     return (
-      <div className="AnalysisToolBox">
+      <div className="AnalysisToolBox" style={this.props.style}>
         <ATBHeader />
         <MarkerList />
       </div>

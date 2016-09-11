@@ -1,4 +1,10 @@
-import React from 'react';
+import React from 'react'
+
+const MapStyle = {
+  position: 'relative',
+  width: '100%',
+  height: '100%'
+}
 
 export default class GoogleMap extends React.Component {
   constructor(props) {
@@ -6,23 +12,19 @@ export default class GoogleMap extends React.Component {
   }
 
   componentDidMount() {
-    var myLatLng = {lat: -25.363, lng: 131.044};
+    let myLatLng = {lat: -25.363, lng: 131.044}
+    let node = this.refs.map
 
-    var map = new google.maps.Map(document.getElementById('map'), {
+    let map = new window.google.maps.Map(node, {
       zoom: 4,
       center: myLatLng
-    });
-
-    var marker = new google.maps.Marker({
-      position: myLatLng,
-      map: map,
-      title: 'CanDataAnalyzer',
-    });
+    })
   }
 
   render() {
     return (
-      <div className="GoogleMap">
+      <div className="GoogleMap" style={this.props.style} >
+        <div style={MapStyle} ref="map">Loading map ...</div>
       </div>
     )
   }
