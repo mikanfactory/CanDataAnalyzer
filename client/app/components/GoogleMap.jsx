@@ -1,4 +1,5 @@
 import React from 'react'
+import MarkerActions from '../actions/MarkerActions'
 
 const GoogleMapStyle = {
   position: 'relative',
@@ -19,13 +20,15 @@ export default class GoogleMap extends React.Component {
   }
 
   componentDidMount() {
-    let myLatLng = {lat: -25.363, lng: 131.044}
-    let node = this.refs.map
+    const myLatLng = {lat: -25.363, lng: 131.044}
+    const node = this.refs.map
 
-    let map = new window.google.maps.Map(node, {
+    const map = new window.google.maps.Map(node, {
       zoom: 4,
       center: myLatLng
     })
+
+    MarkerActions.updateGoogleMap(map)
   }
 
   render() {
