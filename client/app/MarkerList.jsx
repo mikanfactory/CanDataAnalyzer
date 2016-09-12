@@ -1,5 +1,6 @@
 import React from 'react'
 import Marker from './Marker'
+import Rodal from 'rodal'
 
 const ListHeaderStyle = {
   color: "#1B1B1B",
@@ -26,7 +27,10 @@ export default class MarkerList extends React.Component {
 
     this.state = {
       open: true,
-      embed: true
+      embed: true,
+      modal: {
+        visible: false
+      }
     }
 
     this.handleOpenList = this.handleOpenList.bind(this)
@@ -38,6 +42,9 @@ export default class MarkerList extends React.Component {
 
     this.handleRemoveMarker = this.handleRemoveMarker.bind(this)
     this.handleRemoveMarkers = this.handleRemoveMarkers.bind(this)
+
+    this.handleOpenModal = this.handleOpenModal.bind(this)
+    this.handleCloseModal = this.handleCloseModal.bind(this)
   }
 
   handleOpenList() {
@@ -89,8 +96,15 @@ export default class MarkerList extends React.Component {
     this.props.onRemoveMarkers(this.props.children)
   }
 
+  handleOpenModal() {
+    this.setState({ modal: { visible: true } })
+  }
+
+  handleCloseModal() {
+    this.setState({ modal: { visible: false } })
+  }
+
   render() {
-    console.log(this.props)
     const values = this.props.data.map((marker) => {
       return <Marker
                  key={marker.id}
@@ -107,14 +121,27 @@ export default class MarkerList extends React.Component {
       <div className="MarkerList">
         <div className="MarkerListHeader" style={ListHeaderStyle}>
           <span style={StringStyle}>{this.props.children}</span>
-          <span className="glyphicon glyphicon-cog" style={GlyphiconStyle}></span>
+          <span
+            className="glyphicon glyphicon-cog"
+            style={GlyphiconStyle}
+            onClick={this.handleOpenModal}>
+          </span>
           {openOrCloseIcon}
           {embedOrEjectIcon}
           <span className="glyphicon glyphicon-trash"
-                onClick={this.handleRemoveMarkers}
-                style={GlyphiconStyle}></span>
+                style={GlyphiconStyle}
+                onClick={this.handleRemoveMarkers}></span>
         </div>
         <div className="cnt" style={ContainerStyle}>{values}</div>
+        <Rodal visible={this.state.modal.visible}
+               width={800}
+               height={480}
+               onClose={this.handleCloseModal}>
+          <div className="ModalHeader">Rodal</div>
+          <div className="ModalBody">A react modal with animations</div>
+          <button className="rodal-comfirm-btn" onClick={this.handleCloseModal}>OK</button>
+          <button className="rodal-cancel-btn" onClick={this.handleCloseModal}>Cancel</button>
+        </Rodal>
       </div>
     )
   }

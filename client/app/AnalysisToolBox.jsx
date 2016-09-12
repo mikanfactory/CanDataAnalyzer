@@ -1,5 +1,5 @@
 import React from 'react'
-import ATBHeader from './ATBHeader'
+import ToolBoxHeader from './ToolBoxHeader'
 import MarkerList from './MarkerList'
 
 const ToolBoxStyle = {
@@ -75,7 +75,7 @@ export default class AnalysisToolBox extends React.Component {
     })
     return (
       <div className="AnalysisToolBox" style={ToolBoxStyle}>
-        <ATBHeader />
+        <ToolBoxHeader />
         {markerListNodes}
       </div>
     )
