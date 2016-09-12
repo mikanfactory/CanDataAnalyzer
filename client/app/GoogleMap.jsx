@@ -1,5 +1,12 @@
 import React from 'react'
 
+const GoogleMapStyle = {
+  position: 'relative',
+  float: 'left',
+  width: '75%',
+  height: '770px'
+}
+
 const MapStyle = {
   position: 'relative',
   width: '100%',
@@ -23,7 +30,7 @@ export default class GoogleMap extends React.Component {
 
   render() {
     return (
-      <div className="GoogleMap" style={this.props.style} >
+      <div className="GoogleMap" style={GoogleMapStyle} >
         <div style={MapStyle} ref="map">Loading map ...</div>
       </div>
     )

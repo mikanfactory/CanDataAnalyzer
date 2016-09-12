@@ -45,9 +45,9 @@ export default class Marker extends React.Component {
   }
 
   handleRemove() {
-    const key = this.props.name
+    const id = this.props.name
     const value = this.props.children
-    this.props.onRemoveMarker({ key: key, value: value })
+    this.props.onRemoveMarker({ id: id, value: value })
   }
 
   render() {
@@ -67,4 +67,10 @@ export default class Marker extends React.Component {
       </div>
     )
   }
+}
+
+Marker.propTypes = {
+  name: React.PropTypes.number,
+  children: React.PropTypes.string,
+  onRemoveMarker: React.PropTypes.func
 }

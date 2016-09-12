@@ -2,42 +2,79 @@ import React from 'react'
 import ATBHeader from './ATBHeader'
 import MarkerList from './MarkerList'
 
+const ToolBoxStyle = {
+  position: 'relative',
+  float: 'left',
+  width: '25%',
+  height: '770px',
+  overflow: 'scroll'
+}
+
 export default class AnalysisToolBox extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      'Velocity': [...Array(20).keys()].map((val) => {
-        return { key: val, value: (val + 40).toString() + "km/s"}
-      }),
-      'Acceleration': [...Array(10).keys()].map((val) => {
-        return { key: val, value: (val + 10).toString() + "km/s^2"}
-      }),
-      'SuddenStop': [...Array(20).keys()].map((val) => {
-        return { key: val, value: "-" + (val + 10).toString() + "km/s^2"}
-      })
+      markerLists: [
+        {
+          name: 'Velocity',
+          markers: [...Array(20).keys()].map((val) => {
+            return { id: val, value: (val + 40).toString() + "km/s" }
+          })
+        },
+        {
+          name: 'Acceleration',
+          markers: [...Array(10).keys()].map((val) => {
+            return { id: val, value: (val + 10).toString() + "km/s^2" }
+          })
+        },
+        {
+          name: 'SuddenStop',
+          markers: [...Array(20).keys()].map((val) => {
+            return { id: val, value: (val + 40).toString() + "km/s" }
+          })
+        },
+      ]
     }
 
     this.handleRemoveMarker = this.handleRemoveMarker.bind(this)
+    this.handleRemoveMarkers = this.handleRemoveMarkers.bind(this)
   }
 
   handleRemoveMarker(markerExt) {
-    const {target, key} = markerExt
-    const oldTarget = this.state[target]
-    const newTarget = oldTarget.filter((kv) => { return kv.key !== key })
-    this.setState({ 'Velocity': newTarget }) // for testing
+    const {name, id} = markerExt
+    const oldLists = this.state.markerLists
+    const newMarkers = oldLists
+      .find(lst => lst.name === name)
+      .markers
+      .filter(marker => marker.id !== id)
+
+    const newLists = oldLists.map(mlist => {
+      return mlist.name !== name ? mlist : { name: name, markers: newMarkers }
+    })
+
+    this.setState({ markerLists: newLists })
+  }
+
+  handleRemoveMarkers(name) {
+    const newLists = this.state.markerLists.filter(mlist => {
+      return mlist.name !== name
+    })
+
+    this.setState({ markerLists: newLists})
   }
 
   render() {
-    const markerListNodes = Object.keys(this.state).map((key) => {
+    const markerListNodes = this.state.markerLists.map((mlst, i) => {
       return <MarkerList
-                 key={key}
-                 data={this.state[key]}
-                 onRemoveMarker={this.handleRemoveMarker}>
-               {key}
+                 key={i}
+                 data={mlst.markers}
+                 onRemoveMarker={this.handleRemoveMarker}
+                 onRemoveMarkers={this.handleRemoveMarkers}>
+               {mlst.name}
              </MarkerList>
     })
     return (
-      <div className="AnalysisToolBox" style={this.props.style}>
+      <div className="AnalysisToolBox" style={ToolBoxStyle}>
         <ATBHeader />
         {markerListNodes}
       </div>

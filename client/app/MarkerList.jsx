@@ -37,6 +37,7 @@ export default class MarkerList extends React.Component {
     this.handleEjectMarker = this.handleEjectMarker.bind(this)
 
     this.handleRemoveMarker = this.handleRemoveMarker.bind(this)
+    this.handleRemoveMarkers = this.handleRemoveMarkers.bind(this)
   }
 
   handleOpenList() {
@@ -80,13 +81,23 @@ export default class MarkerList extends React.Component {
   }
 
   handleRemoveMarker(marker) {
-    const markerExt = Object.assign({}, marker, { target: this.props.children })
+    const markerExt = Object.assign({}, marker, { name: this.props.children })
     this.props.onRemoveMarker(markerExt)
   }
 
+  handleRemoveMarkers() {
+    this.props.onRemoveMarkers(this.props.children)
+  }
+
   render() {
-    const values = this.props.data.map((kv) => {
-      return <Marker key={kv.key} name={kv.key} onRemoveMarker={this.handleRemoveMarker}>{kv.value}</Marker>
+    console.log(this.props)
+    const values = this.props.data.map((marker) => {
+      return <Marker
+                 key={marker.id}
+                 name={marker.id}
+                 onRemoveMarker={this.handleRemoveMarker}>
+             {marker.value}
+            </Marker>
     })
 
     const openOrCloseIcon = this.getOpenOrCloseIcon()
@@ -99,10 +110,19 @@ export default class MarkerList extends React.Component {
           <span className="glyphicon glyphicon-cog" style={GlyphiconStyle}></span>
           {openOrCloseIcon}
           {embedOrEjectIcon}
-          <span className="glyphicon glyphicon-trash" style={GlyphiconStyle}></span>
+          <span className="glyphicon glyphicon-trash"
+                onClick={this.handleRemoveMarkers}
+                style={GlyphiconStyle}></span>
         </div>
         <div className="cnt" style={ContainerStyle}>{values}</div>
       </div>
     )
   }
+}
+
+MarkerList.propTypes = {
+  data: React.PropTypes.array,
+  children: React.PropTypes.string,
+  onRemoveMarker: React.PropTypes.func,
+  onRemoveMarkers: React.PropTypes.func,
 }
