@@ -22,6 +22,7 @@ const GlyphiconStyle = {
 
 const HoveredMarkerStyle = Object.assign({}, MarkerStyle, { backgroundColor: "#E8E8E8" })
 const HoveredGlyphiconStyle = Object.assign({}, GlyphiconStyle, { visibility: "visible" })
+const PaledGlyphiconStyle = Object.assign({}, HoveredMarkerStyle, { color: "#8B8B8B" })
 
 export default class Marker extends React.Component {
   constructor(props) {
@@ -41,6 +42,20 @@ export default class Marker extends React.Component {
     this.handleMountMarker = this.handleMountMarker.bind(this)
     this.handleToggleInfoWindow = this.handleToggleInfoWindow.bind(this)
     this.handleToggleMarker = this.handleToggleMarker.bind(this)
+    this.getGlyphiconStyle = this.getGlyphiconStyle.bind(this)
+  }
+
+  getGlyphiconStyle() {
+    switch (true) {
+      case this.state.hover && this.state.markerVisible:
+        return HoveredGlyphiconStyle
+      case this.state.hover && !this.state.markerVisible:
+        return PaledGlyphiconStyle
+      case !this.state.hover && this.state.markerVisible:
+        return GlyphiconStyle
+      case !this.state.hover && !this.state.markerVisible:
+        return Object.assign({}, PaledGlyphiconStyle, { backgroundColor: "#FFF" })
+    }
   }
 
   handleMouseOver() {
@@ -94,7 +109,7 @@ export default class Marker extends React.Component {
 
   render() {
     const markerStyle = this.state.hover ? HoveredMarkerStyle : MarkerStyle
-    const glyphiconStyle = this.state.hover ? HoveredGlyphiconStyle : GlyphiconStyle
+    const glyphiconStyle = this.getGlyphiconStyle()
 
     return (
       <div className="Marker"
