@@ -19,32 +19,16 @@ export default class AnalysisToolBox extends React.Component {
   }
 
   handleRemoveMarker(markerExt) {
-    /* const {name, id} = markerExt
-     * const oldLists = this.state.markerLists
-     * const newMarkers = oldLists
-     *   .find(lst => lst.name === name)
-     *   .markers
-     *   .filter(marker => marker.id !== id)
-
-     * const newLists = oldLists.map(mlist => {
-     *   return mlist.name !== name ? mlist : { name: name, markers: newMarkers }
-     * })
-
-     * this.setState({ markerLists: newLists })*/
   }
 
   handleRemoveMarkers(name) {
-    /* const newLists = this.state.markerLists.filter(mlist => {
-     *   return mlist.name !== name
-     * })
-
-     * this.setState({ markerLists: newLists})*/
   }
 
   render() {
     const markerListNodes = this.props.markerLists.map((mlst, i) => {
       return <MarkerList
                  key={i}
+                 gMap={this.props.gMap}
                  data={mlst.markers}
                  onRemoveMarker={this.handleRemoveMarker}
                  onRemoveMarkers={this.handleRemoveMarkers}>

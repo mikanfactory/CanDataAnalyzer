@@ -6,31 +6,41 @@ const CHANGE_EVENT = 'change'
 
 // Define the store as an empty array
 let _store = {
-  map: {},
+  gMap: {},
   markerLists: [
     {
       name: 'Velocity',
-      markers: [...Array(20).keys()].map((val) => {
-        return {id: val, value: (val + 40).toString() + "km/s"}
+      markers: [...Array(20).keys()].map((val, i) => {
+        const defaultPosition = { lat: 36.08, lng: 140.18 }
+        return {
+          id: val,
+          position: {
+            lat: defaultPosition.lat + i*0.01,
+            lng: defaultPosition.lng + i*0.01
+          },
+          value: (val + 40).toString() + "km/s"
+        }
       })
     },
     {
       name: 'Acceleration',
-      markers: [...Array(10).keys()].map((val) => {
-        return { id: val, value: (val + 10).toString() + "km/s^2" }
-      })
-    },
-    {
-      name: 'SuddenStop',
-      markers: [...Array(20).keys()].map((val) => {
-        return { id: val, value: (val + 40).toString() + "km/s" }
+      markers: [...Array(10).keys()].map((val, i) => {
+        const defaultPosition = { lat: 36.18, lng: 140.28 }
+        return {
+          id: val,
+          position: {
+            lat: defaultPosition.lat + i*0.01,
+            lng: defaultPosition.lng - i*0.01
+          },
+          value: (val + 10).toString() + "km/s^2"
+        }
       })
     },
   ]
 };
 
-function updateMap(map) {
-  _store.map = map
+function updateMap(gMap) {
+  _store.gMap = gMap
 }
 
 class MarkerStoreClass extends EventEmitter {
@@ -51,11 +61,15 @@ class MarkerStoreClass extends EventEmitter {
   }
 
   getMap() {
-    return _store.map
+    return _store.gMap
   }
 
   getMarkerLists() {
     return _store.markerLists
+  }
+
+  getMarkerList(name) {
+    return _store.markerLists.find( mlist => mlist.name === name)
   }
 }
 
@@ -64,7 +78,7 @@ const MarkerStore = new MarkerStoreClass();
 AppDispatcher.register((action) => {
   switch (action.actionType) {
     case MarkerConstants.UPDATE_GOOGLE_MAP:
-      updateMap(action.map)
+      updateMap(action.gMap)
       MarkerStore.emitChange()
       break
 

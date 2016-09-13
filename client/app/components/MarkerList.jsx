@@ -106,10 +106,11 @@ export default class MarkerList extends React.Component {
 
   render() {
     const values = this.props.data.map((marker) => {
-      return <Marker
-                 key={marker.id}
-                 name={marker.id}
-                 onRemoveMarker={this.handleRemoveMarker}>
+      return <Marker key={marker.id}
+                     gMap={this.props.gMap}
+                     name={marker.id}
+                     position={marker.position}
+                     onRemoveMarker={this.handleRemoveMarker}>
              {marker.value}
             </Marker>
     })
@@ -121,10 +122,9 @@ export default class MarkerList extends React.Component {
       <div className="MarkerList">
         <div className="MarkerListHeader" style={ListHeaderStyle}>
           <span style={StringStyle}>{this.props.children}</span>
-          <span
-            className="glyphicon glyphicon-cog"
-            style={GlyphiconStyle}
-            onClick={this.handleOpenModal}>
+          <span className="glyphicon glyphicon-cog"
+                style={GlyphiconStyle}
+                onClick={this.handleOpenModal}>
           </span>
           {openOrCloseIcon}
           {embedOrEjectIcon}
@@ -148,6 +148,7 @@ export default class MarkerList extends React.Component {
 }
 
 MarkerList.propTypes = {
+  gMap: React.PropTypes.object,
   data: React.PropTypes.array,
   children: React.PropTypes.string,
   onRemoveMarker: React.PropTypes.func,
