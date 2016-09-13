@@ -4,10 +4,10 @@ import MarkerConstants from '../constants/MarkerConstants'
 export default {
   create: () => {},
 
-  updateGoogleMap: map => {
+  updateGoogleMap: gMap => {
     AppDispatcher.dispatch({
       actionType: MarkerConstants.UPDATE_GOOGLE_MAP,
-      map: map
+      gMap: gMap
     })
   },
 

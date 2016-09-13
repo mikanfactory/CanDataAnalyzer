@@ -11,7 +11,7 @@ const ContainerStyle = {
 
 function getMarkerState() {
   return {
-    map: MarkerStore.getMap(),
+    gMap: MarkerStore.getMap(),
     markerLists: MarkerStore.getMarkerLists()
   }
 }
@@ -39,8 +39,9 @@ export default class Container extends React.Component {
   render() {
     return (
       <div className="Container" style={ContainerStyle}>
-        <GoogleMap map={this.state.map} />
-        <ToolBox map={this.state.map} markerLists={this.state.markerLists }/>
+        <GoogleMap gMap={this.state.gMap} />
+        <ToolBox gMap={this.state.gMap}
+                 markerLists={this.state.markerLists} />
       </div>
     )
   }

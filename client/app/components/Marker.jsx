@@ -28,12 +28,18 @@ export default class Marker extends React.Component {
     super(props)
 
     this.state = {
-      hover: false
+      hover: false,
+      gMap: null,
+      marker: { object: null, open: false },
+      infoWindow: { object: null, open: false },
     }
 
     this.handleMouseOver = this.handleMouseOver.bind(this)
     this.handleMouseOut = this.handleMouseOut.bind(this)
-    this.handleRemove = this.handleRemove.bind(this)
+    this.handleMountMarker = this.handleMountMarker.bind(this)
+    this.handleToggleInfoWindow = this.handleToggleInfoWindow.bind(this)
+    this.handleToggleMarker = this.handleToggleMarker.bind(this)
+    this.handleCloseInfoWindow = this.handleCloseInfoWindow.bind(this)
   }
 
   handleMouseOver() {
@@ -44,10 +50,62 @@ export default class Marker extends React.Component {
     this.setState({ hover: false })
   }
 
-  handleRemove() {
-    const id = this.props.name
-    const value = this.props.children
-    this.props.onRemoveMarker({ id: id, value: value })
+  handleToggleInfoWindow() {
+    this.state.infoWindow.open ?
+    this.state.infoWindow.object.close() :
+    this.state.infoWindow.object.open(
+      this.state.gMap,
+      this.state.marker.object
+    )
+
+    this.setState({ infoWindow: {
+      object: this.state.infoWindow.object,
+      open: !this.state.infoWindow.open
+    }})
+  }
+
+  handleToggleMarker() {
+    this.state.marker.open ?
+    this.state.marker.object.setMap(null) :
+    this.state.marker.object.setMap(this.state.gMap)
+
+    this.setState({ marker: {
+      object: this.state.marker.object,
+      open: !this.state.marker.open
+    }})
+  }
+
+  handleCloseInfoWindow() {
+    this.state.infoWindow.object.close()
+    this.setState({ infoWindow: {
+      object: this.state.infoWindow.object,
+      open: false
+    }})
+  }
+
+  handleMountMarker(nextProps) {
+    const marker = new window.google.maps.Marker({
+      position: this.props.position,
+      title: this.props.children,
+    })
+
+    const infoWindow = new window.google.maps.InfoWindow({
+      content: this.props.children
+    })
+
+    marker.addListener('click', () => {
+      this.handleToggleInfoWindow()
+    })
+
+    this.setState({ marker: { object: marker, open: true } })
+    this.setState({ infoWindow: { object: infoWindow, open: true } })
+    marker.setMap(nextProps.gMap)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.gMap) return
+    this.handleMountMarker(nextProps)
+    this.setState({ gMap: nextProps.gMap })
   }
 
   render() {
@@ -60,9 +118,9 @@ export default class Marker extends React.Component {
            onMouseOver={this.handleMouseOver}
            onMouseOut={this.handleMouseOut}>
             <span style={StringStyle}>{this.props.children}</span>
-            <span className="glyphicon glyphicon-remove"
+            <span className="glyphicon glyphicon-map-marker"
                   style={glyphiconStyle}
-                  onClick={this.handleRemove}>
+                  onClick={this.handleToggleMarker}>
             </span>
       </div>
     )
@@ -70,7 +128,8 @@ export default class Marker extends React.Component {
 }
 
 Marker.propTypes = {
+  gMap: React.PropTypes.object,
   name: React.PropTypes.number,
-  children: React.PropTypes.string,
-  onRemoveMarker: React.PropTypes.func
+  position: React.PropTypes.object,
+  children: React.PropTypes.string
 }

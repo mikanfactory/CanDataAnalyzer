@@ -45,6 +45,7 @@ export default class AnalysisToolBox extends React.Component {
     const markerListNodes = this.props.markerLists.map((mlst, i) => {
       return <MarkerList
                  key={i}
+                 gMap={this.props.gMap}
                  data={mlst.markers}
                  onRemoveMarker={this.handleRemoveMarker}
                  onRemoveMarkers={this.handleRemoveMarkers}>
