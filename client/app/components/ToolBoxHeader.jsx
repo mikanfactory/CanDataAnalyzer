@@ -28,15 +28,15 @@ export default class ToolBoxHeader extends React.Component {
       }
     }
 
-    this.handleOpenModal = this.handleOpenModal.bind(this)
-    this.handleCloseModal = this.handleCloseModal.bind(this)
+    this.handleModalOpen = this.handleModalOpen.bind(this)
+    this.handleModalClose = this.handleModalClose.bind(this)
   }
 
-  handleOpenModal() {
+  handleModalOpen() {
     this.setState({ modal: { visible: true } })
   }
 
-  handleCloseModal() {
+  handleModalClose() {
     this.setState({ modal: { visible: false } })
   }
 
@@ -47,21 +47,21 @@ export default class ToolBoxHeader extends React.Component {
           <span style={StringStyle}>CanDataAnalyzer</span>
           <span className="glyphicon glyphicon-plus"
                 style={GlyphiconStyle}
-                onClick={this.handleOpenModal}>
+                onClick={this.handleModalOpen}>
           </span>
           <span className="glyphicon glyphicon-film"
                 style={GlyphiconStyle}
-                onClick={this.handleOpenModal}>
+                onClick={this.handleModalOpen}>
           </span>
         </div>
         <Rodal visible={this.state.modal.visible}
                width={800}
                height={480}
-               onClose={this.handleCloseModal}>
+               onClose={this.handleModalClose}>
           <div className="ModalHeader">Rodal</div>
           <div className="ModalBody">A react modal with animations</div>
-          <button className="rodal-comfirm-btn" onClick={this.handleCloseModal}>OK</button>
-          <button className="rodal-cancel-btn" onClick={this.handleCloseModal}>Cancel</button>
+          <button className="rodal-comfirm-btn" onClick={this.handleModalClose}>OK</button>
+          <button className="rodal-cancel-btn" onClick={this.handleModalClose}>Cancel</button>
         </Rodal>
       </div>
     )

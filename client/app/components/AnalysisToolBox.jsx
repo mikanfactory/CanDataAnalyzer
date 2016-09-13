@@ -13,15 +13,6 @@ const ToolBoxStyle = {
 export default class AnalysisToolBox extends React.Component {
   constructor(props) {
     super(props)
-
-    this.handleRemoveMarker = this.handleRemoveMarker.bind(this)
-    this.handleRemoveMarkers = this.handleRemoveMarkers.bind(this)
-  }
-
-  handleRemoveMarker(markerExt) {
-  }
-
-  handleRemoveMarkers(name) {
   }
 
   render() {
@@ -29,9 +20,7 @@ export default class AnalysisToolBox extends React.Component {
       return <MarkerList
                  key={i}
                  gMap={this.props.gMap}
-                 data={mlst.markers}
-                 onRemoveMarker={this.handleRemoveMarker}
-                 onRemoveMarkers={this.handleRemoveMarkers}>
+                 data={mlst.markers}>
                {mlst.name}
              </MarkerList>
     })

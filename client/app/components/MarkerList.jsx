@@ -33,25 +33,20 @@ export default class MarkerList extends React.Component {
       }
     }
 
-    this.handleOpenList = this.handleOpenList.bind(this)
-    this.handleCloseList = this.handleCloseList.bind(this)
     this.getOpenOrCloseIcon = this.getOpenOrCloseIcon.bind(this)
-
-    this.handleEmbedMarker = this.handleEmbedMarker.bind(this)
-    this.handleEjectMarker = this.handleEjectMarker.bind(this)
-
-    this.handleRemoveMarker = this.handleRemoveMarker.bind(this)
-    this.handleRemoveMarkers = this.handleRemoveMarkers.bind(this)
-
-    this.handleOpenModal = this.handleOpenModal.bind(this)
-    this.handleCloseModal = this.handleCloseModal.bind(this)
+    this.handleListOpen = this.handleListOpen.bind(this)
+    this.handleListClose = this.handleListClose.bind(this)
+    this.handleMarkerEmbed = this.handleMarkerEmbed.bind(this)
+    this.handleMarkerEject = this.handleMarkerEject.bind(this)
+    this.handleModalOpen = this.handleModalOpen.bind(this)
+    this.handleModalClose = this.handleModalClose.bind(this)
   }
 
-  handleOpenList() {
+  handleListOpen() {
     this.setState({ open: true })
   }
 
-  handleCloseList() {
+  handleListClose() {
     this.setState({ open: false })
   }
 
@@ -59,19 +54,19 @@ export default class MarkerList extends React.Component {
     return this.state.open ?
            <span className="glyphicon glyphicon-triangle-bottom"
                  style={GlyphiconStyle}
-                 onClick={this.handleCloseList}>
+                 onClick={this.handleListClose}>
            </span> :
            <span className="glyphicon glyphicon-triangle-top"
                  style={GlyphiconStyle}
-                 onClick={this.handleOpenList}>
+                 onClick={this.handleListOpen}>
            </span>
   }
 
-  handleEmbedMarker() {
+  handleMarkerEmbed() {
     this.setState({ embed: true })
   }
 
-  handleEjectMarker() {
+  handleMarkerEject() {
     this.setState({ embed: false })
   }
 
@@ -79,38 +74,30 @@ export default class MarkerList extends React.Component {
     return this.state.embed ?
            <span className="glyphicon glyphicon-map-marker"
                  style={GlyphiconStyle}
-                 onClick={this.handleEjectMarker}>
+                 onClick={this.handleMarkerEject}>
            </span> :
            <span className="glyphicon glyphicon-map-marker"
                  style={PaledGlyphiconStyle}
-                 onClick={this.handleEmbedMarker}>
+                 onClick={this.handleMarkerEmbed}>
            </span>
   }
 
-  handleRemoveMarker(marker) {
-    const markerExt = Object.assign({}, marker, { name: this.props.children })
-    this.props.onRemoveMarker(markerExt)
-  }
-
-  handleRemoveMarkers() {
-    this.props.onRemoveMarkers(this.props.children)
-  }
-
-  handleOpenModal() {
+  handleModalOpen() {
     this.setState({ modal: { visible: true } })
   }
 
-  handleCloseModal() {
+  handleModalClose() {
     this.setState({ modal: { visible: false } })
   }
 
   render() {
+    const markerStyle = this.state.open ? {} : { display: "none" }
     const values = this.props.data.map((marker) => {
       return <Marker key={marker.id}
                      gMap={this.props.gMap}
                      name={marker.id}
                      position={marker.position}
-                     onRemoveMarker={this.handleRemoveMarker}>
+                     style={markerStyle}>
              {marker.value}
             </Marker>
     })
@@ -124,23 +111,22 @@ export default class MarkerList extends React.Component {
           <span style={StringStyle}>{this.props.children}</span>
           <span className="glyphicon glyphicon-cog"
                 style={GlyphiconStyle}
-                onClick={this.handleOpenModal}>
+                onClick={this.handleModalOpen}>
           </span>
           {openOrCloseIcon}
           {embedOrEjectIcon}
           <span className="glyphicon glyphicon-trash"
-                style={GlyphiconStyle}
-                onClick={this.handleRemoveMarkers}></span>
+                style={GlyphiconStyle}></span>
         </div>
         <div className="cnt" style={ContainerStyle}>{values}</div>
         <Rodal visible={this.state.modal.visible}
                width={800}
                height={480}
-               onClose={this.handleCloseModal}>
+               onClose={this.handleModalClose}>
           <div className="ModalHeader">Rodal</div>
           <div className="ModalBody">A react modal with animations</div>
-          <button className="rodal-comfirm-btn" onClick={this.handleCloseModal}>OK</button>
-          <button className="rodal-cancel-btn" onClick={this.handleCloseModal}>Cancel</button>
+          <button className="rodal-comfirm-btn" onClick={this.handleModalClose}>OK</button>
+          <button className="rodal-cancel-btn" onClick={this.handleModalClose}>Cancel</button>
         </Rodal>
       </div>
     )
@@ -151,6 +137,4 @@ MarkerList.propTypes = {
   gMap: React.PropTypes.object,
   data: React.PropTypes.array,
   children: React.PropTypes.string,
-  onRemoveMarker: React.PropTypes.func,
-  onRemoveMarkers: React.PropTypes.func,
 }
