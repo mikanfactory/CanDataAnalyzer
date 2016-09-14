@@ -29,8 +29,9 @@ export default class Marker extends React.Component {
   constructor(props) {
     super(props)
 
+    this._isMarkerInitiallyRenderd = false
+
     this.state = {
-      gMap: null,
       hover: false,
       marker: null,
       isMarkerDrawed: false,
@@ -84,7 +85,7 @@ export default class Marker extends React.Component {
     this.setState({ isWindowPoped: !this.state.isWindowPoped })
   }
 
-  handleNewMarkerMount(nextProps) {
+  handleNewMarkerMount() {
     const marker = new window.google.maps.Marker({
       position: this.props.position,
       title: this.props.children,
@@ -104,12 +105,10 @@ export default class Marker extends React.Component {
       infoWindow: infoWindow,
       isWindowPoped: false
     })
-
-    marker.setMap(nextProps.gMap)
   }
 
   handleMarkerMount() {
-    this.state.marker.setMap(this.state.gMap)
+    this.state.marker.setMap(this.props.gMap)
   }
 
   handleMarkerUnmount() {
@@ -119,14 +118,19 @@ export default class Marker extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     // if google maps marker has not rendered
-    if (!this.state.marker) {
-      this.setState({ gMap: nextProps.gMap })
+    if (!this._isMarkerInitiallyRenderd) {
       this.handleNewMarkerMount(nextProps)
-      return
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // if google maps marker has not rendered
+    if (!this._isMarkerInitiallyRenderd) {
+      this.handleMarkerMount()
+      this._isMarkerInitiallyRenderd = true
+      return
+    }
+
     // Click marker toggle button in Marker
     if (this.state.isMarkerDrawed !== prevState.isMarkerDrawed) {
       this.state.isMarkerDrawed ? this.handleMarkerUnmount() : this.handleMarkerMount()
