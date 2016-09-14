@@ -26,14 +26,13 @@ export default class MarkerList extends React.Component {
     super(props)
 
     this.state = {
-      open: true,
-      embed: true,
-      modal: {
-        visible: false
-      }
+      isListOpened: true,
+      isMarkersDrawed: true,
+      isModalAppeared: false
     }
 
     this.getOpenOrCloseIcon = this.getOpenOrCloseIcon.bind(this)
+    this.getEmbedOrEjectIcon = this.getEmbedOrEjectIcon.bind(this)
     this.handleListOpen = this.handleListOpen.bind(this)
     this.handleListClose = this.handleListClose.bind(this)
     this.handleMarkerEmbed = this.handleMarkerEmbed.bind(this)
@@ -42,16 +41,8 @@ export default class MarkerList extends React.Component {
     this.handleModalClose = this.handleModalClose.bind(this)
   }
 
-  handleListOpen() {
-    this.setState({ open: true })
-  }
-
-  handleListClose() {
-    this.setState({ open: false })
-  }
-
   getOpenOrCloseIcon() {
-    return this.state.open ?
+    return this.state.isListOpened ?
            <span className="glyphicon glyphicon-triangle-bottom"
                  style={GlyphiconStyle}
                  onClick={this.handleListClose}>
@@ -62,16 +53,8 @@ export default class MarkerList extends React.Component {
            </span>
   }
 
-  handleMarkerEmbed() {
-    this.setState({ embed: true })
-  }
-
-  handleMarkerEject() {
-    this.setState({ embed: false })
-  }
-
   getEmbedOrEjectIcon() {
-    return this.state.embed ?
+    return this.state.isMarkersDrawed ?
            <span className="glyphicon glyphicon-map-marker"
                  style={GlyphiconStyle}
                  onClick={this.handleMarkerEject}>
@@ -82,22 +65,38 @@ export default class MarkerList extends React.Component {
            </span>
   }
 
+  handleListOpen() {
+    this.setState({ isListOpened: true })
+  }
+
+  handleListClose() {
+    this.setState({ isListOpened: false })
+  }
+
+  handleMarkerEmbed() {
+    this.setState({ isMarkersDrawed: true })
+  }
+
+  handleMarkerEject() {
+    this.setState({ isMarkersDrawed: false })
+  }
+
   handleModalOpen() {
-    this.setState({ modal: { visible: true } })
+    this.setState({ isModalAppeared: true })
   }
 
   handleModalClose() {
-    this.setState({ modal: { visible: false } })
+    this.setState({ isModalAppeared: false })
   }
 
   render() {
-    const markerStyle = this.state.open ? {} : { display: "none" }
-    const values = this.props.data.map((marker) => {
+    const markerNodes = this.props.data.map((marker) => {
       return <Marker key={marker.id}
                      gMap={this.props.gMap}
                      name={marker.id}
                      position={marker.position}
-                     style={markerStyle}>
+                     isDisplayed={this.state.isListOpened}
+                     isMarkersDrawed={this.state.isMarkersDrawed}>
              {marker.value}
             </Marker>
     })
@@ -111,15 +110,15 @@ export default class MarkerList extends React.Component {
           <span style={StringStyle}>{this.props.children}</span>
           <span className="glyphicon glyphicon-cog"
                 style={GlyphiconStyle}
-                onClick={this.handleModalOpen}>
+                onClick={this.handleModalOpen} >
           </span>
           {openOrCloseIcon}
           {embedOrEjectIcon}
           <span className="glyphicon glyphicon-trash"
                 style={GlyphiconStyle}></span>
         </div>
-        <div className="cnt" style={ContainerStyle}>{values}</div>
-        <Rodal visible={this.state.modal.visible}
+        <div className="cnt" style={ContainerStyle}>{markerNodes}</div>
+        <Rodal visible={this.state.isModalAppeared}
                width={800}
                height={480}
                onClose={this.handleModalClose}>

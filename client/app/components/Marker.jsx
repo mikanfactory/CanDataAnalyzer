@@ -1,4 +1,5 @@
 import React from 'react'
+import isEmpty from 'lodash/isEmpty'
 
 const MarkerStyle = {
   color: "#1F1F1F",
@@ -29,38 +30,40 @@ export default class Marker extends React.Component {
     super(props)
 
     this.state = {
-      hover: false,
-      display: true,
       gMap: null,
+      hover: false,
       marker: null,
-      markerVisible: false,
+      isMarkerDrawed: false,
       infoWindow: null,
-      infoWindowVisible: false,
+      isWindowPoped: false,
     }
 
     this.getMarkerStyle = this.getMarkerStyle.bind(this)
     this.getGlyphiconStyle = this.getGlyphiconStyle.bind(this)
     this.handleMouseOver = this.handleMouseOver.bind(this)
     this.handleMouseOut = this.handleMouseOut.bind(this)
-    this.handleMarkerMount = this.handleMarkerMount.bind(this)
+    this.handleNewMarkerMount = this.handleNewMarkerMount.bind(this)
     this.handleMarkerToggle = this.handleMarkerToggle.bind(this)
     this.handleInfoWindowToggle = this.handleInfoWindowToggle.bind(this)
+    this.handleMarkerMount = this.handleMarkerMount.bind(this)
+    this.handleMarkerUnmount = this.handleMarkerUnmount.bind(this)
   }
 
   getMarkerStyle() {
     const style = this.state.hover ? HoveredMarkerStyle : MarkerStyle
-    return Object.assign({}, style, this.props.style)
+    const extension = this.props.isDisplayed ? {} : { display: "none" }
+    return Object.assign({}, style, extension)
   }
 
   getGlyphiconStyle() {
     switch (true) {
-      case this.state.hover && this.state.markerVisible:
+      case this.state.hover && this.state.isMarkerDrawed:
         return HoveredGlyphiconStyle
-      case this.state.hover && !this.state.markerVisible:
+      case this.state.hover && !this.state.isMarkerDrawed:
         return PaledGlyphiconStyle
-      case !this.state.hover && this.state.markerVisible:
+      case !this.state.hover && this.state.isMarkerDrawed:
         return GlyphiconStyle
-      case !this.state.hover && !this.state.markerVisible:
+      case !this.state.hover && !this.state.isMarkerDrawed:
         return Object.assign({}, PaledGlyphiconStyle, { backgroundColor: "#FFF" })
     }
   }
@@ -73,23 +76,15 @@ export default class Marker extends React.Component {
     this.setState({ hover: false })
   }
 
-  handleInfoWindowToggle() {
-    this.state.infoWindowVisible ?
-    this.state.infoWindow.close() :
-    this.state.infoWindow.open(this.state.gMap, this.state.marker)
-
-    this.setState({ infoWindowVisible: !this.state.infoWindowVisible })
-  }
-
   handleMarkerToggle() {
-    this.state.markerVisible ?
-    this.state.marker.setMap(null) :
-    this.state.marker.setMap(this.state.gMap)
-
-    this.setState({ markerVisible: !this.state.markerVisible })
+    this.setState({ isMarkerDrawed: !this.state.isMarkerDrawed })
   }
 
-  handleMarkerMount(nextProps) {
+  handleInfoWindowToggle() {
+    this.setState({ isWindowPoped: !this.state.isWindowPoped })
+  }
+
+  handleNewMarkerMount(nextProps) {
     const marker = new window.google.maps.Marker({
       position: this.props.position,
       title: this.props.children,
@@ -103,24 +98,49 @@ export default class Marker extends React.Component {
       this.handleInfoWindowToggle()
     })
 
-    this.setState({ marker: marker, markerVisible: true })
-    this.setState({ infoWindow: infoWindow, infoWindowVisible: true })
+    this.setState({
+      marker: marker,
+      isMarkerDrawed: true,
+      infoWindow: infoWindow,
+      isWindowPoped: false
+    })
+
     marker.setMap(nextProps.gMap)
   }
 
+  handleMarkerMount() {
+    this.state.marker.setMap(this.state.gMap)
+  }
+
+  handleMarkerUnmount() {
+    this.state.marker.setMap(null)
+    this.state.infoWindow.close()
+  }
+
   componentWillReceiveProps(nextProps) {
-    // if marker has not rendered
+    // if google maps marker has not rendered
     if (!this.state.marker) {
       this.setState({ gMap: nextProps.gMap })
-      return this.handleMarkerMount(nextProps)
+      this.handleNewMarkerMount(nextProps)
+      return
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // Click marker toggle button in Marker
+    if (this.state.isMarkerDrawed !== prevState.isMarkerDrawed) {
+      this.state.isMarkerDrawed ? this.handleMarkerUnmount() : this.handleMarkerMount()
     }
 
-    this.setState({ display: !this.state.display })
+    // Click marker toggle button in MarkerList
+    if (this.props.isMarkersDrawed !== prevProps.isMarkersDrawed) {
+      this.props.isMarkersDrawed ? this.handleMarkerMount() : this.handleMarkerUnmount()
+    }
   }
 
   render() {
     const markerStyle = this.getMarkerStyle()
-    const glyphiconStyle = Object.assign({}, this.getGlyphiconStyle(), this.props.style)
+    const glyphiconStyle = this.getGlyphiconStyle()
 
     return (
       <div className="Marker"
