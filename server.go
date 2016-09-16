@@ -43,8 +43,11 @@ func (s *Server) Init() {
 
 // Route setting router for this app.
 func (s *Server) Route() {
+	marker := &controller.Marker{}
 	googleMap := &controller.GoogleMap{Key: s.Config.GoogleMap.Key}
+
 	s.Engine.GET("/", googleMap.Get)
+	s.Engine.GET("/api/v1/speed.json", marker.GetSpeed)
 }
 
 func main() {
