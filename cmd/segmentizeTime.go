@@ -4,11 +4,13 @@ import (
 	"bufio"
 	"encoding/csv"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
+	"math"
 	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
 )
 
 type CacheInfo struct {
@@ -24,8 +26,15 @@ type Column struct {
 }
 
 type Line struct {
-	Index int
-	Value []string
+	FrameNumber      string
+	MovieFrameNumber string
+	Statistics       []Statistics
+}
+
+type Statistics struct {
+	Name     string
+	Average  float64
+	Variance float64
 }
 
 const SegmentSize = 100
@@ -35,18 +44,6 @@ func main() {
 	readCacheConfig(&cacheInfo)
 
 	segmentizeTime(cacheInfo)
-}
-
-func readCacheConfig(c *CacheInfo) {
-	file, err := ioutil.ReadFile("../config/cacheConfig.json")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = json.Unmarshal(file, c)
-	if err != nil {
-		log.Fatal(err)
-	}
 }
 
 func segmentizeTime(cacheInfo CacheInfo) {
@@ -63,41 +60,94 @@ func segmentizeTime(cacheInfo CacheInfo) {
 
 	validColumns := getValidColumns(cacheInfo)
 
-	result := [][]float64{}
+	result := []Line{}
 	for i := 0; i < len(allRecords)/SegmentSize; i++ {
 		records := allRecords[i*SegmentSize : (i+1)*SegmentSize]
-		result = append(result, calcAverages(validColumns, &records))
+		result = append(result, calcStatistics(validColumns, &records))
 	}
 
-	fmt.Println(result)
+	writeCSV(cacheInfo, result)
 }
 
-func calcAverages(columns []Column, records *[][]string) []float64 {
-	ch := make(chan float64, SegmentSize)
+func writeCSV(cacheInfo CacheInfo, result []Line) {
+	filename := cacheInfo.Target
+	name := strings.TrimSuffix(filename, filepath.Ext(filename))
+	target := "../data/" + name + "-cache" + filepath.Ext(filename)
+
+	file, err := os.OpenFile(target, os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	w := csv.NewWriter(file)
+	w.Write(createHeader(cacheInfo))
+	for _, line := range result {
+		field := []string{}
+		field = append(field, line.FrameNumber, line.MovieFrameNumber)
+		for _, st := range line.Statistics {
+			average := strconv.FormatFloat(st.Average, 'G', -1, 64)
+			variance := strconv.FormatFloat(st.Variance, 'G', -1, 64)
+			field = append(field, average, variance)
+		}
+		w.Write(field)
+	}
+}
+
+func readCacheConfig(c *CacheInfo) {
+	file, err := ioutil.ReadFile("../config/cacheConfig.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = json.Unmarshal(file, c)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func calcStatistics(columns []Column, records *[][]string) Line {
+	result := []Statistics{}
 	for _, column := range columns {
-		go calcAverage(column, records, ch)
+		result = append(result, calcStatistic(column, records))
 	}
 
-	result := []float64{}
-	for _ = range ch {
-		result = append(result, <-ch)
-	}
-
-	return result
+	line := getLines(*records, result)
+	return line
 }
 
-func calcAverage(column Column, records *[][]string, ch chan float64) {
-	var acc float64
+func calcStatistic(column Column, records *[][]string) Statistics {
+	var average float64
+	var variance float64
+	values := []float64{}
 	for i, record := range *records {
-		if i < 3 {
+		if i < 2 {
 			continue
 		}
 
-		tmp, _ := strconv.ParseFloat(record[column.Index], 64)
-		acc += tmp
+		value, _ := strconv.ParseFloat(record[column.Index], 64)
+		values = append(values, value)
+		average += value
 	}
 
-	ch <- acc / float64(SegmentSize)
+	average = average / float64(SegmentSize)
+	for _, v := range values {
+		variance += math.Pow(v-average, 2)
+	}
+
+	return Statistics{
+		Name:     column.Name,
+		Average:  average,
+		Variance: variance / float64(SegmentSize),
+	}
+}
+
+func getLines(records [][]string, statistics []Statistics) Line {
+	record := records[2]
+	return Line{
+		FrameNumber:      record[1],
+		MovieFrameNumber: record[2],
+		Statistics:       statistics,
+	}
 }
 
 func getValidColumns(cacheInfo CacheInfo) []Column {
@@ -109,4 +159,16 @@ func getValidColumns(cacheInfo CacheInfo) []Column {
 	}
 
 	return valids
+}
+
+func createHeader(cacheInfo CacheInfo) []string {
+	buffer := []string{}
+	buffer = append(buffer, "FrameNumber", "MovieFrameNumber")
+	for _, column := range cacheInfo.Columns {
+		if column.Read {
+			buffer = append(buffer, column.Name+" Ave", column.Name+" Var")
+		}
+	}
+
+	return buffer
 }
