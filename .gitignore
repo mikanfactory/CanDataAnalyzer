@@ -7,5 +7,5 @@ public/js/bundle.js
 Godeps/_workspace
 !.eslintrc.js
 !.editorconfig
-!data/.gitkeep
+data/*
 config/config.toml
