@@ -92,7 +92,9 @@ func writeCSV(cacheInfo CacheInfo, result []Line) {
 			variance := strconv.FormatFloat(st.Variance, 'G', -1, 64)
 			field = append(field, average, variance)
 		}
+
 		w.Write(field)
+		w.Flush()
 	}
 }
 
