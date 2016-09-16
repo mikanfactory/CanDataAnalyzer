@@ -37,7 +37,10 @@ type Statistics struct {
 	Variance float64
 }
 
-const SegmentSize = 100
+const (
+	headerLines = 2
+	SegmentSize = 100
+)
 
 func main() {
 	cacheInfo := CacheInfo{}
@@ -120,7 +123,7 @@ func calcStatistic(column Column, records *[][]string) Statistics {
 	var variance float64
 	values := []float64{}
 	for i, record := range *records {
-		if i < 2 {
+		if i < headerLines {
 			continue
 		}
 
