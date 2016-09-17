@@ -2,15 +2,16 @@ NPM:=$(shell which npm)
 NODE_MODULES := node_modules/.bin
 WEBPACK:=$(NODE_MODULES)/webpack
 ESLINT:=$(NODE_MODULES)/eslint
-WEBPACK_JS:=client/webpack/webpack.config.js
+WEBPACK_JS:=webpack.config.js
 ENV:=development
 
 # TODO: Resolve the dependency of Go
 deps:
+	go get
 	npm install
 
 test:
-	godep go test -v ./...
+	go test -v ./...
 
 build:
 	$(WEBPACK) -p --config $(WEBPACK_JS)

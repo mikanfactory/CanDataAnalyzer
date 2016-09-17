@@ -3,9 +3,9 @@ var path = require('path')
 
 module.exports = {
   target: 'web',
-  entry: [path.join(__dirname, '../index.jsx')],
+  entry: [path.join(__dirname, 'client/index.jsx')],
   output: {
-    path: path.join(__dirname, '../../public/js'),
+    path: path.join(__dirname, 'public/js'),
     publicPath: '/js/',
     filename: 'bundle.js'
   },
