@@ -11,10 +11,15 @@ import (
 type Marker struct{}
 
 func (m *Marker) Get(c echo.Context) error {
-	markers := []model.Marker{}
-	markers.FindByName()
+	setting := model.Setting{}
+	if err := c.Bind(&setting); err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
 
-	data := model.Markers{Name: "Speed", Markers: markers}
+	markers := &[]model.Marker{}
+	if err := model.LoadMarkers(markers, setting); err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
 
-	return c.JSON(http.StatusOK, data)
+	return c.JSON(http.StatusOK, markers)
 }

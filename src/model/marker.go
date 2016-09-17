@@ -7,6 +7,12 @@ import (
 	"strconv"
 )
 
+const headerLines = 2
+
+type imageAnalyzer func(record []string) string
+type componentAnalyzer func(record []string) []string
+type positionAnalyzer func(record []string) Position
+
 var statusToFilename = map[string]string{
 	"green":    "/icon/green_car.png",
 	"yellow":   "/icon/yellow_car.png",
@@ -18,21 +24,20 @@ var statusToFilename = map[string]string{
 	"straight": "/icon/straight.png",
 	"stop":     "/icon/stop_car.png",
 	"empty":    "/icon/empty.png",
+	"normal":   "/icon/normal.png",
 }
 
-const headerLines = 2
-
 // LoadMarkers load markers from csv file specified by target argument.
-func LoadMarkers(xs *[]Marker, target string) error {
-	records, err := readFile(target)
+func LoadMarkers(xs *[]Marker, setting Setting) error {
+	records, err := readFile(setting.Target)
 	if err != nil {
 		return err
 	}
 
 	markers := []Marker{}
-	getImage := imageGenerator(records[0])
-	getPosition := positionGenerator(records[0])
-	getComponents := componentsGenerator(records[0])
+	getImage := genImageAnalyzer(records[0], setting.Conditions)
+	getPosition := genPositonAnalyzer(records[0])
+	getComponents := genComponentAnalyzer(records[0])
 	for i, record := range records {
 		if i < headerLines {
 			continue
@@ -71,7 +76,7 @@ func readFile(target string) ([][]string, error) {
 	return records, nil
 }
 
-func componentsGenerator(header []string) func(record []string) []string {
+func genComponentAnalyzer(header []string) componentAnalyzer {
 	names := header
 
 	return func(record []string) []string {
@@ -85,12 +90,12 @@ func componentsGenerator(header []string) func(record []string) []string {
 	}
 }
 
-func positionGenerator(header []string) func(record []string) Position {
-	nameToIndexMap := createNameToIndexMap(header)
+func genPositonAnalyzer(header []string) positionAnalyzer {
+	nameToIndex := createNameToIndex(header)
 
 	return func(record []string) Position {
-		latI := nameToIndexMap["GPSLatitude Ave"]
-		lngI := nameToIndexMap["GPSLongtitude Ave"]
+		latI := nameToIndex["GPSLatitude Ave"]
+		lngI := nameToIndex["GPSLongtitude Ave"]
 		lat, _ := strconv.ParseFloat(record[latI], 64)
 		lng, _ := strconv.ParseFloat(record[lngI], 64)
 
@@ -98,27 +103,23 @@ func positionGenerator(header []string) func(record []string) Position {
 	}
 }
 
-func imageGenerator(header []string) func(record []string) string {
-	nameToIndexMap := createNameToIndexMap(header)
+func genImageAnalyzer(header []string, conditions []Condition) imageAnalyzer {
+	nameToIndex := createNameToIndex(header)
 
+	// if record matchs the condition then returns status icon,
+	// else normal icon.
 	return func(record []string) string {
-		aveI := nameToIndexMap["AccelerationX Ave"]
-		average, _ := strconv.Atoi(record[aveI])
-
-		switch {
-		case average < 10:
-			return statusToFilename["stop"]
-		case average < 30:
-			return statusToFilename["green"]
-		case average < 60:
-			return statusToFilename["yellow"]
-		default:
-			return statusToFilename["red"]
+		for _, cond := range conditions {
+			if cond.evalRecord(record, nameToIndex) {
+				return statusToFilename[cond.Status]
+			}
 		}
+
+		return statusToFilename["normal"]
 	}
 }
 
-func createNameToIndexMap(header []string) map[string]int64 {
+func createNameToIndex(header []string) map[string]int64 {
 	nameToIndex := make(map[string]int64)
 	for i, name := range header {
 		nameToIndex[name] = int64(i)
