@@ -5,12 +5,6 @@ type Cache struct {
 	Columns []string
 }
 
-// Markers have Name which is the amount of feature of interest like `Speed`.
-type Markers struct {
-	Name    string   `json:"name"`
-	Markers []Marker `json:"markers"`
-}
-
 // Marker is used for GoogleMap Marker.
 type Marker struct {
 	ID         int64    `json:"id"`

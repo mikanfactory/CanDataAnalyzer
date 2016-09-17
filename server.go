@@ -48,7 +48,7 @@ func (s *Server) Route() {
 	googleMap := &controller.GoogleMap{Key: s.Config.GoogleMap.Key}
 
 	s.Engine.GET("/", googleMap.Get)
-	s.Engine.GET("/api/v1/speed.json", marker.GetSpeed)
+	s.Engine.POST("/api/v1/markers", marker.Get)
 }
 
 func main() {
