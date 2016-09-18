@@ -6,11 +6,12 @@ import uniqWith from 'lodash/uniqWith'
 
 const CHANGE_EVENT = 'change'
 
-// Define the store as an empty array
+
 let _store = {
   gMap: {},
   markerLists: [
     {
+      target: '02121K1KAm',
       name: 'Velocity',
       markers: [...Array(20).keys()].map((val, i) => {
         const defaultPosition = { lat: 36.08, lng: 140.18 }
@@ -25,6 +26,7 @@ let _store = {
       })
     },
     {
+      target: '02121K1KAm',
       name: 'Acceleration',
       markers: [...Array(10).keys()].map((val, i) => {
         const defaultPosition = { lat: 36.18, lng: 140.28 }

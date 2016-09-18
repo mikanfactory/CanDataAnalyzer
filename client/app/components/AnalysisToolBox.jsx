@@ -27,6 +27,7 @@ export default class AnalysisToolBox extends React.Component {
       return <MarkerList
                  key={i}
                  gMap={this.props.gMap}
+                 target={ml.target}
                  name={ml.name}
                  data={ml.markers}
                  invisibleMarkers={this.findMarkersByName(ml.name)} />

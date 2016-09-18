@@ -21,23 +21,6 @@ const GlyphiconStyle = { padding: "0 10px" }
 export default class ToolBoxHeader extends React.Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      modal: {
-        visible: false
-      }
-    }
-
-    this.handleModalOpen = this.handleModalOpen.bind(this)
-    this.handleModalClose = this.handleModalClose.bind(this)
-  }
-
-  handleModalOpen() {
-    this.setState({ modal: { visible: true } })
-  }
-
-  handleModalClose() {
-    this.setState({ modal: { visible: false } })
   }
 
   render() {
@@ -54,15 +37,6 @@ export default class ToolBoxHeader extends React.Component {
                 onClick={this.handleModalOpen}>
           </span>
         </div>
-        <Rodal visible={this.state.modal.visible}
-               width={800}
-               height={480}
-               onClose={this.handleModalClose}>
-          <div className="ModalHeader">Rodal</div>
-          <div className="ModalBody">A react modal with animations</div>
-          <button className="rodal-comfirm-btn" onClick={this.handleModalClose}>OK</button>
-          <button className="rodal-cancel-btn" onClick={this.handleModalClose}>Cancel</button>
-        </Rodal>
       </div>
     )
   }

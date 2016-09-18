@@ -1,6 +1,5 @@
 import React from 'react'
 import Marker from './Marker'
-import Rodal from 'rodal'
 import MarkerActions from '../actions/MarkerActions'
 
 const ListHeaderStyle = {
@@ -29,7 +28,6 @@ export default class MarkerList extends React.Component {
     this.state = {
       isListOpened: true,
       drawAllMarkers: true,
-      isModalAppeared: false
     }
 
     this.getOpenOrCloseIcon = this.getOpenOrCloseIcon.bind(this)
@@ -92,11 +90,11 @@ export default class MarkerList extends React.Component {
   }
 
   handleModalOpen() {
-    this.setState({ isModalAppeared: true })
+    /* this.setState({ isModalAppeared: true })*/
   }
 
   handleModalClose() {
-    this.setState({ isModalAppeared: false })
+    /* this.setState({ isModalAppeared: false })*/
   }
 
   render() {
@@ -128,15 +126,6 @@ export default class MarkerList extends React.Component {
                 style={GlyphiconStyle}></span>
         </div>
         <div className="cnt" style={ContainerStyle}>{markerNodes}</div>
-        <Rodal visible={this.state.isModalAppeared}
-               width={800}
-               height={480}
-               onClose={this.handleModalClose}>
-          <div className="ModalHeader">Rodal</div>
-          <div className="ModalBody">A react modal with animations</div>
-          <button className="rodal-comfirm-btn" onClick={this.handleModalClose}>OK</button>
-          <button className="rodal-cancel-btn" onClick={this.handleModalClose}>Cancel</button>
-        </Rodal>
       </div>
     )
   }
@@ -144,7 +133,8 @@ export default class MarkerList extends React.Component {
 
 MarkerList.propTypes = {
   gMap: React.PropTypes.object,
+  target: React.PropTypes.string,
+  name: React.PropTypes.string,
   data: React.PropTypes.array,
-  name: React.PropTypes.string, // it denote name
   invisibleMarkers: React.PropTypes.array
 }
