@@ -47,6 +47,12 @@ function updateMap(gMap) {
 }
 
 function drawMarkers(name) {
+  const markers = _store.invisibleMarkers
+                        .filter( m => m.name == name )
+  _store.invisibleMarkers = markers
+}
+
+function eraseMarkers(name) {
   const markers = _store.markerLists
                         .find( ml => ml.name === name )
                         .markers
@@ -54,15 +60,14 @@ function drawMarkers(name) {
   _store.invisibleMarkers = uniqWith([..._store.invisibleMarkers, ...markers], isEqual)
 }
 
-function eraseMarkers(name) {
-  const markers = _store.invisibleMarkers.filter( m => m.name !== name )
+function drawMarker(name, id) {
+  const markers = _store.invisibleMarkers
+                        .filter( m => m.name == name && m.id === id )
   _store.invisibleMarkers = markers
 }
 
-function drawMarker(name, id) {
-}
-
 function eraseMarker(name, id) {
+  _store.invisibleMarkers = uniqWith([..._store.invisibleMarkers, { name: name, id: id }], isEqual)
 }
 
 class MarkerStoreClass extends EventEmitter {

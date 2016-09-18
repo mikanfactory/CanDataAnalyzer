@@ -70,7 +70,7 @@ export default class MarkerList extends React.Component {
   isMarkerDrawed(id) {
     const marker = this.props.invisibleMarkers
                        .find(marker => marker.id === id)
-    return !!marker
+    return !marker
   }
 
   handleListOpen() {
