@@ -1,5 +1,5 @@
 import React from 'react'
-import isEmpty from 'lodash/isEmpty'
+import MarkerActions from '../actions/MarkerActions'
 
 const MarkerStyle = {
   color: "#1F1F1F",
@@ -34,7 +34,6 @@ export default class Marker extends React.Component {
     this.state = {
       hover: false,
       marker: null,
-      isMarkerDrawed: false,
       infoWindow: null,
       isWindowPoped: false,
     }
@@ -58,13 +57,13 @@ export default class Marker extends React.Component {
 
   getGlyphiconStyle() {
     switch (true) {
-      case this.state.hover && this.state.isMarkerDrawed:
+      case this.state.hover && this.props.isMarkerDrawed:
         return HoveredGlyphiconStyle
-      case this.state.hover && !this.state.isMarkerDrawed:
+      case this.state.hover && !this.props.isMarkerDrawed:
         return PaledGlyphiconStyle
-      case !this.state.hover && this.state.isMarkerDrawed:
+      case !this.state.hover && this.props.isMarkerDrawed:
         return GlyphiconStyle
-      case !this.state.hover && !this.state.isMarkerDrawed:
+      case !this.state.hover && !this.props.isMarkerDrawed:
         return Object.assign({}, PaledGlyphiconStyle, { backgroundColor: "#FFF" })
     }
   }
@@ -78,7 +77,10 @@ export default class Marker extends React.Component {
   }
 
   handleMarkerToggle() {
-    this.setState({ isMarkerDrawed: !this.state.isMarkerDrawed })
+    const { mid, name } = this.props
+    this.props.isMarkerDrawed ?
+      MarkerActions.eraseMarker(name, mid) :
+      MarkerActions.drawMarker(name, mid)
   }
 
   handleInfoWindowToggle() {
@@ -88,11 +90,11 @@ export default class Marker extends React.Component {
   handleNewMarkerMount() {
     const marker = new window.google.maps.Marker({
       position: this.props.position,
-      title: this.props.children,
+      title: this.props.title,
     })
 
     const infoWindow = new window.google.maps.InfoWindow({
-      content: this.props.children
+      content: this.props.title
     })
 
     marker.addListener('click', () => {
@@ -101,7 +103,6 @@ export default class Marker extends React.Component {
 
     this.setState({
       marker: marker,
-      isMarkerDrawed: true,
       infoWindow: infoWindow,
       isWindowPoped: false
     })
@@ -123,7 +124,7 @@ export default class Marker extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     // if google maps marker has not rendered
     if (!this._isMarkerInitiallyRenderd) {
       this.handleMarkerMount()
@@ -132,13 +133,13 @@ export default class Marker extends React.Component {
     }
 
     // Click marker toggle button in Marker
-    if (this.state.isMarkerDrawed !== prevState.isMarkerDrawed) {
-      this.state.isMarkerDrawed ? this.handleMarkerUnmount() : this.handleMarkerMount()
+    if (this.props.isMarkerDrawed !== prevProps.isMarkerDrawed) {
+      this.props.isMarkerDrawed ? this.handleMarkerUnmount() : this.handleMarkerMount()
     }
 
     // Click marker toggle button in MarkerList
-    if (this.props.isMarkersDrawed !== prevProps.isMarkersDrawed) {
-      this.props.isMarkersDrawed ? this.handleMarkerMount() : this.handleMarkerUnmount()
+    if (this.props.isMarkerDrawed !== prevProps.isMarkerDrawed) {
+      this.props.isMarkerDrawed ? this.handleMarkerMount() : this.handleMarkerUnmount()
     }
   }
 
@@ -151,7 +152,7 @@ export default class Marker extends React.Component {
            style={markerStyle}
            onMouseOver={this.handleMouseOver}
            onMouseOut={this.handleMouseOut}>
-            <span style={StringStyle}>{this.props.children}</span>
+            <span style={StringStyle}>{this.props.title}</span>
             <span className="glyphicon glyphicon-map-marker"
                   style={glyphiconStyle}
                   onClick={this.handleMarkerToggle}>
@@ -163,7 +164,10 @@ export default class Marker extends React.Component {
 
 Marker.propTypes = {
   gMap: React.PropTypes.object,
-  name: React.PropTypes.number,
+  mid: React.PropTypes.number,
+  name: React.PropTypes.string,
   position: React.PropTypes.object,
-  children: React.PropTypes.string
+  title: React.PropTypes.string,
+  isDisplayed: React.PropTypes.bool,
+  isMarkerDrawed: React.PropTypes.bool
 }

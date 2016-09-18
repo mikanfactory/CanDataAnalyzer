@@ -1,6 +1,5 @@
 import React from 'react'
 import MarkerActions from '../actions/MarkerActions'
-import MarkerStore from '../stores/MarkerStore'
 
 const GoogleMapStyle = {
   position: 'relative',
