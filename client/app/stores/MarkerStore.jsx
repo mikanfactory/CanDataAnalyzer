@@ -1,6 +1,8 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import { EventEmitter } from 'events'
 import MarkerConstants from '../constants/MarkerConstants';
+import isEqual from 'lodash/isEqual'
+import uniqWith from 'lodash/uniqWith'
 
 const CHANGE_EVENT = 'change'
 
@@ -36,11 +38,31 @@ let _store = {
         }
       })
     },
-  ]
+  ],
+  invisibleMarkers: []
 };
 
 function updateMap(gMap) {
   _store.gMap = gMap
+}
+
+function drawMarkers(name) {
+  const markers = _store.markerLists
+                        .find( ml => ml.name === name )
+                        .markers
+                        .map( m => ({ name: name, id: m.id }) )
+  _store.invisibleMarkers = uniqWith([..._store.invisibleMarkers, ...markers], isEqual)
+}
+
+function eraseMarkers(name) {
+  const markers = _store.invisibleMarkers.filter( m => m.name !== name )
+  _store.invisibleMarkers = markers
+}
+
+function drawMarker(name, id) {
+}
+
+function eraseMarker(name, id) {
 }
 
 class MarkerStoreClass extends EventEmitter {
@@ -69,7 +91,11 @@ class MarkerStoreClass extends EventEmitter {
   }
 
   getMarkerList(name) {
-    return _store.markerLists.find( mlist => mlist.name === name)
+    return _store.markerLists.find( mlist => mlist.name === name )
+  }
+
+  getInvisibles() {
+    return _store.invisibleMarkers
   }
 }
 
@@ -82,20 +108,24 @@ AppDispatcher.register((action) => {
       MarkerStore.emitChange()
       break
 
-    case MarkerConstants.NEW_ITEM:
-      /* MarkerStore.emit(CHANGE_EVENT);*/
+    case MarkerConstants.DRAW_MARKERS:
+      drawMarkers(action.name)
+      MarkerStore.emitChange()
       break;
 
-    case MarkerConstants.SAVE_ITEM:
-      /* MarkerStore.emit(CHANGE_EVENT);*/
+    case MarkerConstants.ERASE_MARKERS:
+      eraseMarkers(action.name)
+      MarkerStore.emitChange()
       break;
 
-    case MarkerConstants.REMOVE_ITEM:
-      /* MarkerStore.emit(CHANGE_EVENT);*/
+    case MarkerConstants.DRAW_MARKER:
+      drawMarker(action.name, action.id)
+      MarkerStore.emitChange()
       break;
 
-    case MarkerConstants.GET_RANDOM_RESPONSE:
-      /* MarkerStore.emit(CHANGE_EVENT);*/
+    case MarkerConstants.ERASE_MARKER:
+      eraseMarker(action.name, action.id)
+      MarkerStore.emitChange()
       break;
 
     default:

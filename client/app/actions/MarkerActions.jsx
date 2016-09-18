@@ -2,8 +2,6 @@ import AppDispatcher from '../dispatcher/AppDispatcher'
 import MarkerConstants from '../constants/MarkerConstants'
 
 export default {
-  create: () => {},
-
   updateGoogleMap: gMap => {
     AppDispatcher.dispatch({
       actionType: MarkerConstants.UPDATE_GOOGLE_MAP,
@@ -11,9 +9,33 @@ export default {
     })
   },
 
-  toggleDisplay: () => {},
+  drawMarkers: name => {
+    AppDispatcher.dispatch({
+      actionType: MarkerConstants.DRAW_MARKERS,
+      name: name
+    })
+  },
 
-  toggleDisplayAll: () => {},
+  eraseMarkers: name => {
+    AppDispatcher.dispatch({
+      actionType: MarkerConstants.ERASE_MARKERS,
+      name: name
+    })
+  },
 
-  destroy: () => {}
+  drawMarker: (name, id) => {
+    AppDispatcher.dispatch({
+      actionType: MarkerConstants.DRAW_MARKER,
+      name: name,
+      id: id
+    })
+  },
+
+  eraseMarker: (name, id) => {
+    AppDispatcher.dispatch({
+      actionType: MarkerConstants.ERASE_MARKER,
+      name: name,
+      id: id
+    })
+  }
 }
