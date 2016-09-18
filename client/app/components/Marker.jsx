@@ -132,11 +132,6 @@ export default class Marker extends React.Component {
       return
     }
 
-    // Click marker toggle button in Marker
-    if (this.props.isMarkerDrawed !== prevProps.isMarkerDrawed) {
-      this.props.isMarkerDrawed ? this.handleMarkerUnmount() : this.handleMarkerMount()
-    }
-
     // Click marker toggle button in MarkerList
     if (this.props.isMarkerDrawed !== prevProps.isMarkerDrawed) {
       this.props.isMarkerDrawed ? this.handleMarkerMount() : this.handleMarkerUnmount()

@@ -48,7 +48,7 @@ function updateMap(gMap) {
 
 function drawMarkers(name) {
   const markers = _store.invisibleMarkers
-                        .filter( m => m.name == name )
+                        .filter( m => m.name !== name )
   _store.invisibleMarkers = markers
 }
 
@@ -62,7 +62,7 @@ function eraseMarkers(name) {
 
 function drawMarker(name, id) {
   const markers = _store.invisibleMarkers
-                        .filter( m => m.name == name && m.id === id )
+                        .filter( m => m.name !== name || m.id !== id )
   _store.invisibleMarkers = markers
 }
 

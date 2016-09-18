@@ -33,7 +33,7 @@ export default class MarkerList extends React.Component {
     }
 
     this.getOpenOrCloseIcon = this.getOpenOrCloseIcon.bind(this)
-    this.getEmbedOrEjectIcon = this.getEmbedOrEjectIcon.bind(this)
+    this.getDrawOrEraseIcon = this.getDrawOrEraseIcon.bind(this)
     this.isMarkerDrawed = this.isMarkerDrawed.bind(this)
     this.handleListOpen = this.handleListOpen.bind(this)
     this.handleListClose = this.handleListClose.bind(this)
@@ -55,7 +55,7 @@ export default class MarkerList extends React.Component {
            </span>
   }
 
-  getEmbedOrEjectIcon() {
+  getDrawOrEraseIcon() {
     return this.state.drawAllMarkers ?
            <span className="glyphicon glyphicon-map-marker"
                  style={GlyphiconStyle}
@@ -112,7 +112,7 @@ export default class MarkerList extends React.Component {
     })
 
     const openOrCloseIcon = this.getOpenOrCloseIcon()
-    const embedOrEjectIcon = this.getEmbedOrEjectIcon()
+    const drawOrEraseIcon = this.getDrawOrEraseIcon()
 
     return (
       <div className="MarkerList">
@@ -123,7 +123,7 @@ export default class MarkerList extends React.Component {
                 onClick={this.handleModalOpen} >
           </span>
           {openOrCloseIcon}
-          {embedOrEjectIcon}
+          {drawOrEraseIcon}
           <span className="glyphicon glyphicon-trash"
                 style={GlyphiconStyle}></span>
         </div>
