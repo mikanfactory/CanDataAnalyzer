@@ -2,6 +2,9 @@ import React from 'react'
 import GoogleMap from './GoogleMap'
 import ToolBox from './AnalysisToolBox.jsx'
 import MarkerStore from '../stores/MarkerStore'
+import EditSettingModal from './EditSettingModal'
+/* import NewSettingModal from './NewSettingModal'
+ * import ShowImageModal from './ShowImageModal'*/
 
 const ContainerStyle = {
   position: 'relative',
@@ -44,6 +47,11 @@ export default class Container extends React.Component {
         <ToolBox gMap={this.state.gMap}
                  markerLists={this.state.markerLists}
                  invisibleMarkers={this.state.invisibleMarkers} />
+        <EditSettingModal
+            isVisible={this.isVisibleModal("Edit Setting")}
+        />
+        {/* <NewSettingModal />
+            <ShowImagesModal /> */}
       </div>
     )
   }

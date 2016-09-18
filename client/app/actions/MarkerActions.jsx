@@ -37,5 +37,17 @@ export default {
       name: name,
       id: id
     })
+  },
+
+  openModal: () => {
+    AppDispatcher.dispatch({
+      actionType: MarkerConstants.OPEN_MODAL,
+    })
+  },
+
+  closeModal: () => {
+    AppDispatcher.dispatch({
+      actionType: MarkerConstants.CLOSE_MODAL,
+    })
   }
 }

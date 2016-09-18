@@ -1,11 +1,10 @@
-import AppDispatcher from '../dispatcher/AppDispatcher';
+import AppDispatcher from '../dispatcher/AppDispatcher'
+import MarkerConstants from '../constants/MarkerConstants'
 import { EventEmitter } from 'events'
-import MarkerConstants from '../constants/MarkerConstants';
 import isEqual from 'lodash/isEqual'
 import uniqWith from 'lodash/uniqWith'
 
 const CHANGE_EVENT = 'change'
-
 
 let _store = {
   gMap: {},
@@ -41,8 +40,9 @@ let _store = {
       })
     },
   ],
-  invisibleMarkers: []
-};
+  invisibleMarkers: [],
+  visibleModals: []
+}
 
 function updateMap(gMap) {
   _store.gMap = gMap
@@ -104,9 +104,13 @@ class MarkerStoreClass extends EventEmitter {
   getInvisibles() {
     return _store.invisibleMarkers
   }
+
+  getVisibleModals() {
+    return _store.visibleModals
+  }
 }
 
-const MarkerStore = new MarkerStoreClass();
+const MarkerStore = new MarkerStoreClass()
 
 AppDispatcher.register((action) => {
   switch (action.actionType) {
@@ -118,26 +122,26 @@ AppDispatcher.register((action) => {
     case MarkerConstants.DRAW_MARKERS:
       drawMarkers(action.name)
       MarkerStore.emitChange()
-      break;
+      break
 
     case MarkerConstants.ERASE_MARKERS:
       eraseMarkers(action.name)
       MarkerStore.emitChange()
-      break;
+      break
 
     case MarkerConstants.DRAW_MARKER:
       drawMarker(action.name, action.id)
       MarkerStore.emitChange()
-      break;
+      break
 
     case MarkerConstants.ERASE_MARKER:
       eraseMarker(action.name, action.id)
       MarkerStore.emitChange()
-      break;
+      break
 
     default:
-      return true;
+      return true
   }
-});
+})
 
-export default MarkerStore;
+export default MarkerStore
