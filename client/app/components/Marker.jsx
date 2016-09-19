@@ -145,6 +145,7 @@ export default class Marker extends React.Component {
       this.props.isMarkerDrawed ? this.handleMarkerMount() : this.handleMarkerUnmount()
     }
 
+    // Click infoWindow toggle buttons
     if (this.state.isWindowPoped !== prevState.isWindowPoped) {
       this.state.isWindowPoped ? this.handleWindowOpen() : this.handleWindowClose()
     }
@@ -157,6 +158,7 @@ export default class Marker extends React.Component {
     return (
       <div className="Marker"
            style={markerStyle}
+           onClick={this.handleInfoWindowToggle}
            onMouseOver={this.handleMouseOver}
            onMouseOut={this.handleMouseOut}>
             <span style={StringStyle}>{"this is test"}</span>
