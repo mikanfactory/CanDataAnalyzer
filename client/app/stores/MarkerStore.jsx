@@ -10,6 +10,7 @@ let _store = {
   gMap: {},
   markerLists: [
     {
+      id: 1,
       target: '02121K1KAm',
       name: 'Velocity',
       markers: [...Array(20).keys()].map((val, i) => {
@@ -20,11 +21,12 @@ let _store = {
             lat: defaultPosition.lat + i*0.01,
             lng: defaultPosition.lng + i*0.01
           },
-          value: (val + 40).toString() + "km/s"
+          description: (val + 40).toString() + "km/s"
         }
       })
     },
     {
+      id: 2,
       target: '02121K1KAm',
       name: 'Acceleration',
       markers: [...Array(10).keys()].map((val, i) => {
@@ -35,13 +37,21 @@ let _store = {
             lat: defaultPosition.lat + i*0.01,
             lng: defaultPosition.lng - i*0.01
           },
-          value: (val + 10).toString() + "km/s^2"
+          description: (val + 10).toString() + "km/s^2"
         }
       })
     },
   ],
+  settings: [
+    { id: 1, target: "02121K1KAm", title: "Velocity", conditionIDs: [1] },
+    { id: 2, target: "02121K1KAm", title: "Acceleration", conditionIDs: [1, 2] }
+  ],
+  conditions: [
+    { id: 1, feature: "Velocity", operator: "<", value: 5.0, status: "stop" },
+    { id: 2, feature: "Acceleration Ave", operator: ">", value: 5.0, status: "run" },
+  ],
   invisibleMarkers: [],
-  visibleModals: []
+  visibleModal: {}
 }
 
 function updateMap(gMap) {
@@ -70,6 +80,16 @@ function drawMarker(name, id) {
 
 function eraseMarker(name, id) {
   _store.invisibleMarkers = uniqWith([..._store.invisibleMarkers, { name: name, id: id }], isEqual)
+}
+
+function openModal(modalType, settingID) {
+  let setting = _store.settings.find( s => s.id === settingID )
+  setting.modalType = modalType
+  _store.visibleModal = setting
+}
+
+function closeModal() {
+  _store.visibleModal = null
 }
 
 class MarkerStoreClass extends EventEmitter {
@@ -105,8 +125,8 @@ class MarkerStoreClass extends EventEmitter {
     return _store.invisibleMarkers
   }
 
-  getVisibleModals() {
-    return _store.visibleModals
+  getVisibleModal() {
+    return _store.visibleModal
   }
 }
 
@@ -136,6 +156,16 @@ AppDispatcher.register((action) => {
 
     case MarkerConstants.ERASE_MARKER:
       eraseMarker(action.name, action.id)
+      MarkerStore.emitChange()
+      break
+
+    case MarkerConstants.OPEN_MODAL:
+      openModal("Edit Config", action.id)
+      MarkerStore.emitChange()
+      break
+
+    case MarkerConstants.CLOSE_MODAL:
+      closeModal()
       MarkerStore.emitChange()
       break
 

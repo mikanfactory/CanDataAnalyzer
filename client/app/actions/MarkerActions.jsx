@@ -39,9 +39,10 @@ export default {
     })
   },
 
-  openModal: () => {
+  openModal: (id) => {
     AppDispatcher.dispatch({
       actionType: MarkerConstants.OPEN_MODAL,
+      id: id
     })
   },
 

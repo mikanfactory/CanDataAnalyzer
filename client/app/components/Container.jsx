@@ -1,10 +1,9 @@
 import React from 'react'
+import isEmpty from 'lodash/isEmpty'
+import Modal from "./Modal"
 import GoogleMap from './GoogleMap'
 import ToolBox from './AnalysisToolBox.jsx'
 import MarkerStore from '../stores/MarkerStore'
-import EditSettingModal from './EditSettingModal'
-/* import NewSettingModal from './NewSettingModal'
- * import ShowImageModal from './ShowImageModal'*/
 
 const ContainerStyle = {
   position: 'relative',
@@ -12,11 +11,19 @@ const ContainerStyle = {
   height: '100%'
 }
 
+const EmptyModal = {
+  id: 0,
+  target: "",
+  title: "",
+  conditionIDs: []
+}
+
 function getMarkerState() {
   return {
-    gMap: MarkerStore.getMap(),
-    markerLists: MarkerStore.getMarkerLists(),
-    invisibleMarkers: MarkerStore.getInvisibles()
+    gMap:             MarkerStore.getMap(),
+    markerLists:      MarkerStore.getMarkerLists(),
+    invisibleMarkers: MarkerStore.getInvisibles(),
+    visibleModal:     MarkerStore.getVisibleModal(),
   }
 }
 
@@ -26,32 +33,37 @@ export default class Container extends React.Component {
     this.state = getMarkerState()
 
     this._onChange = this._onChange.bind(this)
-
-    this.componentDidMount = this.componentDidMount.bind(this)
-    this.componentWillUnmount = this.componentWillUnmount.bind(this)
   }
 
   componentDidMount() {
     MarkerStore.addChangeListener(this._onChange)
-    this.setState(getMarkerState()) // Because this function runs after emitting
+
+    // Because this function runs after GoogleMap#ComponentDidMount,
+    // rerender and pass gMap to child component.
+    this.setState(getMarkerState())
   }
 
   componentWillUnmount() {
     MarkerStore.removeChangeListener(this._onChange)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevProps, prevState)
+  }
+
   render() {
+    const modal = !isEmpty(this.state.visibleModal) ?
+                  this.state.visibleModal :
+                  EmptyModal
+
     return (
       <div className="Container" style={ContainerStyle}>
         <GoogleMap gMap={this.state.gMap} />
         <ToolBox gMap={this.state.gMap}
                  markerLists={this.state.markerLists}
                  invisibleMarkers={this.state.invisibleMarkers} />
-        <EditSettingModal
-            isVisible={this.isVisibleModal("Edit Setting")}
-        />
-        {/* <NewSettingModal />
-            <ShowImagesModal /> */}
+        <Modal isVisible={!isEmpty(this.state.visibleModal)}
+               {...modal} />
       </div>
     )
   }

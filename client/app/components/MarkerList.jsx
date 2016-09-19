@@ -38,7 +38,6 @@ export default class MarkerList extends React.Component {
     this.handleMarkerDraw = this.handleMarkerDraw.bind(this)
     this.handleMarkerErase = this.handleMarkerErase.bind(this)
     this.handleModalOpen = this.handleModalOpen.bind(this)
-    this.handleModalClose = this.handleModalClose.bind(this)
   }
 
   getOpenOrCloseIcon() {
@@ -90,20 +89,16 @@ export default class MarkerList extends React.Component {
   }
 
   handleModalOpen() {
-    /* this.setState({ isModalAppeared: true })*/
-  }
-
-  handleModalClose() {
-    /* this.setState({ isModalAppeared: false })*/
+    MarkerActions.openModal(this.props.id)
   }
 
   render() {
-    const markerNodes = this.props.data.map((marker) => {
+    const markerNodes = this.props.markers.map((marker) => {
       return <Marker key={marker.id}
                      gMap={this.props.gMap}
                      mid={marker.id}
                      name={this.props.name}
-                     title={marker.value}
+                     title={marker.description}
                      position={marker.position}
                      isDisplayed={this.state.isListOpened}
                      isMarkerDrawed={this.isMarkerDrawed(marker.id)} />
@@ -133,8 +128,9 @@ export default class MarkerList extends React.Component {
 
 MarkerList.propTypes = {
   gMap: React.PropTypes.object,
+  id: React.PropTypes.number,
   target: React.PropTypes.string,
   name: React.PropTypes.string,
-  data: React.PropTypes.array,
+  markers: React.PropTypes.array,
   invisibleMarkers: React.PropTypes.array
 }

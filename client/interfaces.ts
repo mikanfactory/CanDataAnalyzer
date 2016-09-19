@@ -1,6 +1,7 @@
 // If we introduce TypeScript, use for class.
 // Just use as reference.
 interface MarkerLists {
+  id:      number,              // unique
   target:  string,
   name:    string,              // unique
   markers: Array<Marker>
@@ -18,6 +19,7 @@ interface Position {
 }
 
 interface Condition {
+  id:       number,             // unique
   feature:  string,
   operator: Operator,
   value:    number,
@@ -44,4 +46,16 @@ enum Status {
   Stop     = "stop",
   Empty    = "empty",
   Normal   = "normal"
+}
+
+interface Setting {
+  id:         number,           // unique
+  target:     string,
+  title:      string,
+  conditions: Array<Condition>
+}
+
+interface Modal {
+  modalType:  string,
+  settingID:  number
 }
