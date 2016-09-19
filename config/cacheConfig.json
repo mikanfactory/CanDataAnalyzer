@@ -1,5 +1,4 @@
 {
-    "target": "021021K1KAm.csv",
     "columns": [
         { "index":  1, "name": "frameIndex", "jName": "フレーム", "read": false },
         { "index":  2, "name": "frameIndexForImg", "jName": "フレーム(画像抽出対応)", "read": false },

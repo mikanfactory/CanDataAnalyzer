@@ -14,8 +14,11 @@ import (
 )
 
 type CacheInfo struct {
-	Target  string
-	Columns []Column
+	Columns []Column `json:"columns"`
+}
+
+type Targets struct {
+	Names []string `json:"names"`
 }
 
 type Column struct {
@@ -43,14 +46,25 @@ const (
 )
 
 func main() {
+	file, err := ioutil.ReadFile("../config/targets.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	targets := &Targets{}
+	json.Unmarshal(file, targets)
+
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	segmentizeTime(cacheInfo)
+	for _, name := range targets.Names {
+		filename := name + ".csv"
+		segmentizeTime(filename, cacheInfo)
+	}
 }
 
-func segmentizeTime(cacheInfo CacheInfo) {
-	file, err := os.Open("../data/" + cacheInfo.Target)
+func segmentizeTime(filename string, cacheInfo CacheInfo) {
+	file, err := os.Open("../data/" + filename)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -69,11 +83,10 @@ func segmentizeTime(cacheInfo CacheInfo) {
 		result = append(result, calcStatistics(validColumns, &records))
 	}
 
-	writeCSV(cacheInfo, result)
+	writeCSV(filename, cacheInfo, result)
 }
 
-func writeCSV(cacheInfo CacheInfo, result []Line) {
-	filename := cacheInfo.Target
+func writeCSV(filename string, cacheInfo CacheInfo, result []Line) {
 	name := strings.TrimSuffix(filename, filepath.Ext(filename))
 	target := "../data/" + name + "-cache" + filepath.Ext(filename)
 
