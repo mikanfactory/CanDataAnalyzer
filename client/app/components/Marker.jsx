@@ -90,7 +90,8 @@ export default class Marker extends React.Component {
   handleNewMarkerMount() {
     const marker = new window.google.maps.Marker({
       position: this.props.position,
-      title: "this is test"
+      title: "this is test",
+      icon: this.props.image
     })
 
     const infoWindow = new window.google.maps.InfoWindow({
@@ -175,6 +176,7 @@ Marker.propTypes = {
   gMap: React.PropTypes.object,
   mid: React.PropTypes.number,
   name: React.PropTypes.string,
+  image: React.PropTypes.string,
   position: React.PropTypes.object,
   description: React.PropTypes.string,
   isDisplayed: React.PropTypes.bool,

@@ -24,6 +24,7 @@ let _store = {
             lat: defaultPosition.lat + i*0.01,
             lng: defaultPosition.lng + i*0.01
           },
+          image: "./static/icon/green_car.png",
           description: (val + 40).toString() + "km/s"
         }
       })
@@ -40,6 +41,7 @@ let _store = {
             lat: defaultPosition.lat + i*0.01,
             lng: defaultPosition.lng - i*0.01
           },
+          image: "./static/icon/green_car.png",
           description: (val + 10).toString() + "km/s^2"
         }
       })

@@ -1,9 +1,13 @@
 package model
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 func (c *Condition) evalRecord(record []string, nameToIndex map[string]int64) bool {
-	aveI := nameToIndex[c.Feature]
+	featureName := fmt.Sprintf("%s Ave", c.Feature)
+	aveI := nameToIndex[featureName]
 	average, _ := strconv.ParseFloat(record[aveI], 64)
 
 	switch {
