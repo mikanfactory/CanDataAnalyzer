@@ -61,9 +61,20 @@ function updateMap(gMap) {
   _store.gMap = gMap
 }
 
+function addNewMarkers(target, name, markers) {
+  const id = getCount()
+  const ml = {
+    id: id,
+    target: target,
+    name: name,
+    markers: markers
+  }
+
+  _store.markerLists = [..._store.markerLists, ml]
+}
+
 function drawMarkers(name) {
-  const markers = _store.invisibleMarkers
-                        .filter( m => m.name !== name )
+  const markers = _store.invisibleMarkers.filter( m => m.name !== name )
   _store.invisibleMarkers = markers
 }
 
@@ -107,8 +118,13 @@ function newModal() {
   _store.visibleModal = emptySetting
 }
 
-function countUpSettings() {
+function getCount() {
+  return _store.nextSettingID
+}
+
+function countUp() {
   _store.nextSettingID++
+  return _store.nextSettingID
 }
 
 class MarkerStoreClass extends EventEmitter {
@@ -159,6 +175,12 @@ AppDispatcher.register((action) => {
   switch (action.actionType) {
     case MarkerConstants.UPDATE_GOOGLE_MAP:
       updateMap(action.gMap)
+      MarkerStore.emitChange()
+      break
+
+    case MarkerConstants.ADD_NEW_MARKERS:
+      const { target, name, markers } = action
+      addNewMarkers(target, name, markers)
       MarkerStore.emitChange()
       break
 

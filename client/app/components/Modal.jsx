@@ -1,7 +1,7 @@
 import React from 'react'
 import Rodal from 'rodal'
-import 'whatwg-fetch';
 import MarkerActions from '../actions/MarkerActions'
+import 'whatwg-fetch'
 
 const MODAL_TYPE_EDIT = 'Edit'
 const MODAL_TYPE_NEW  = 'New'
@@ -80,14 +80,14 @@ export default class Modal extends React.Component {
     super(props)
 
     this.getConditions = this.getConditions.bind(this)
-    this.handleSaveSetting = this.handleSaveSetting.bind(this)
+    this.handleSettingSave = this.handleSettingSave.bind(this)
   }
 
   handleModalClose() {
     MarkerActions.closeModal()
   }
 
-  handleSaveSetting() {
+  handleSettingSave() {
     const { id, target, title, conditions } = this.props
     const cnds = conditions.filter( c => c.settingID === id )
     const data = {
@@ -106,8 +106,10 @@ export default class Modal extends React.Component {
       body: JSON.stringify(data)
     })
       .then(resp => resp.json())
-      .then(json => console.log('parsed json:', json))
+      .then(markers => MarkerActions.addNewMarkers(target, title, markers))
       .catch(err => console.log('post setting error:', err))
+
+    // MarkerActions.addSetting()
   }
 
   getFeature(feature) {
@@ -213,7 +215,7 @@ export default class Modal extends React.Component {
         </div>
         <button className="btn btn-primary btn-lg"
                 style={OKButtonStyle}
-                onClick={this.handleSaveSetting}>OK</button>
+                onClick={this.handleSettingSave}>OK</button>
         <button className="btn btn-default btn-lg"
                 style={CancelButtonStyle}
                 onClick={this.handleModalClose}>Cancel</button>

@@ -10,7 +10,7 @@ import (
 const headerLines = 2
 
 type imageAnalyzer func(record []string) string
-type componentAnalyzer func(record []string) []string
+type descriptionAnalyzer func(record []string) string
 type positionAnalyzer func(record []string) Position
 
 var statusToFilename = map[string]string{
@@ -37,17 +37,17 @@ func LoadMarkers(xs *[]Marker, setting Setting) error {
 	markers := []Marker{}
 	getImage := genImageAnalyzer(records[0], setting.Conditions)
 	getPosition := genPositonAnalyzer(records[0])
-	getComponents := genComponentAnalyzer(records[0])
+	getDescription := genDescriptionAnalyzer(records[0])
 	for i, record := range records {
 		if i < headerLines {
 			continue
 		}
 
 		marker := Marker{
-			ID:         int64(i),
-			Image:      getImage(record),
-			Position:   getPosition(record),
-			Components: getComponents(record),
+			ID:          int64(i),
+			Image:       getImage(record),
+			Position:    getPosition(record),
+			Description: getDescription(record),
 		}
 
 		markers = append(markers, marker)
@@ -76,17 +76,17 @@ func readFile(target string) ([][]string, error) {
 	return records, nil
 }
 
-func genComponentAnalyzer(header []string) componentAnalyzer {
+func genDescriptionAnalyzer(header []string) descriptionAnalyzer {
 	names := header
 
-	return func(record []string) []string {
-		components := []string{}
-		for i, component := range record {
-			cmp := "<div class='feature'>" + names[i] + ": " + component + "</div>"
-			components = append(components, cmp)
+	return func(record []string) string {
+		description := ""
+		for i, feature := range record {
+			cmp := "<div class='feature'>" + names[i] + ": " + feature + "</div>"
+			description = description + cmp + "\n"
 		}
 
-		return components
+		return description
 	}
 }
 

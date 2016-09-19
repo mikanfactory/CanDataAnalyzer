@@ -9,6 +9,15 @@ export default {
     })
   },
 
+  addNewMarkers: (target, name, markers) => {
+    AppDispatcher.dispatch({
+      actionType: MarkerConstants.ADD_NEW_MARKERS,
+      target: target,
+      name: name,
+      markers: markers
+    })
+  },
+
   drawMarkers: name => {
     AppDispatcher.dispatch({
       actionType: MarkerConstants.DRAW_MARKERS,

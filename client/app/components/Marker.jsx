@@ -90,11 +90,11 @@ export default class Marker extends React.Component {
   handleNewMarkerMount() {
     const marker = new window.google.maps.Marker({
       position: this.props.position,
-      title: this.props.title,
+      title: "this is test"
     })
 
     const infoWindow = new window.google.maps.InfoWindow({
-      content: this.props.title
+      content: this.props.description
     })
 
     marker.addListener('click', () => {
@@ -117,6 +117,14 @@ export default class Marker extends React.Component {
     this.state.infoWindow.close()
   }
 
+  handleWindowOpen() {
+    this.state.infoWindow.open(this.state.gMap, this.state.marker)
+  }
+
+  handleWindowClose() {
+    this.state.infoWindow.close()
+  }
+
   componentWillReceiveProps(nextProps) {
     // if google maps marker has not rendered
     if (!this._isMarkerInitiallyRenderd) {
@@ -124,7 +132,7 @@ export default class Marker extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     // if google maps marker has not rendered
     if (!this._isMarkerInitiallyRenderd) {
       this.handleMarkerMount()
@@ -135,6 +143,10 @@ export default class Marker extends React.Component {
     // Click marker toggle button in MarkerList
     if (this.props.isMarkerDrawed !== prevProps.isMarkerDrawed) {
       this.props.isMarkerDrawed ? this.handleMarkerMount() : this.handleMarkerUnmount()
+    }
+
+    if (this.state.isWindowPoped !== prevState.isWindowPoped) {
+      this.state.isWindowPoped ? this.handleWindowOpen() : this.handleWindowClose()
     }
   }
 
@@ -147,7 +159,7 @@ export default class Marker extends React.Component {
            style={markerStyle}
            onMouseOver={this.handleMouseOver}
            onMouseOut={this.handleMouseOut}>
-            <span style={StringStyle}>{this.props.title}</span>
+            <span style={StringStyle}>{"this is test"}</span>
             <span className="glyphicon glyphicon-map-marker"
                   style={glyphiconStyle}
                   onClick={this.handleMarkerToggle}>
@@ -162,7 +174,7 @@ Marker.propTypes = {
   mid: React.PropTypes.number,
   name: React.PropTypes.string,
   position: React.PropTypes.object,
-  title: React.PropTypes.string,
+  description: React.PropTypes.string,
   isDisplayed: React.PropTypes.bool,
   isMarkerDrawed: React.PropTypes.bool
 }

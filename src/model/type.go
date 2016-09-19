@@ -7,10 +7,10 @@ type Cache struct {
 
 // Marker is used for GoogleMap Marker.
 type Marker struct {
-	ID         int64    `json:"id"`
-	Image      string   `json:"image"`
-	Position   Position `json:"position"`
-	Components []string `json:"components"`
+	ID          int64    `json:"id"`
+	Image       string   `json:"image"`
+	Position    Position `json:"position"`
+	Description string   `json:"description"`
 }
 
 // Position means position of the marker.

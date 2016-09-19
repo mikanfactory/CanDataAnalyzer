@@ -18,12 +18,24 @@ interface Position {
   lng: number
 }
 
+interface Setting {
+  id:     number,               // unique
+  target: string,
+  title:  string,
+}
+
 interface Condition {
-  id:       number,             // unique
-  feature:  string,
-  operator: Operator,
-  value:    number,
-  status:   Status
+  id:        number,            // unique
+  settingID: number,
+  feature:   string,
+  operator:  Operator,
+  value:     number,
+  status:    Status
+}
+
+interface Modal {
+  modalType:  string,
+  settingID:  number
 }
 
 enum Operator {
@@ -46,16 +58,4 @@ enum Status {
   Stop     = "stop",
   Empty    = "empty",
   Normal   = "normal"
-}
-
-interface Setting {
-  id:         number,           // unique
-  target:     string,
-  title:      string,
-  conditions: Array<Condition>
-}
-
-interface Modal {
-  modalType:  string,
-  settingID:  number
 }
