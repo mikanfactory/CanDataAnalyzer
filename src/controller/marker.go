@@ -10,6 +10,7 @@ import (
 // Marker control request of Marker
 type Marker struct{}
 
+// Get return markers
 func (m *Marker) Get(c echo.Context) error {
 	setting := model.Setting{}
 	if err := c.Bind(&setting); err != nil {

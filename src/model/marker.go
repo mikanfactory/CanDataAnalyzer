@@ -14,17 +14,17 @@ type componentAnalyzer func(record []string) []string
 type positionAnalyzer func(record []string) Position
 
 var statusToFilename = map[string]string{
-	"green":    "/icon/green_car.png",
-	"yellow":   "/icon/yellow_car.png",
-	"red":      "/icon/red_car.png",
-	"up":       "/icon/up.png",
-	"down":     "/icon/down.png",
-	"right":    "/icon/right.png",
-	"left":     "/icon/left.png",
-	"straight": "/icon/straight.png",
-	"stop":     "/icon/stop_car.png",
-	"empty":    "/icon/empty.png",
-	"normal":   "/icon/normal.png",
+	"green":    "./static/icon/green_car.png",
+	"yellow":   "./static/icon/yellow_car.png",
+	"red":      "./static/icon/red_car.png",
+	"up":       "./static/icon/up.png",
+	"down":     "./static/icon/down.png",
+	"right":    "./static/icon/right.png",
+	"left":     "./static/icon/left.png",
+	"straight": "./static/icon/straight.png",
+	"stop":     "./static/icon/stop_car.png",
+	"empty":    "./static/icon/empty.png",
+	"normal":   "./static/icon/normal.png",
 }
 
 // LoadMarkers load markers from csv file specified by target argument.
@@ -53,7 +53,7 @@ func LoadMarkers(xs *[]Marker, setting Setting) error {
 		markers = append(markers, marker)
 	}
 
-	xs = &markers
+	*xs = markers
 
 	return nil
 }
@@ -61,7 +61,7 @@ func LoadMarkers(xs *[]Marker, setting Setting) error {
 // TODO: Copy all file may expensive. So I have to use pointer.
 // If I introduce levelDB, I can write this function compactly.
 func readFile(target string) ([][]string, error) {
-	file, err := os.Open("data/" + target)
+	file, err := os.Open("data/" + target + "-cache.csv")
 	if err != nil {
 		return [][]string{}, err
 	}

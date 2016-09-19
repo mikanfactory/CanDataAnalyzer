@@ -14,7 +14,7 @@ let _store = {
   markerLists: [
     {
       id: 1,
-      target: '02121K1KAm',
+      target: '021021K1KAm',
       name: 'Velocity',
       markers: [...Array(20).keys()].map((val, i) => {
         const defaultPosition = { lat: 36.08, lng: 140.18 }
@@ -30,7 +30,7 @@ let _store = {
     },
     {
       id: 2,
-      target: '02121K1KAm',
+      target: '021021K1KAm',
       name: 'Acceleration',
       markers: [...Array(10).keys()].map((val, i) => {
         const defaultPosition = { lat: 36.18, lng: 140.28 }
@@ -46,8 +46,8 @@ let _store = {
     },
   ],
   settings: [
-    { id: 1, target: "02121K1KAm", title: "Velocity Setting" },
-    { id: 2, target: "02121K1KAm", title: "Acceleration Setting" }
+    { id: 1, target: "021021K1KAm", title: "Velocity Setting" },
+    { id: 2, target: "021021K1KAm", title: "Acceleration Setting" }
   ],
   conditions: [
     { id: 1, settingID: 1, feature: "AccelerationX", operator: "<", value: 5.0, status: "stop" },

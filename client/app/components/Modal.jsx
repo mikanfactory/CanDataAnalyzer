@@ -1,5 +1,6 @@
 import React from 'react'
 import Rodal from 'rodal'
+import 'whatwg-fetch';
 import MarkerActions from '../actions/MarkerActions'
 
 const MODAL_TYPE_EDIT = 'Edit'
@@ -79,10 +80,34 @@ export default class Modal extends React.Component {
     super(props)
 
     this.getConditions = this.getConditions.bind(this)
+    this.handleSaveSetting = this.handleSaveSetting.bind(this)
   }
 
   handleModalClose() {
     MarkerActions.closeModal()
+  }
+
+  handleSaveSetting() {
+    const { id, target, title, conditions } = this.props
+    const cnds = conditions.filter( c => c.settingID === id )
+    const data = {
+      target: target,
+      title: title,
+      conditions: cnds
+    }
+
+    fetch("/api/v1/markers", {
+      credentials: "same-origin",
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+      .then(resp => resp.json())
+      .then(json => console.log('parsed json:', json))
+      .catch(err => console.log('post setting error:', err))
   }
 
   getFeature(feature) {
@@ -188,7 +213,7 @@ export default class Modal extends React.Component {
         </div>
         <button className="btn btn-primary btn-lg"
                 style={OKButtonStyle}
-                onClick={this.handleModalClose}>OK</button>
+                onClick={this.handleSaveSetting}>OK</button>
         <button className="btn btn-default btn-lg"
                 style={CancelButtonStyle}
                 onClick={this.handleModalClose}>Cancel</button>
