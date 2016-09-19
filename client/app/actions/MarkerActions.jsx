@@ -48,7 +48,13 @@ export default {
 
   closeModal: () => {
     AppDispatcher.dispatch({
-      actionType: MarkerConstants.CLOSE_MODAL,
+      actionType: MarkerConstants.CLOSE_MODAL
+    })
+  },
+
+  newModal: () => {
+    AppDispatcher.dispatch({
+      actionType: MarkerConstants.NEW_MODAL
     })
   }
 }

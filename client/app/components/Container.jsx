@@ -24,6 +24,7 @@ function getMarkerState() {
     markerLists:      MarkerStore.getMarkerLists(),
     invisibleMarkers: MarkerStore.getInvisibles(),
     visibleModal:     MarkerStore.getVisibleModal(),
+    conditions:       MarkerStore.getConditions()
   }
 }
 
@@ -59,6 +60,7 @@ export default class Container extends React.Component {
                  markerLists={this.state.markerLists}
                  invisibleMarkers={this.state.invisibleMarkers} />
         <Modal isVisible={!isEmpty(this.state.visibleModal)}
+               conditions={this.state.conditions}
                {...modal} />
       </div>
     )

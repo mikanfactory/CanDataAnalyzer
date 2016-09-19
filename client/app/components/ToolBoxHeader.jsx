@@ -1,5 +1,5 @@
 import React from 'react'
-import Rodal from 'rodal'
+import MarkerAction from '../actions/MarkerActions'
 
 const HeaderStyle = {
   color: "#FFF",
@@ -21,6 +21,12 @@ const GlyphiconStyle = { padding: "0 10px" }
 export default class ToolBoxHeader extends React.Component {
   constructor(props) {
     super(props)
+
+    this.handleModalOpen = this.handleModalOpen.bind(this)
+  }
+
+  handleModalOpen() {
+    MarkerAction.newModal()
   }
 
   render() {

@@ -7,5 +7,6 @@ export default keyMirror({
   DRAW_MARKER: null,
   ERASE_MARKER: null,
   OPEN_MODAL: null,
-  CLOSE_MODAL: null
+  CLOSE_MODAL: null,
+  NEW_MODAL: null
 })

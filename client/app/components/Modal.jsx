@@ -2,6 +2,9 @@ import Rodal from 'rodal'
 import React from 'react'
 import MarkerActions from '../actions/MarkerActions'
 
+const MODAL_TYPE_EDIT = 'Edit'
+const MODAL_TYPE_NEW = 'New'
+
 const HeaderStyle = {
   fontSize: "32px",
   borderBottom: "1px solid #e9e9e9"
@@ -74,6 +77,10 @@ export default class Modal extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      "conditions": []
+    }
+
     this.getFeature = this.getFeature.bind(this)
     this.getOperator = this.getOperator.bind(this)
     this.getStatus = this.getStatus.bind(this)
@@ -139,7 +146,7 @@ export default class Modal extends React.Component {
              height={480}
              onClose={this.handleModalClose}>
         <div className="ModalHeader" style={HeaderStyle}>
-          Edit {this.props.target} : {this.props.title}
+          {this.props.modalType}: {this.props.target} {this.props.title}
         </div>
         <div className="ModalBody" style={BodyStyle}>
           <div style={{ width: "100%" }}>
@@ -170,5 +177,6 @@ Modal.propTypes = {
   id: React.PropTypes.number,
   target: React.PropTypes.string,
   title: React.PropTypes.string,
-  conditionIDs: React.PropTypes.Array,
+  conditionIDs: React.PropTypes.array,
+  conditions: React.PropTypes.array
 }

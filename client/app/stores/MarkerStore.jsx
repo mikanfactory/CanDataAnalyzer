@@ -5,9 +5,12 @@ import isEqual from 'lodash/isEqual'
 import uniqWith from 'lodash/uniqWith'
 
 const CHANGE_EVENT = 'change'
+const MODAL_TYPE_EDIT = 'Edit'
+const MODAL_TYPE_NEW = 'New'
 
 let _store = {
   gMap: {},
+  nextSettingID: 3,
   markerLists: [
     {
       id: 1,
@@ -43,8 +46,8 @@ let _store = {
     },
   ],
   settings: [
-    { id: 1, target: "02121K1KAm", title: "Velocity", conditionIDs: [1] },
-    { id: 2, target: "02121K1KAm", title: "Acceleration", conditionIDs: [1, 2] }
+    { id: 1, target: "02121K1KAm", title: "Velocity Setting", conditionIDs: [1] },
+    { id: 2, target: "02121K1KAm", title: "Acceleration Setting", conditionIDs: [1, 2] }
   ],
   conditions: [
     { id: 1, feature: "Velocity", operator: "<", value: 5.0, status: "stop" },
@@ -82,14 +85,30 @@ function eraseMarker(name, id) {
   _store.invisibleMarkers = uniqWith([..._store.invisibleMarkers, { name: name, id: id }], isEqual)
 }
 
-function openModal(modalType, settingID) {
-  let setting = _store.settings.find( s => s.id === settingID )
-  setting.modalType = modalType
+function openModal(settingID) {
+  const setting = _store.settings.find( s => s.id === settingID )
+  setting.modalType = MODAL_TYPE_EDIT
   _store.visibleModal = setting
 }
 
 function closeModal() {
   _store.visibleModal = null
+}
+
+function newModal() {
+  const id = _store.nextSettingID
+  const emptySetting = {
+    modalType: MODAL_TYPE_NEW,
+    id: id,
+    target: "",
+    title: "",
+    conditionIDs: []
+  }
+  _store.visibleModal = emptySetting
+}
+
+function countUpSettings() {
+  _store.nextSettingID++
 }
 
 class MarkerStoreClass extends EventEmitter {
@@ -128,6 +147,10 @@ class MarkerStoreClass extends EventEmitter {
   getVisibleModal() {
     return _store.visibleModal
   }
+
+  getConditions() {
+    return _store.conditions
+  }
 }
 
 const MarkerStore = new MarkerStoreClass()
@@ -160,12 +183,17 @@ AppDispatcher.register((action) => {
       break
 
     case MarkerConstants.OPEN_MODAL:
-      openModal("Edit Config", action.id)
+      openModal(action.id)
       MarkerStore.emitChange()
       break
 
     case MarkerConstants.CLOSE_MODAL:
       closeModal()
+      MarkerStore.emitChange()
+      break
+
+    case MarkerConstants.NEW_MODAL:
+      newModal()
       MarkerStore.emitChange()
       break
 
