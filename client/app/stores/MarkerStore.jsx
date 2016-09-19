@@ -46,12 +46,12 @@ let _store = {
     },
   ],
   settings: [
-    { id: 1, target: "02121K1KAm", title: "Velocity Setting", conditionIDs: [1] },
-    { id: 2, target: "02121K1KAm", title: "Acceleration Setting", conditionIDs: [1, 2] }
+    { id: 1, target: "02121K1KAm", title: "Velocity Setting" },
+    { id: 2, target: "02121K1KAm", title: "Acceleration Setting" }
   ],
   conditions: [
-    { id: 1, feature: "Velocity", operator: "<", value: 5.0, status: "stop" },
-    { id: 2, feature: "Acceleration Ave", operator: ">", value: 5.0, status: "run" },
+    { id: 1, settingID: 1, feature: "AccelerationX", operator: "<", value: 5.0, status: "stop" },
+    { id: 2, settingID: 2, feature: "BrakeOnOff", operator: ">", value: 5.0, status: "stop" },
   ],
   invisibleMarkers: [],
   visibleModal: {}

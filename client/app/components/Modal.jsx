@@ -1,9 +1,10 @@
-import Rodal from 'rodal'
 import React from 'react'
+import Rodal from 'rodal'
 import MarkerActions from '../actions/MarkerActions'
 
 const MODAL_TYPE_EDIT = 'Edit'
-const MODAL_TYPE_NEW = 'New'
+const MODAL_TYPE_NEW  = 'New'
+const MODAL_TYPE_SHOW = 'Show'
 
 const HeaderStyle = {
   fontSize: "32px",
@@ -77,21 +78,14 @@ export default class Modal extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      "conditions": []
-    }
-
-    this.getFeature = this.getFeature.bind(this)
-    this.getOperator = this.getOperator.bind(this)
-    this.getStatus = this.getStatus.bind(this)
+    this.getConditions = this.getConditions.bind(this)
   }
 
   handleModalClose() {
     MarkerActions.closeModal()
   }
 
-  getFeature() {
-    const feature = "AccelerationX"
+  getFeature(feature) {
     const options = Features.map( o => <option value={o}>{o}</option> )
     return (
       <select className="form-control feature"
@@ -102,8 +96,7 @@ export default class Modal extends React.Component {
     )
   }
 
-  getOperator() {
-    const operator = ">"
+  getOperator(operator) {
     const options = Operators.map( o => <option value={o}>{o}</option> )
     return (
       <select className="form-control operator"
@@ -114,8 +107,7 @@ export default class Modal extends React.Component {
     )
   }
 
-  getStatus() {
-    const status = "green"
+  getStatus(status) {
     const options = Status.map( o => <option value={o}>{o}</option> )
     return (
       <select className="form-control status"
@@ -126,19 +118,53 @@ export default class Modal extends React.Component {
     )
   }
 
-  render() {
-    const conditions = this.props.conditionIDs.map( i => {
+  getConditions() {
+    let conditions = []
+    switch (this.props.modalType) {
+      case MODAL_TYPE_EDIT:
+        conditions = this.props.conditions
+                         .filter( c => c.settingID === this.props.id)
+        break
+
+      case MODAL_TYPE_NEW:
+        const newCondition = {
+          id: 0,
+          settingID: this.props.id,
+          feature: "Velocity",
+          operator: "<",
+          value: 5.0,
+          status: "stop"
+        }
+        conditions = [newCondition]
+        break
+
+      case MODAL_TYPE_SHOW:
+        conditions = []
+        break
+
+      default:
+        conditions = []
+        break
+    }
+
+    const nodes = conditions.map( cnd => {
       return (
-        <div key={i} style={ConditionStyle}>
+        <div key={cnd.id} style={ConditionStyle}>
           <span style={RawTextStyle}>if</span>
-          {this.getFeature()}
-          {this.getOperator()}
-          <input type="text" placeholder="10.0" style={TextStyle} />
+          {this.getFeature(cnd.feature)}
+          {this.getOperator(cnd.operator)}
+          <input type="text" placeholder={cnd.value} style={TextStyle} />
           <span style={RawTextStyle}>then</span>
-          {this.getStatus()}
+          {this.getStatus(cnd.status)}
         </div>
       )
     })
+
+    return nodes
+  }
+
+  render() {
+    const conditions = this.getConditions()
 
     return (
       <Rodal visible={this.props.isVisible}
@@ -177,6 +203,5 @@ Modal.propTypes = {
   id: React.PropTypes.number,
   target: React.PropTypes.string,
   title: React.PropTypes.string,
-  conditionIDs: React.PropTypes.array,
   conditions: React.PropTypes.array
 }
