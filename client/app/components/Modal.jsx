@@ -2,6 +2,7 @@ import React from 'react'
 import Rodal from 'rodal'
 import MarkerActions from '../actions/MarkerActions'
 import 'whatwg-fetch'
+import uniqBy from 'lodash/uniqBy'
 
 const MODAL_TYPE_EDIT = 'Edit'
 const MODAL_TYPE_NEW  = 'New'
@@ -107,7 +108,7 @@ export default class Modal extends React.Component {
       conditions: []
     }
 
-    this.getHeader = this.getHeader.bind(this)
+    this.getHeaderNode = this.getHeaderNode.bind(this)
     this.getConditions = this.getConditions.bind(this)
     this.handleSettingSave = this.handleSettingSave.bind(this)
   }
@@ -144,7 +145,7 @@ export default class Modal extends React.Component {
     // MarkerActions.addSetting()
   }
 
-  getHeader() {
+  getHeaderNode() {
     if (this.props.modalType === MODAL_TYPE_EDIT)  {
       return (
         <div>
@@ -155,12 +156,12 @@ export default class Modal extends React.Component {
 
     return (
       <div>
-        {this.props.modalType}: {this.getTargets()} {this.getTitle()}
+        {this.props.modalType}: {this.getTargetNode()} {this.getTitleNode()}
       </div>
     )
   }
 
-  getTargets() {
+  getTargetNode() {
     const selectStyle = {
       marginLeft: "10px",
       fontSize: "28px",
@@ -170,50 +171,70 @@ export default class Modal extends React.Component {
     const options = Targets.map( o => <option value={o}>{o}</option> )
     return (
       <select className="form-control target" style={selectStyle}
-              defaultValue="Target">
+              defaultValue="Target"
+              onChange={this.handleSettingChange.bind(this, "target")} >
         {options}
       </select>
     )
   }
 
-  getTitle() {
+  getTitleNode() {
     const textStyle = { width: "130px", fontSize: "24px" }
     return (
-      <input type="text" placeholder="Title" style={textStyle} />
+      <input type="text" placeholder="Title" style={textStyle}
+             onChange={this.handleSettingChange.bind(this, "title")} />
     )
   }
 
-  getFeature(feature) {
+  getFeatureNode(feature, i) {
     const options = Features.map( o => <option value={o}>{o}</option> )
     return (
       <select className="form-control feature"
               style={SelectStyle}
-              defaultValue={feature} >
+              defaultValue={feature}
+              onChange={this.handleConditionChange.bind(this, 'feature', i)} >
         {options}
       </select>
     )
   }
 
-  getOperator(operator) {
+  getOperatorNode(operator, i) {
     const options = Operators.map( o => <option value={o}>{o}</option> )
     return (
       <select className="form-control operator"
               style={SelectStyle}
-              defaultValue={operator}>
+              defaultValue={operator}
+              onChange={this.handleConditionChange.bind(this, 'operator', i)} >
         {options}
       </select>
     )
   }
 
-  getStatus(status) {
+  getStatusNode(status, i) {
     const options = Status.map( o => <option value={o}>{o}</option> )
     return (
       <select className="form-control status"
               style={SelectStyle}
-              defaultValue={status}>
+              defaultValue={status}
+              onChange={this.handleConditionChange.bind(this, 'status', i)} >
         {options}
       </select>
     )
+  }
+
+  handleSettingChange(key, e) {
+    if (key == "target") {
+      this.setState({ target: e.target.value })
+    } else {
+      this.setState({ title: e.target.value })
+    }
+  }
+
+  handleConditionChange(key, i, e) {
+    let cnd = this.state.conditions[i]
+    cnd[key] = e.target.value
+    let cnds = uniqBy([...this.state.conditions, cnd], 'id')
+    this.setState({ conditions: cnds })
   }
 
   getConditions() {
@@ -245,15 +266,19 @@ export default class Modal extends React.Component {
         break
     }
 
-    const nodes = conditions.map( cnd => {
+    const nodes = conditions.map( (cnd, i) => {
       return (
         <div key={cnd.id} style={ConditionStyle}>
           <span style={RawTextStyle}>if</span>
-          {this.getFeature(cnd.feature)}
-          {this.getOperator(cnd.operator)}
-          <input type="text" placeholder={cnd.value} style={TextStyle} />
+          {this.getFeatureNode(cnd.feature, i)}
+          {this.getOperatorNode(cnd.operator, i)}
+          <input type="text"
+                 value={this.getValue}
+                 placeholder={cnd.value}
+                 onChange={this.handleConditionChange.bind(this, 'value', i)}
+                 style={TextStyle} />
           <span style={RawTextStyle}>then</span>
-          {this.getStatus(cnd.status)}
+          {this.getStatusNode(cnd.status, i)}
         </div>
       )
     })
@@ -272,19 +297,13 @@ export default class Modal extends React.Component {
   }
 
   render() {
-    const conditions = this.getConditions()
-
-    const settingStyle = this.props.modalType === MODAL_TYPE_NEW ?
-                         SettingStyle :
-                         Object.assign({}, SelectStyle, { display: "none" })
-
     return (
       <Rodal visible={this.props.isVisible}
              width={800}
              height={480}
              onClose={this.handleModalClose}>
         <div className="ModalHeader" style={HeaderStyle}>
-          {this.getHeader()}
+          {this.getHeaderNode()}
         </div>
         <div className="ModalBody" style={BodyStyle}>
           <div style={{ width: "100%" }}>
@@ -294,7 +313,7 @@ export default class Modal extends React.Component {
           </div>
           <div className="ConditionsContainer">
             <form className="form-inline">
-              {conditions}
+              {this.getConditions()}
             </form>
           </div>
         </div>

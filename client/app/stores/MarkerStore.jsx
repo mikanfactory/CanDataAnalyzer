@@ -52,8 +52,10 @@ let _store = {
     { id: 2, target: "021021K1KAm", title: "Acceleration Setting" }
   ],
   conditions: [
-    { id: 1, settingID: 1, feature: "AccelerationX", operator: "<", value: 5.0, status: "stop" },
-    { id: 2, settingID: 2, feature: "BrakeOnOff", operator: ">", value: 5.0, status: "stop" },
+    { id: 1, settingID: 1, feature: "AccelerationX", operator: "<", value: 10.0, status: "stop" },
+    { id: 2, settingID: 1, feature: "AccelerationX", operator: "<", value: 30.0, status: "green" },
+    { id: 3, settingID: 1, feature: "AccelerationX", operator: "<", value: 60.0, status: "yellow" },
+    { id: 4, settingID: 2, feature: "BrakeOnOff", operator: ">", value: 5.0, status: "stop" },
   ],
   invisibleMarkers: [],
   visibleModal: {}
