@@ -30,24 +30,46 @@ const CancelButtonStyle = {
   right: "5%"
 }
 
+const SettingStyle = {
+  fontSize: "24px"
+}
+
 const ConditionStyle = {
   paddingTop: "20px",
 }
 
 const RawTextStyle = {
   fontSize: "24px",
-  marginRight: "20px"
+  margin: "0 20px"
 }
 
 const TextStyle = {
   width: "50px",
   fontSize: "20px",
-  marginRight: "20px"
 }
 
 const SelectStyle = {
   marginRight: "20px"
 }
+
+const Targets = [
+  "Target",
+  "021021K1KAm",
+  "021022K1KAm",
+  "021023K1KAm",
+  "021024K1KAm",
+  "021025K1KAm",
+  "021026K1KAm",
+  "021027K1KAm",
+  "021028K1KAm",
+  "021029K1KAm",
+  "021030K1KAm",
+  "021031K1KAm",
+  "021101K1KAm",
+  "021021K2KBm",
+  "021023K2KBm",
+  "021024K2KBm",
+]
 
 const Features = [
   "AccelerationX",
@@ -79,6 +101,13 @@ export default class Modal extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      target: "",
+      title: "",
+      conditions: []
+    }
+
+    this.getHeader = this.getHeader.bind(this)
     this.getConditions = this.getConditions.bind(this)
     this.handleSettingSave = this.handleSettingSave.bind(this)
   }
@@ -106,10 +135,52 @@ export default class Modal extends React.Component {
       body: JSON.stringify(data)
     })
       .then(resp => resp.json())
-      .then(markers => MarkerActions.addNewMarkers(target, title, markers))
+      .then(markers => {
+        MarkerActions.addNewMarkers(target, title, markers)
+        MarkerActions.closeModal()
+      })
       .catch(err => console.log('post setting error:', err))
 
     // MarkerActions.addSetting()
+  }
+
+  getHeader() {
+    if (this.props.modalType === MODAL_TYPE_EDIT)  {
+      return (
+        <div>
+          {this.props.modalType}: {this.props.target} {this.props.title}
+        </div>
+      )
+    }
+
+    return (
+      <div>
+        {this.props.modalType}: {this.getTargets()} {this.getTitle()}
+      </div>
+    )
+  }
+
+  getTargets() {
+    const selectStyle = {
+      marginLeft: "10px",
+      fontSize: "28px",
+      width: "300px",
+      display: "inline-block",
+    }
+    const options = Targets.map( o => <option value={o}>{o}</option> )
+    return (
+      <select className="form-control target" style={selectStyle}
+              defaultValue="Target">
+        {options}
+      </select>
+    )
+  }
+
+  getTitle() {
+    const textStyle = { width: "130px", fontSize: "24px" }
+    return (
+      <input type="text" placeholder="Title" style={textStyle} />
+    )
   }
 
   getFeature(feature) {
@@ -190,8 +261,22 @@ export default class Modal extends React.Component {
     return nodes
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isVisible) {
+      this.setState({
+        target: this.props.target,
+        title: this.props.title,
+        conditions: this.props.conditions
+      })
+    }
+  }
+
   render() {
     const conditions = this.getConditions()
+
+    const settingStyle = this.props.modalType === MODAL_TYPE_NEW ?
+                         SettingStyle :
+                         Object.assign({}, SelectStyle, { display: "none" })
 
     return (
       <Rodal visible={this.props.isVisible}
@@ -199,7 +284,7 @@ export default class Modal extends React.Component {
              height={480}
              onClose={this.handleModalClose}>
         <div className="ModalHeader" style={HeaderStyle}>
-          {this.props.modalType}: {this.props.target} {this.props.title}
+          {this.getHeader()}
         </div>
         <div className="ModalBody" style={BodyStyle}>
           <div style={{ width: "100%" }}>
