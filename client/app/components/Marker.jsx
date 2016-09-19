@@ -38,6 +38,7 @@ export default class Marker extends React.Component {
       isWindowPoped: false,
     }
 
+    this.getTitle = this.getTitle.bind(this)
     this.getMarkerStyle = this.getMarkerStyle.bind(this)
     this.getGlyphiconStyle = this.getGlyphiconStyle.bind(this)
     this.handleMouseOver = this.handleMouseOver.bind(this)
@@ -47,6 +48,11 @@ export default class Marker extends React.Component {
     this.handleInfoWindowToggle = this.handleInfoWindowToggle.bind(this)
     this.handleMarkerMount = this.handleMarkerMount.bind(this)
     this.handleMarkerUnmount = this.handleMarkerUnmount.bind(this)
+  }
+
+  getTitle() {
+    const { mid, position } = this.props
+    return `id: ${mid}, lat: ${position.lat.toFixed(3)}, lng: ${position.lng.toFixed(3)}`
   }
 
   getMarkerStyle() {
@@ -90,7 +96,7 @@ export default class Marker extends React.Component {
   handleNewMarkerMount() {
     const marker = new window.google.maps.Marker({
       position: this.props.position,
-      title: "this is test",
+      title: this.getTitle(),
       icon: this.props.image
     })
 
@@ -162,7 +168,7 @@ export default class Marker extends React.Component {
            onClick={this.handleInfoWindowToggle}
            onMouseOver={this.handleMouseOver}
            onMouseOut={this.handleMouseOut}>
-            <span style={StringStyle}>{"this is test"}</span>
+            <span style={StringStyle}>{this.getTitle()}</span>
             <span className="glyphicon glyphicon-map-marker"
                   style={glyphiconStyle}
                   onClick={this.handleMarkerToggle}>
