@@ -44,17 +44,95 @@ const SelectStyle = {
   marginRight: "20px"
 }
 
+const Features = [
+  "AccelerationX",
+  "GPSLatitude",
+  "GPSLongtitude",
+  "MapLongtitude",
+  "MapLatitude",
+  "SpeedPerHourLowpass",
+  "BrakeOnOff",
+  "BrakeOnOff",
+  "AcceleratorOnOff",
+  "Steering Angle",
+  "AheadDistance",
+  "AheadRelativitySpeed"
+]
+
+const Operators = [
+  "<", "<=", "=", ">=", ">"
+]
+
+const Status = [
+  "green", "yellow", "red",
+  "up", "down", "right", "left",
+  "straight", "stop",
+  "empty", "normal"
+]
 
 export default class Modal extends React.Component {
   constructor(props) {
     super(props)
+
+    this.getFeature = this.getFeature.bind(this)
+    this.getOperator = this.getOperator.bind(this)
+    this.getStatus = this.getStatus.bind(this)
   }
 
   handleModalClose() {
     MarkerActions.closeModal()
   }
 
+  getFeature() {
+    const feature = "AccelerationX"
+    const options = Features.map( o => <option value={o}>{o}</option> )
+    return (
+      <select className="form-control feature"
+              style={SelectStyle}
+              defaultValue={feature} >
+        {options}
+      </select>
+    )
+  }
+
+  getOperator() {
+    const operator = ">"
+    const options = Operators.map( o => <option value={o}>{o}</option> )
+    return (
+      <select className="form-control operator"
+              style={SelectStyle}
+              defaultValue={operator}>
+        {options}
+      </select>
+    )
+  }
+
+  getStatus() {
+    const status = "green"
+    const options = Status.map( o => <option value={o}>{o}</option> )
+    return (
+      <select className="form-control status"
+              style={SelectStyle}
+              defaultValue={status}>
+        {options}
+      </select>
+    )
+  }
+
   render() {
+    const conditions = this.props.conditionIDs.map( i => {
+      return (
+        <div key={i} style={ConditionStyle}>
+          <span style={RawTextStyle}>if</span>
+          {this.getFeature()}
+          {this.getOperator()}
+          <input type="text" placeholder="10.0" style={TextStyle} />
+          <span style={RawTextStyle}>then</span>
+          {this.getStatus()}
+        </div>
+      )
+    })
+
     return (
       <Rodal visible={this.props.isVisible}
              width={800}
@@ -71,25 +149,7 @@ export default class Modal extends React.Component {
           </div>
           <div className="ConditionsContainer">
             <form className="form-inline">
-              <div style={ConditionStyle}>
-                <span style={RawTextStyle}>if</span>
-                <select className="form-control feature" style={SelectStyle}>
-                  <option>Velocity</option>
-                  <option>Average</option>
-                </select>
-                <select className="form-control operator" style={SelectStyle}>
-                  <option>{">"}</option>
-                  <option>{"<"}</option>
-                  <option>{"="}</option>
-                </select>
-                <input type="text" placeholder="10.0" style={TextStyle} />
-                <span style={RawTextStyle}>then</span>
-                <select className="form-control status" style={SelectStyle}>
-                  <option>green</option>
-                  <option>yello</option>
-                  <option>blue</option>
-                </select>
-              </div>
+              {conditions}
             </form>
           </div>
         </div>

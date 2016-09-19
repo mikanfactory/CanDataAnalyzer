@@ -47,10 +47,6 @@ export default class Container extends React.Component {
     MarkerStore.removeChangeListener(this._onChange)
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps, prevState)
-  }
-
   render() {
     const modal = !isEmpty(this.state.visibleModal) ?
                   this.state.visibleModal :
