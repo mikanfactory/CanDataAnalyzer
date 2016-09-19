@@ -103,6 +103,7 @@ export default class Modal extends React.Component {
     super(props)
 
     this.state = {
+      id: 0,
       target: "",
       title: "",
       conditions: []
@@ -118,7 +119,7 @@ export default class Modal extends React.Component {
   }
 
   handleSettingSave() {
-    const { id, target, title, conditions } = this.props
+    const { id, target, title, conditions } = this.state
     const cnds = conditions.filter( c => c.settingID === id )
     const data = {
       target: target,
@@ -287,13 +288,12 @@ export default class Modal extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.isVisible) {
-      this.setState({
-        target: this.props.target,
-        title: this.props.title,
-        conditions: this.props.conditions
-      })
-    }
+    this.setState({
+      id: nextProps.id,
+      target: nextProps.target,
+      title: nextProps.title,
+      conditions: nextProps.conditions
+    })
   }
 
   render() {
