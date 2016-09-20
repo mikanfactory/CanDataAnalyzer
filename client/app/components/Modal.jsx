@@ -107,6 +107,7 @@ export default class Modal extends React.Component {
 
     this.getHeaderNode = this.getHeaderNode.bind(this)
     this.getConditions = this.getConditions.bind(this)
+    this.addNewCondition = this.addNewCondition.bind(this)
     this.handleSettingSave = this.handleSettingSave.bind(this)
   }
 
@@ -244,8 +245,10 @@ export default class Modal extends React.Component {
   }
 
   handleConditionChange(key, id, e) {
+    const val = key === 'value' ?
+                parseFloat(e.target.value) : e.target.value
     let cnd = this.state.conditions.find( c => c.id === id  )
-    cnd[key] = e.target.value
+    cnd[key] = val
     let cnds = uniqBy([...this.state.conditions, cnd], 'id')
     this.setState({ conditions: cnds })
   }

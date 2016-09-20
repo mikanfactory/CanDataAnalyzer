@@ -20,7 +20,7 @@ const defaultCondition = {
   settingID: 0,
   feature: "AccelerationX",
   operator: "<",
-  valueOf: 10,
+  value: 10,
   status: "stop"
 }
 
@@ -28,6 +28,8 @@ let _store = {
   mIndex: 1,
   sIndex: 1,
   cIndex: 1,
+  mlIndex: 1,
+  markerLists: [],
   gMap: {},
   settings: [],
   conditions: [],
@@ -52,7 +54,7 @@ function addNewMarkers(target, name, markers) {
 
 function addNewCondition(settingID) {
   const id = getAndCountUp("cIndex")
-  const cnd = {id: id, settingID: settingID}
+  const cnd = assign({}, defaultCondition, {id: id, settingID: settingID})
   _store.conditions = [..._store.conditions, cnd]
 }
 
@@ -111,7 +113,7 @@ function countUp(target) {
 
 function getAndCountUp(target) {
   const id = _store[target]
-  _store[target]++
+  _store[target] += 1
   return id
 }
 
@@ -160,18 +162,20 @@ class MarkerStoreClass extends EventEmitter {
 const MarkerStore = new MarkerStoreClass()
 
 AppDispatcher.register((action) => {
+
   switch (action.actionType) {
     case MarkerConstants.UPDATE_GOOGLE_MAP:
       updateMap(action.gMap)
       MarkerStore.emitChange()
       break
 
-    case MarkerConstants.ADD_NEW_SETTING:
-      const { target, name, markers } = action
-      addNewSetting(target, name, markers)
-      MarkerStore.emitChange()
-      break
-
+      // TODO: rename
+      /* case MarkerConstants.ADD_NEW_SETTING:
+       *   let { target, name, markers } = action
+       *   addNewSetting(target, name, markers)
+       *   MarkerStore.emitChange()
+       *   break
+       */
     case MarkerConstants.ADD_NEW_CONDITION:
       addNewCondition(action.settingID)
       MarkerStore.emitChange()
