@@ -20,7 +20,8 @@ const EmptyModal = {
 function getMarkerState() {
   return {
     gMap:             MarkerStore.getMap(),
-    markerLists:      MarkerStore.getMarkerLists(),
+    markers:          MarkerStore.getMarkers(),
+    settings:         MarkerStore.getSettings(),
     invisibleMarkers: MarkerStore.getInvisibles(),
     visibleModal:     MarkerStore.getVisibleModal(),
     conditions:       MarkerStore.getConditions()
@@ -56,7 +57,8 @@ export default class Container extends React.Component {
       <div className="Container" style={ContainerStyle}>
         <GoogleMap gMap={this.state.gMap} />
         <ToolBox gMap={this.state.gMap}
-                 markerLists={this.state.markerLists}
+                 settings={this.state.settings}
+                 markers={this.state.markers}
                  invisibleMarkers={this.state.invisibleMarkers} />
         <Modal isVisible={!isEmpty(this.state.visibleModal)}
                conditions={this.state.conditions}
