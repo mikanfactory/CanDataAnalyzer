@@ -24,7 +24,7 @@ export default {
     })
   },
 
-  addNewConditon: (settingID) => {
+  addNewCondition: (settingID) => {
     AppDispatcher.dispatch({
       actionType: MarkerConstants.ADD_NEW_CONDITION,
       settingID: settingID

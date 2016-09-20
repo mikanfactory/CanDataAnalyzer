@@ -20,7 +20,7 @@ const defaultCondition = {
   settingID: 0,
   feature: "AccelerationX",
   operator: "<",
-  valueOf: 10,
+  value: 10,
   status: "stop"
 }
 
@@ -54,7 +54,7 @@ function addNewMarkers(target, name, markers) {
 
 function addNewCondition(settingID) {
   const id = getAndCountUp("cIndex")
-  const cnd = {id: id, settingID: settingID}
+  const cnd = assign({}, defaultCondition, {id: id, settingID: settingID})
   _store.conditions = [..._store.conditions, cnd]
 }
 
