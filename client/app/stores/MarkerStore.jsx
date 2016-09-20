@@ -138,12 +138,12 @@ class MarkerStoreClass extends EventEmitter {
     return _store.gMap
   }
 
-  getMarkerLists() {
-    return _store.markerLists
+  getSettings() {
+    return _store.settings
   }
 
-  getMarkerList(name) {
-    return _store.markerLists.find( mlist => mlist.name === name )
+  getMarkers() {
+    return _store.markers
   }
 
   getInvisibles() {
