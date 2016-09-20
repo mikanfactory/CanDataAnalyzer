@@ -18,6 +18,19 @@ export default {
     })
   },
 
+  addNewSetting: () => {
+    AppDispatcher.dispatch({
+      actionType: MarkerConstants.ADD_NEW_SETTING
+    })
+  },
+
+  addNewConditon: (settingID) => {
+    AppDispatcher.dispatch({
+      actionType: MarkerConstants.ADD_NEW_CONDITION,
+      settingID: settingID
+    })
+  },
+
   drawMarkers: name => {
     AppDispatcher.dispatch({
       actionType: MarkerConstants.DRAW_MARKERS,

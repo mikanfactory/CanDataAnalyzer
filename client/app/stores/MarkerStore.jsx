@@ -3,6 +3,7 @@ import MarkerConstants from '../constants/MarkerConstants'
 import { EventEmitter } from 'events'
 import isEqual from 'lodash/isEqual'
 import uniqWith from 'lodash/uniqWith'
+import uniqueId from 'lodash/uniqueId'
 
 const CHANGE_EVENT = 'change'
 const MODAL_TYPE_EDIT = 'Edit'
@@ -75,6 +76,30 @@ function addNewMarkers(target, name, markers) {
   }
 
   _store.markerLists = [..._store.markerLists, ml]
+}
+
+function addNewSetting() {
+  const id = uniqueId()
+  const st = {
+    id: id,
+    target: "",
+    title: ""
+  }
+
+  _store.settings = [..._store.settings, st]
+}
+
+function addNewCondition(settingID) {
+  const id = uniqueId()
+  const cnd = {
+    id: id,
+    settingID: settingID,
+    feature: "",
+    operator: "",
+    value: 0,
+    status: "",
+  }
+  _store.conditions = [..._store.conditions, cnd]
 }
 
 function drawMarkers(name) {
@@ -182,6 +207,16 @@ AppDispatcher.register((action) => {
       MarkerStore.emitChange()
       break
 
+    case MarkerConstants.ADD_NEW_SETTING:
+      addNewSetting()
+      MarkerStore.emitChange()
+      break
+
+    case MarkerConstants.ADD_NEW_CONDITION:
+      addNewCondition(action.settingID)
+      MarkerStore.emitChange()
+      break
+
     case MarkerConstants.ADD_NEW_MARKERS:
       const { target, name, markers } = action
       addNewMarkers(target, name, markers)
@@ -220,6 +255,7 @@ AppDispatcher.register((action) => {
 
     case MarkerConstants.NEW_MODAL:
       newModal()
+      addNewSetting()
       MarkerStore.emitChange()
       break
 

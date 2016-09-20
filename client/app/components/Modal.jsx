@@ -31,10 +31,6 @@ const CancelButtonStyle = {
   right: "5%"
 }
 
-const SettingStyle = {
-  fontSize: "24px"
-}
-
 const ConditionStyle = {
   paddingTop: "20px",
 }
@@ -112,6 +108,10 @@ export default class Modal extends React.Component {
     this.getHeaderNode = this.getHeaderNode.bind(this)
     this.getConditions = this.getConditions.bind(this)
     this.handleSettingSave = this.handleSettingSave.bind(this)
+  }
+
+  addNewCondition() {
+    MarkerActions.addNewCondition(this.state.id)
   }
 
   handleModalClose() {
@@ -308,7 +308,9 @@ export default class Modal extends React.Component {
         <div className="ModalBody" style={BodyStyle}>
           <div style={{ width: "100%" }}>
             <span style={{ paddingRight: "20px" }}>Conditions</span>
-            <span className="glyphicon glyphicon-plus-sign"></span>
+            <span className="glyphicon glyphicon-plus-sign"
+                  onClick={this.addNewCondition}>
+            </span>
             <span className="glyphicon glyphicon-minus-sign" style={{marginLeft: "10px"}}></span>
           </div>
           <div className="ConditionsContainer">
