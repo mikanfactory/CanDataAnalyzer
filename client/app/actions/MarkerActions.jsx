@@ -9,62 +9,56 @@ export default {
     })
   },
 
-  addNewMarkers: (target, name, markers) => {
+  addNewSetting: (target, settingID, markers) => {
     AppDispatcher.dispatch({
-      actionType: MarkerConstants.ADD_NEW_MARKERS,
+      actionType: MarkerConstants.ADD_NEW_SETTING,
       target: target,
-      name: name,
+      settingID: settingID,
       markers: markers
     })
   },
 
-  addNewSetting: () => {
-    AppDispatcher.dispatch({
-      actionType: MarkerConstants.ADD_NEW_SETTING
-    })
-  },
-
-  addNewConditon: (settingID) => {
+  addNewCondition: settingID => {
     AppDispatcher.dispatch({
       actionType: MarkerConstants.ADD_NEW_CONDITION,
       settingID: settingID
     })
   },
 
-  drawMarkers: name => {
+  drawMarkers: settingID => {
     AppDispatcher.dispatch({
       actionType: MarkerConstants.DRAW_MARKERS,
-      name: name
+      settingID: settingID
     })
   },
 
-  eraseMarkers: name => {
+  eraseMarkers: settingID => {
     AppDispatcher.dispatch({
       actionType: MarkerConstants.ERASE_MARKERS,
-      name: name
+      settingID: settingID
     })
   },
 
-  drawMarker: (name, id) => {
+  drawMarker: (id, settingID) => {
     AppDispatcher.dispatch({
       actionType: MarkerConstants.DRAW_MARKER,
-      name: name,
-      id: id
+      id: id,
+      settingID: settingID
     })
   },
 
-  eraseMarker: (name, id) => {
+  eraseMarker: (id, settingID) => {
     AppDispatcher.dispatch({
       actionType: MarkerConstants.ERASE_MARKER,
-      name: name,
-      id: id
+      id: id,
+      settingID: settingID
     })
   },
 
-  openModal: (id) => {
+  openModal: (settingID) => {
     AppDispatcher.dispatch({
       actionType: MarkerConstants.OPEN_MODAL,
-      id: id
+      settingID: settingID
     })
   },
 

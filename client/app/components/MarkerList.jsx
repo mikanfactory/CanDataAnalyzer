@@ -80,12 +80,12 @@ export default class MarkerList extends React.Component {
 
   handleMarkerDraw() {
     this.setState({ drawAllMarkers: true })
-    MarkerActions.drawMarkers(this.props.name)
+    MarkerActions.drawMarkers(this.props.title)
   }
 
   handleMarkerErase() {
     this.setState({ drawAllMarkers: false })
-    MarkerActions.eraseMarkers(this.props.name)
+    MarkerActions.eraseMarkers(this.props.title)
   }
 
   handleModalOpen() {
@@ -93,13 +93,11 @@ export default class MarkerList extends React.Component {
   }
 
   render() {
-    const { gMap, name } = this.props
-    const markerNodes = this.props.markers.map((marker) => {
+    const { gMap, id, title, markers } = this.props
+    const markerNodes = markers.map((marker) => {
       return <Marker key={marker.id}
                      {...marker}
                      gMap={gMap}
-                     name={name}
-                     mid={marker.id}
                      isDisplayed={this.state.isListOpened}
                      isMarkerDrawed={this.isMarkerDrawed(marker.id)} />
     })
@@ -110,7 +108,7 @@ export default class MarkerList extends React.Component {
     return (
       <div className="MarkerList">
         <div className="MarkerListHeader" style={ListHeaderStyle}>
-          <span style={StringStyle}>{this.props.name}</span>
+          <span style={StringStyle}>{this.props.title}</span>
           <span className="glyphicon glyphicon-cog"
                 style={GlyphiconStyle}
                 onClick={this.handleModalOpen} >
@@ -130,7 +128,7 @@ MarkerList.propTypes = {
   gMap: React.PropTypes.object,
   id: React.PropTypes.number,
   target: React.PropTypes.string,
-  name: React.PropTypes.string,
+  title: React.PropTypes.string,
   markers: React.PropTypes.array,
   invisibleMarkers: React.PropTypes.array
 }

@@ -13,22 +13,19 @@ const ToolBoxStyle = {
 export default class AnalysisToolBox extends React.Component {
   constructor(props) {
     super(props)
-
-    this.findMarkersByName = this.findMarkersByName.bind(this)
-  }
-
-  findMarkersByName(name) {
-    return this.props.invisibleMarkers
-               .filter( marker => marker.name === name )
   }
 
   render() {
-    const markerListNodes = this.props.markerLists.map((ml, i) => {
+    const { gMap, settings, markers, invisibleMarkers } = this.props
+    const markerListNodes = settings.map( st => {
+      const ms = markers.filter( m => m.settingID === st.id )
+      const invs = invisibleMarkers.filter( m => m.settingID === st.id )
       return <MarkerList
-                 key={i}
-                 gMap={this.props.gMap}
-                 {...ml}
-                 invisibleMarkers={this.findMarkersByName(ml.name)} />
+                 key={st.id}
+                 gMap={gMap}
+                 markers={ms}
+                 {...st}
+                 invisibleMarkers={invs} />
     })
     return (
       <div className="AnalysisToolBox" style={ToolBoxStyle}>
@@ -41,6 +38,7 @@ export default class AnalysisToolBox extends React.Component {
 
 AnalysisToolBox.propTypes = {
   gMap: React.PropTypes.object,
-  markerLists: React.PropTypes.array,
+  markers: React.PropTypes.array,
+  settings: React.PropTypes.array,
   invisibleMarkers: React.PropTypes.array
 }
