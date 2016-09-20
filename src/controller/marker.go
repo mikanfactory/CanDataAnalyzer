@@ -14,12 +14,12 @@ type Marker struct{}
 func (m *Marker) Get(c echo.Context) error {
 	setting := model.Setting{}
 	if err := c.Bind(&setting); err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	markers := &[]model.Marker{}
 	if err := model.LoadMarkers(markers, setting); err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, markers)

@@ -15,7 +15,6 @@ const EmptyModal = {
   id: 0,
   target: "",
   title: "",
-  conditionIDs: []
 }
 
 function getMarkerState() {

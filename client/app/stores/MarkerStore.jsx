@@ -3,61 +3,34 @@ import MarkerConstants from '../constants/MarkerConstants'
 import { EventEmitter } from 'events'
 import isEqual from 'lodash/isEqual'
 import uniqWith from 'lodash/uniqWith'
-import uniqueId from 'lodash/uniqueId'
+import assign from 'object-assign'
 
 const CHANGE_EVENT = 'change'
 const MODAL_TYPE_EDIT = 'Edit'
 const MODAL_TYPE_NEW = 'New'
 
+const defaultSetting = {
+  id: 0,
+  target: "021021K1KAm",
+  title: "default"
+}
+
+const defaultCondition = {
+  id: 0,
+  settingID: 0,
+  feature: "AccelerationX",
+  operator: "<",
+  valueOf: 10,
+  status: "stop"
+}
+
 let _store = {
+  mIndex: 1,
+  sIndex: 1,
+  cIndex: 1,
   gMap: {},
-  nextSettingID: 3,
-  markerLists: [
-    {
-      id: 1,
-      target: '021021K1KAm',
-      name: 'Velocity',
-      markers: [...Array(20).keys()].map((val, i) => {
-        const defaultPosition = { lat: 36.08, lng: 140.18 }
-        return {
-          id: val,
-          position: {
-            lat: defaultPosition.lat + i*0.01,
-            lng: defaultPosition.lng + i*0.01
-          },
-          image: "./static/icon/green_car.png",
-          description: (val + 40).toString() + "km/s"
-        }
-      })
-    },
-    {
-      id: 2,
-      target: '021021K1KAm',
-      name: 'Acceleration',
-      markers: [...Array(10).keys()].map((val, i) => {
-        const defaultPosition = { lat: 36.18, lng: 140.28 }
-        return {
-          id: val,
-          position: {
-            lat: defaultPosition.lat + i*0.01,
-            lng: defaultPosition.lng - i*0.01
-          },
-          image: "./static/icon/green_car.png",
-          description: (val + 10).toString() + "km/s^2"
-        }
-      })
-    },
-  ],
-  settings: [
-    { id: 1, target: "021021K1KAm", title: "Velocity Setting" },
-    { id: 2, target: "021021K1KAm", title: "Acceleration Setting" }
-  ],
-  conditions: [
-    { id: 1, settingID: 1, feature: "AccelerationX", operator: "<", value: 10.0, status: "stop" },
-    { id: 2, settingID: 1, feature: "AccelerationX", operator: "<", value: 30.0, status: "green" },
-    { id: 3, settingID: 1, feature: "AccelerationX", operator: "<", value: 60.0, status: "yellow" },
-    { id: 4, settingID: 2, feature: "BrakeOnOff", operator: ">", value: 5.0, status: "stop" },
-  ],
+  settings: [],
+  conditions: [],
   invisibleMarkers: [],
   visibleModal: {}
 }
@@ -67,38 +40,19 @@ function updateMap(gMap) {
 }
 
 function addNewMarkers(target, name, markers) {
-  const id = getCount()
+  const id = getAndCountUp("mlIndex")
   const ml = {
     id: id,
     target: target,
     name: name,
     markers: markers
   }
-
   _store.markerLists = [..._store.markerLists, ml]
 }
 
-function addNewSetting() {
-  const id = uniqueId()
-  const st = {
-    id: id,
-    target: "",
-    title: ""
-  }
-
-  _store.settings = [..._store.settings, st]
-}
-
 function addNewCondition(settingID) {
-  const id = uniqueId()
-  const cnd = {
-    id: id,
-    settingID: settingID,
-    feature: "",
-    operator: "",
-    value: 0,
-    status: "",
-  }
+  const id = getAndCountUp("cIndex")
+  const cnd = {id: id, settingID: settingID}
   _store.conditions = [..._store.conditions, cnd]
 }
 
@@ -136,24 +90,29 @@ function closeModal() {
 }
 
 function newModal() {
-  const id = _store.nextSettingID
-  const emptySetting = {
-    modalType: MODAL_TYPE_NEW,
-    id: id,
-    target: "",
-    title: "",
-    conditionIDs: []
-  }
-  _store.visibleModal = emptySetting
+  const sid = getAndCountUp("sIndex")
+  const st = assign({}, defaultSetting, {modalType: MODAL_TYPE_NEW, id: sid})
+
+  const cid = getAndCountUp("cIndex")
+  const cnd = assign({}, defaultCondition, {id: cid, settingID: sid})
+
+  _store.visibleModal = st
+  _store.settings = [..._store.settings, st]
+  _store.conditions = [..._store.conditions, cnd]
 }
 
-function getCount() {
-  return _store.nextSettingID
+function getCount(target) {
+  return _store[target]
 }
 
-function countUp() {
-  _store.nextSettingID++
-  return _store.nextSettingID
+function countUp(target) {
+  _store[target]++
+}
+
+function getAndCountUp(target) {
+  const id = _store[target]
+  _store[target]++
+  return id
 }
 
 class MarkerStoreClass extends EventEmitter {
@@ -208,7 +167,8 @@ AppDispatcher.register((action) => {
       break
 
     case MarkerConstants.ADD_NEW_SETTING:
-      addNewSetting()
+      const { target, name, markers } = action
+      addNewSetting(target, name, markers)
       MarkerStore.emitChange()
       break
 
@@ -255,7 +215,6 @@ AppDispatcher.register((action) => {
 
     case MarkerConstants.NEW_MODAL:
       newModal()
-      addNewSetting()
       MarkerStore.emitChange()
       break
 

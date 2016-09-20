@@ -118,6 +118,17 @@ export default class Modal extends React.Component {
     MarkerActions.closeModal()
   }
 
+  checkStatus(resp, code) {
+    if (resp.status == code) {
+      return resp
+    } else {
+      console.log(resp)
+      const error = new Error(resp.statusText)
+      error.resp = resp
+      throw error
+    }
+  }
+
   handleSettingSave() {
     const { id, target, title, conditions } = this.state
     const cnds = conditions.filter( c => c.settingID === id )
@@ -136,7 +147,8 @@ export default class Modal extends React.Component {
       },
       body: JSON.stringify(data)
     })
-      .then(resp => resp.json())
+      .then(resp => this.checkStatus(resp, 200))
+    .then(resp => resp.json())
       .then(markers => {
         MarkerActions.addNewMarkers(target, title, markers)
         MarkerActions.closeModal()
@@ -187,37 +199,37 @@ export default class Modal extends React.Component {
     )
   }
 
-  getFeatureNode(feature, i) {
+  getFeatureNode(cnd) {
     const options = Features.map( o => <option value={o}>{o}</option> )
     return (
       <select className="form-control feature"
               style={SelectStyle}
-              defaultValue={feature}
-              onChange={this.handleConditionChange.bind(this, 'feature', i)} >
+              defaultValue={cnd.feature}
+              onChange={this.handleConditionChange.bind(this, 'feature', cnd.id)} >
         {options}
       </select>
     )
   }
 
-  getOperatorNode(operator, i) {
+  getOperatorNode(cnd) {
     const options = Operators.map( o => <option value={o}>{o}</option> )
     return (
       <select className="form-control operator"
               style={SelectStyle}
-              defaultValue={operator}
-              onChange={this.handleConditionChange.bind(this, 'operator', i)} >
+              defaultValue={cnd.operator}
+              onChange={this.handleConditionChange.bind(this, 'operator', cnd.id)} >
         {options}
       </select>
     )
   }
 
-  getStatusNode(status, i) {
+  getStatusNode(cnd) {
     const options = Status.map( o => <option value={o}>{o}</option> )
     return (
       <select className="form-control status"
               style={SelectStyle}
-              defaultValue={status}
-              onChange={this.handleConditionChange.bind(this, 'status', i)} >
+              defaultValue={cnd.status}
+              onChange={this.handleConditionChange.bind(this, 'status', cnd.id)} >
         {options}
       </select>
     )
@@ -231,8 +243,8 @@ export default class Modal extends React.Component {
     }
   }
 
-  handleConditionChange(key, i, e) {
-    let cnd = this.state.conditions[i]
+  handleConditionChange(key, id, e) {
+    let cnd = this.state.conditions.find( c => c.id === id  )
     cnd[key] = e.target.value
     let cnds = uniqBy([...this.state.conditions, cnd], 'id')
     this.setState({ conditions: cnds })
@@ -247,15 +259,8 @@ export default class Modal extends React.Component {
         break
 
       case MODAL_TYPE_NEW:
-        const newCondition = {
-          id: 0,
-          settingID: this.props.id,
-          feature: "Velocity",
-          operator: "<",
-          value: 5.0,
-          status: "stop"
-        }
-        conditions = [newCondition]
+        conditions = this.props.conditions
+                         .filter( c => c.settingID === this.props.id)
         break
 
       case MODAL_TYPE_SHOW:
@@ -271,15 +276,15 @@ export default class Modal extends React.Component {
       return (
         <div key={cnd.id} style={ConditionStyle}>
           <span style={RawTextStyle}>if</span>
-          {this.getFeatureNode(cnd.feature, i)}
-          {this.getOperatorNode(cnd.operator, i)}
+          {this.getFeatureNode(cnd)}
+          {this.getOperatorNode(cnd)}
           <input type="text"
                  value={this.getValue}
                  placeholder={cnd.value}
-                 onChange={this.handleConditionChange.bind(this, 'value', i)}
+                 onChange={this.handleConditionChange.bind(this, 'value', cnd.id)}
                  style={TextStyle} />
           <span style={RawTextStyle}>then</span>
-          {this.getStatusNode(cnd.status, i)}
+          {this.getStatusNode(cnd)}
         </div>
       )
     })
@@ -333,7 +338,7 @@ export default class Modal extends React.Component {
 Modal.propTypes = {
   isVisible: React.PropTypes.bool,
   modalType: React.PropTypes.string,
-  id: React.PropTypes.number,
+  id: React.PropTypes.string,
   target: React.PropTypes.string,
   title: React.PropTypes.string,
   conditions: React.PropTypes.array
