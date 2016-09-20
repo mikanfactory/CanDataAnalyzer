@@ -93,13 +93,11 @@ export default class MarkerList extends React.Component {
   }
 
   render() {
-    const { gMap, title } = this.props
-    const markerNodes = this.props.markers.map((marker) => {
+    const { gMap, id, title, markers } = this.props
+    const markerNodes = markers.map((marker) => {
       return <Marker key={marker.id}
                      {...marker}
                      gMap={gMap}
-                     title={title}
-                     index={marker.id}
                      isDisplayed={this.state.isListOpened}
                      isMarkerDrawed={this.isMarkerDrawed(marker.id)} />
     })

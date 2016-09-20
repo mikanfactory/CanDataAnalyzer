@@ -29,7 +29,7 @@ let _store = {
   sIndex: 1,
   cIndex: 1,
   mlIndex: 1,
-  markerLists: [],
+  markers: [],
   gMap: {},
   settings: [],
   conditions: [],
@@ -41,48 +41,38 @@ function updateMap(gMap) {
   _store.gMap = gMap
 }
 
-function addNewMarkers(target, name, markers) {
-  const id = getAndCountUp("mlIndex")
-  const ml = {
-    id: id,
-    target: target,
-    name: name,
-    markers: markers
-  }
-  _store.markerLists = [..._store.markerLists, ml]
-}
-
 function addNewCondition(settingID) {
   const id = getAndCountUp("cIndex")
   const cnd = assign({}, defaultCondition, {id: id, settingID: settingID})
   _store.conditions = [..._store.conditions, cnd]
 }
 
-function drawMarkers(name) {
-  const markers = _store.invisibleMarkers.filter( m => m.name !== name )
-  _store.invisibleMarkers = markers
+function drawMarkers(sid) {
+  _store.invisibleMarkers = _store.invisibleMarkers
+                                  .filter( m => m.settingID !== sid )
 }
 
-function eraseMarkers(name) {
-  const markers = _store.markerLists
-                        .find( ml => ml.name === name )
-                        .markers
-                        .map( m => ({ name: name, id: m.id }) )
-  _store.invisibleMarkers = uniqWith([..._store.invisibleMarkers, ...markers], isEqual)
+function eraseMarkers(sid) {
+  const markers = _store.markers
+                        .filter( m => m.settingID === sid )
+                        .map( m => ({ settingID: sid, id: m.id }) )
+  const umarkers = uniqWith([..._store.invisibleMarkers, ...markers], isEqual)
+  _store.invisibleMarkers = umarkers
 }
 
-function drawMarker(name, id) {
-  const markers = _store.invisibleMarkers
-                        .filter( m => m.name !== name || m.id !== id )
-  _store.invisibleMarkers = markers
+function drawMarker(id, sid) {
+  const invs = _store.invisibleMarkers
+                     .filter( m => m.settingID !== sid || m.id !== id)
+  _store.invisibleMarkers = invs
 }
 
-function eraseMarker(name, id) {
-  _store.invisibleMarkers = uniqWith([..._store.invisibleMarkers, { name: name, id: id }], isEqual)
+function eraseMarker(id, sid) {
+  const invs = [..._store.invisibleMarkers, { settingID: sid, id: id }]
+  _store.invisibleMarkers = uniqWith(invs, isEqual)
 }
 
-function openModal(settingID) {
-  const setting = _store.settings.find( s => s.id === settingID )
+function openModal(sid) {
+  const setting = _store.settings.find( s => s.id === sid )
   setting.modalType = MODAL_TYPE_EDIT
   _store.visibleModal = setting
 }
@@ -169,46 +159,33 @@ AppDispatcher.register((action) => {
       MarkerStore.emitChange()
       break
 
-      // TODO: rename
-      /* case MarkerConstants.ADD_NEW_SETTING:
-       *   let { target, name, markers } = action
-       *   addNewSetting(target, name, markers)
-       *   MarkerStore.emitChange()
-       *   break
-       */
     case MarkerConstants.ADD_NEW_CONDITION:
       addNewCondition(action.settingID)
       MarkerStore.emitChange()
       break
 
-    case MarkerConstants.ADD_NEW_MARKERS:
-      const { target, name, markers } = action
-      addNewMarkers(target, name, markers)
-      MarkerStore.emitChange()
-      break
-
     case MarkerConstants.DRAW_MARKERS:
-      drawMarkers(action.name)
+      drawMarkers(action.settingID)
       MarkerStore.emitChange()
       break
 
     case MarkerConstants.ERASE_MARKERS:
-      eraseMarkers(action.name)
+      eraseMarkers(action.settingID)
       MarkerStore.emitChange()
       break
 
     case MarkerConstants.DRAW_MARKER:
-      drawMarker(action.name, action.id)
+      drawMarker(action.id, action.settingID)
       MarkerStore.emitChange()
       break
 
     case MarkerConstants.ERASE_MARKER:
-      eraseMarker(action.name, action.id)
+      eraseMarker(action.id, action.settingID)
       MarkerStore.emitChange()
       break
 
     case MarkerConstants.OPEN_MODAL:
-      openModal(action.id)
+      openModal(action.settingID)
       MarkerStore.emitChange()
       break
 

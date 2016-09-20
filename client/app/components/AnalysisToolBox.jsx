@@ -16,13 +16,14 @@ export default class AnalysisToolBox extends React.Component {
   }
 
   render() {
-    const markerListNodes = this.props.settings.map( st => {
-      const markers = this.props.markers.filter( m => m.settingID === st.id )
-      const invs = this.props.invisibleMarkers.filter( marker => marker.name === name )
+    const { gMap, settings, markers, invisibleMarkers } = this.props
+    const markerListNodes = settings.map( st => {
+      const ms = markers.filter( m => m.settingID === st.id )
+      const invs = invisibleMarkers.filter( m => m.settingID === st.id )
       return <MarkerList
                  key={st.id}
-                 gMap={this.props.gMap}
-                 markers={markers}
+                 gMap={gMap}
+                 markers={ms}
                  {...st}
                  invisibleMarkers={invs} />
     })

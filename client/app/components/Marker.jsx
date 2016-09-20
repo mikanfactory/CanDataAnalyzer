@@ -51,8 +51,8 @@ export default class Marker extends React.Component {
   }
 
   getTitle() {
-    const { index, position } = this.props
-    return `id: ${index}, lat: ${position.lat.toFixed(3)}, lng: ${position.lng.toFixed(3)}`
+    const { id, position } = this.props
+    return `id: ${id}, lat: ${position.lat.toFixed(3)}, lng: ${position.lng.toFixed(3)}`
   }
 
   getMarkerStyle() {
@@ -83,10 +83,10 @@ export default class Marker extends React.Component {
   }
 
   handleMarkerToggle() {
-    const { index, target } = this.props
+    const { id, settingID } = this.props
     this.props.isMarkerDrawed ?
-      MarkerActions.eraseMarker(target, index) :
-      MarkerActions.drawMarker(target, index)
+      MarkerActions.eraseMarker(settingID, id) :
+      MarkerActions.drawMarker(settingID, id)
   }
 
   handleInfoWindowToggle() {
@@ -180,8 +180,8 @@ export default class Marker extends React.Component {
 
 Marker.propTypes = {
   gMap: React.PropTypes.object,
-  index: React.PropTypes.number,
-  target: React.PropTypes.string,
+  settingID: React.PropTypes.number,
+  id: React.PropTypes.number,
   image: React.PropTypes.string,
   position: React.PropTypes.object,
   description: React.PropTypes.string,
