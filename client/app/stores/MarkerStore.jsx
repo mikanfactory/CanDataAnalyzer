@@ -54,17 +54,9 @@ class MarkerStoreClass extends EventEmitter {
     this.removeListener(CHANGE_EVENT, callback)
   }
 
-  getAllMarkers() {
-    return _store.markers
-  }
-
   getMarkers(settingID) {
     return _store.markers
                  .filter( m => m.settingID == settingID )
-  }
-
-  getAllInvisibles() {
-    return _store.invisibleMarkers
   }
 
   getInvisibles(settingID) {

@@ -1,6 +1,9 @@
 import React from 'react'
 import Marker from './Marker'
+import MarkerStore from '../stores/MarkerStore'
 import MarkerActions from '../actions/MarkerActions'
+import ModalActions from '../actions/ModalActions'
+import assign from 'object-assign'
 
 const ListHeaderStyle = {
   color: "#1B1B1B",
@@ -18,8 +21,15 @@ const StringStyle = {
 }
 
 const GlyphiconStyle = { padding: "0 10px" }
-const PaledGlyphiconStyle = Object.assign({}, GlyphiconStyle, { color: "#8B8B8B" })
+const PaledGlyphiconStyle = assign({}, GlyphiconStyle, { color: "#8B8B8B" })
 const ContainerStyle = { padding: "0" }
+
+function getStateFromStores(sid) {
+  return {
+    markers: MarkerStore.getMarkers(sid),
+    invisibleMarkers: MarkerStore.getInvisibles(sid)
+  }
+}
 
 export default class MarkerList extends React.Component {
   constructor(props) {
@@ -30,6 +40,7 @@ export default class MarkerList extends React.Component {
       drawAllMarkers: true,
     }
 
+    this.getMarker = this.getMarker.bind(this)
     this.getOpenOrCloseIcon = this.getOpenOrCloseIcon.bind(this)
     this.getDrawOrEraseIcon = this.getDrawOrEraseIcon.bind(this)
     this.isMarkerDrawed = this.isMarkerDrawed.bind(this)
@@ -64,8 +75,16 @@ export default class MarkerList extends React.Component {
            </span>
   }
 
+  getMarker(marker) {
+    return (
+      <Marker key={marker.id} gMap={this.props.gMap} {...marker}
+              isDisplayed={this.state.isListOpened}
+              isMarkerDrawed={this.isMarkerDrawed(marker.id)} />
+    )
+  }
+
   isMarkerDrawed(id) {
-    const marker = this.props.invisibleMarkers
+    const marker = this.state.invisibleMarkers
                        .find(marker => marker.id === id)
     return !marker
   }
@@ -89,19 +108,19 @@ export default class MarkerList extends React.Component {
   }
 
   handleModalOpen() {
-    MarkerActions.openModal(this.props.id)
+    ModalActions.openModal(this.props.id)
+  }
+
+  componentDidMount() {
+    MarkerStore.addChangeListener(this._onChange);
+  }
+
+  componentWillUnmount() {
+    MarkerStore.removeChangeListener(this._onChange);
   }
 
   render() {
-    const { gMap, id, title, markers } = this.props
-    const markerNodes = markers.map((marker) => {
-      return <Marker key={marker.id}
-                     {...marker}
-                     gMap={gMap}
-                     isDisplayed={this.state.isListOpened}
-                     isMarkerDrawed={this.isMarkerDrawed(marker.id)} />
-    })
-
+    const markerNodes = this.state.markers.map(this.getMarker)
     const openOrCloseIcon = this.getOpenOrCloseIcon()
     const drawOrEraseIcon = this.getDrawOrEraseIcon()
 
@@ -122,6 +141,10 @@ export default class MarkerList extends React.Component {
       </div>
     )
   }
+
+  _onChange() {
+    this.setState(getStateFromStores(this.props.id));
+  }
 }
 
 MarkerList.propTypes = {
@@ -129,6 +152,4 @@ MarkerList.propTypes = {
   id: React.PropTypes.number,
   target: React.PropTypes.string,
   title: React.PropTypes.string,
-  markers: React.PropTypes.array,
-  invisibleMarkers: React.PropTypes.array
 }
