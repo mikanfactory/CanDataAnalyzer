@@ -31,6 +31,11 @@ function getStateFromStores(sid) {
   }
 }
 
+isMarkerDrawed(id, invs) {
+  const marker = invs.find(marker => marker.id === id)
+  return !marker
+}
+
 export default class MarkerList extends React.Component {
   constructor(props) {
     super(props)
@@ -43,7 +48,6 @@ export default class MarkerList extends React.Component {
     this.getMarker = this.getMarker.bind(this)
     this.getOpenOrCloseIcon = this.getOpenOrCloseIcon.bind(this)
     this.getDrawOrEraseIcon = this.getDrawOrEraseIcon.bind(this)
-    this.isMarkerDrawed = this.isMarkerDrawed.bind(this)
     this.handleListOpen = this.handleListOpen.bind(this)
     this.handleListClose = this.handleListClose.bind(this)
     this.handleMarkerDraw = this.handleMarkerDraw.bind(this)
@@ -79,14 +83,8 @@ export default class MarkerList extends React.Component {
     return (
       <Marker key={marker.id} gMap={this.props.gMap} {...marker}
               isDisplayed={this.state.isListOpened}
-              isMarkerDrawed={this.isMarkerDrawed(marker.id)} />
+              isMarkerDrawed={isMarkerDrawed(marker.id, this.state.invisibleMarkers)} />
     )
-  }
-
-  isMarkerDrawed(id) {
-    const marker = this.state.invisibleMarkers
-                       .find(marker => marker.id === id)
-    return !marker
   }
 
   handleListOpen() {

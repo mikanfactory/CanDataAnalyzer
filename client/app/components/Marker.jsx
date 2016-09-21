@@ -180,8 +180,8 @@ export default class Marker extends React.Component {
 
 Marker.propTypes = {
   gMap: React.PropTypes.object,
-  settingID: React.PropTypes.number,
   id: React.PropTypes.number,
+  settingID: React.PropTypes.number,
   image: React.PropTypes.string,
   position: React.PropTypes.object,
   description: React.PropTypes.string,
