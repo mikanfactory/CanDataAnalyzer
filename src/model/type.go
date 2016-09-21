@@ -8,6 +8,7 @@ type Cache struct {
 // Marker is used for GoogleMap Marker.
 type Marker struct {
 	ID          int64    `json:"id"`
+	SettingID   int64    `json:"settingID"`
 	Image       string   `json:"image"`
 	Position    Position `json:"position"`
 	Description string   `json:"description"`
@@ -21,6 +22,7 @@ type Position struct {
 
 // Setting denotes the setting of the list of marker.
 type Setting struct {
+	ID         int64       `json:"id"`
 	Target     string      `json:"target"`
 	Title      string      `json:"title"`
 	Conditions []Condition `json:"conditions"`
