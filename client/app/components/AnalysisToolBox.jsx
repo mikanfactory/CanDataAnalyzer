@@ -1,6 +1,7 @@
 import React from 'react'
 import ToolBoxHeader from './ToolBoxHeader'
 import MarkerList from './MarkerList'
+import SettingStore from '../stores/SettingStore'
 
 const ToolBoxStyle = {
   position: 'relative',
@@ -10,23 +11,36 @@ const ToolBoxStyle = {
   overflow: 'scroll'
 }
 
+function getStateFromStores() {
+  return {
+    settings: SettingStore.getAllSettings(),
+  }
+}
+
 export default class AnalysisToolBox extends React.Component {
   constructor(props) {
     super(props)
+
+    this.getMarkerList = this.getMarkerList.bind(this)
+  }
+
+  getMarkerList(setting) {
+    return (
+      <MarkerList key={setting.id} gMap={this.props.gMap} {...setting} />
+    )
+  }
+
+  componentDidMount() {
+    SettingStore.addChangeListener(this._onChange);
+  }
+
+  componentWillUnmount() {
+    SettingStore.removeChangeListener(this._onChange);
   }
 
   render() {
-    const { gMap, settings, markers, invisibleMarkers } = this.props
-    const markerListNodes = settings.map( st => {
-      const ms = markers.filter( m => m.settingID === st.id )
-      const invs = invisibleMarkers.filter( m => m.settingID === st.id )
-      return <MarkerList
-                 key={st.id}
-                 gMap={gMap}
-                 markers={ms}
-                 {...st}
-                 invisibleMarkers={invs} />
-    })
+    const markerListNodes = this.state.settings.map(this.getMarkerList)
+
     return (
       <div className="AnalysisToolBox" style={ToolBoxStyle}>
         <ToolBoxHeader />
@@ -34,11 +48,12 @@ export default class AnalysisToolBox extends React.Component {
       </div>
     )
   }
+
+  _onChange() {
+    this.setState(getStateFromStores())
+  }
 }
 
 AnalysisToolBox.propTypes = {
-  gMap: React.PropTypes.object,
-  markers: React.PropTypes.array,
-  settings: React.PropTypes.array,
-  invisibleMarkers: React.PropTypes.array
+  gMap: React.PropTypes.object
 }
