@@ -1,5 +1,5 @@
 import React from 'react'
-import MarkerAction from '../actions/MarkerActions'
+import ModalAction from '../actions/ModalActions'
 
 const HeaderStyle = {
   color: "#FFF",
@@ -26,7 +26,7 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleModalOpen() {
-    MarkerAction.newModal()
+    ModalAction.newModal()
   }
 
   render() {

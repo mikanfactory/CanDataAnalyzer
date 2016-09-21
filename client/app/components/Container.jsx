@@ -10,7 +10,7 @@ const ContainerStyle = {
   height: '100%'
 }
 
-function getGMapState() {
+function getStateFromStores() {
   return {
     gMap: GMapStore.getMap(),
   }
@@ -19,7 +19,7 @@ function getGMapState() {
 export default class Container extends React.Component {
   constructor(props) {
     super(props)
-    this.state = getGMapState()
+    this.state = getStateFromStores()
 
     this._onChange = this._onChange.bind(this)
   }
@@ -29,7 +29,7 @@ export default class Container extends React.Component {
 
     // Because this function runs after GoogleMap#ComponentDidMount,
     // rerender and pass gMap to child component.
-    this.setState(getGMapState())
+    this.setState(getStateFromStores())
   }
 
   componentWillUnmount() {
@@ -47,6 +47,6 @@ export default class Container extends React.Component {
   }
 
   _onChange() {
-    this.setState(getGMapState())
+    this.setState(getStateFromStores())
   }
 }
