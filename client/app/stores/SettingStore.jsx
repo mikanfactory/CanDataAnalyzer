@@ -2,8 +2,8 @@ import AppDispatcher from '../dispatcher/AppDispatcher'
 import AppConstants from '../constants/AppConstants'
 import { EventEmitter } from 'events'
 import assign from 'object-assign'
+import uniqBy from 'lodash/uniqBy'
 import last from 'lodash/last'
-import include from 'lodash/include'
 
 import { defaultSetting } from '../constants/AppConstants'
 
@@ -21,14 +21,18 @@ function _newSetting() {
   _store.settings = [..._store.settings, setting]
 }
 
+function _updateSetting(setting) {
+  _store.settings = uniqBy([..._store.settings, setting], 'id')
+}
+
 function _getAndCountUpId() {
   const sid = _store.currentID
   _store.currentID += 1
   return sid
 }
 
-function _removeSetting(ids) {
-  _store.settings = _store.settings.filter( s => !include(ids, s.id) )
+function _removeSetting(sid) {
+  _store.settings = _store.settings.filter( s => s.id !== sid )
 }
 
 class SettingStoreClass extends EventEmitter {
@@ -48,10 +52,6 @@ class SettingStoreClass extends EventEmitter {
     this.removeListener(CHANGE_EVENT, callback)
   }
 
-  getSetting(id) {
-    return _store.settings.find( s => s.id === id )
-  }
-
   getLatestSetting() {
     return last(_store.settings)
   }
@@ -62,13 +62,18 @@ const SettingStore = new SettingStoreClass()
 SettingStore.dispatchToken = AppDispatcher.register((action) => {
 
   switch (action.actionType) {
+    case ActionTypes.UDPATE_SETTING:
+      _updateSetting(action.setting)
+      SettingStore.emitChange()
+      break
+
     case ActionTypes.CREATE_MODAL:
       _newSetting()
       SettingStore.emitChange()
       break
 
     case ActionTypes.CANCEL_MODAL:
-      _removeSetting(action.ids)
+      _removeSetting(action.settingID)
       SettingStore.emitChange()
       break
 

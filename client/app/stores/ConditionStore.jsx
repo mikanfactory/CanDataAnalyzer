@@ -20,7 +20,7 @@ function _updateCondition(condition) {
 
 function _createConditions(sid) {
   const cid = _getAndCountUpId()
-  const condition = assign({}, defaultCondition, {id: cid, settingID: sid})
+  const condition = assign({}, defaultCondition, { id: cid, settingID: sid })
   _store.conditions = [..._store.conditions, condition]
 }
 
@@ -30,8 +30,8 @@ function _getAndCountUpId() {
   return cid
 }
 
-function _removeCondition(id) {
-  _store.conditions = _store.conditions.filter( c => c.id !== id )
+function _removeCondition(sid) {
+  _store.conditions = _store.conditions.filter( c => c.settingID !== sid )
 }
 
 class ConditionStoreClass extends EventEmitter {
@@ -66,13 +66,18 @@ ConditionStore.dispatchToken = AppDispatcher.register((action) => {
       break
 
     case ActionTypes.CREATE_MODAL:
-      _createConditions(action.sid)
+      _createConditions(action.settingID)
       ConditionStore.emitChange()
       break
 
     case ActionTypes.CANCEL_MODAL:
-      _removeCondition(action.id)
+      _removeCondition(action.settingID)
       ConditionStore.emitChange()
+      break
+
+    // TODO: implement this function
+    case ActionTypes.REMOVE_CONDITIONS:
+      _removeConditions(action.ids)
       break
 
     default:

@@ -32,6 +32,13 @@ const MarkerActions = {
       id: id,
       settingID: settingID
     })
+  },
+
+  createMarkers: (settingID, markers) => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CREATE_MARKERS,
+      markers: markers
+    })
   }
 }
 

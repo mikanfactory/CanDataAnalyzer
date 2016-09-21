@@ -13,12 +13,16 @@ let _store = {
   invisibleMarkers: [],
 }
 
-function drawMarkers(sid) {
+function _createMarkers(markers) {
+  _store.markers = [..._store.markers, ...markers]
+}
+
+function _drawMarkers(sid) {
   _store.invisibleMarkers = _store.invisibleMarkers
                                   .filter( m => m.settingID !== sid )
 }
 
-function eraseMarkers(sid) {
+function _eraseMarkers(sid) {
   const markers = _store.markers
                         .filter( m => m.settingID === sid )
                         .map( m => ({ settingID: sid, id: m.id }) )
@@ -26,13 +30,13 @@ function eraseMarkers(sid) {
   _store.invisibleMarkers = umarkers
 }
 
-function drawMarker(id, sid) {
+function _drawMarker(id, sid) {
   const invs = _store.invisibleMarkers
                      .filter( m => m.settingID !== sid || m.id !== id)
   _store.invisibleMarkers = invs
 }
 
-function eraseMarker(id, sid) {
+function _eraseMarker(id, sid) {
   const invs = [..._store.invisibleMarkers, { settingID: sid, id: id }]
   _store.invisibleMarkers = uniqWith(invs, isEqual)
 }
@@ -70,23 +74,28 @@ const MarkerStore = new MarkerStoreClass()
 MarkerStore.dispatchToken = AppDispatcher.register((action) => {
 
   switch (action.actionType) {
+    case ActionTypes.CREATE_MARKERS:
+      _createMarkers(action.markers)
+      MarkerStore.emitChange()
+      break
+
     case ActionTypes.DRAW_MARKERS:
-      drawMarkers(action.settingID)
+      _drawMarkers(action.settingID)
       MarkerStore.emitChange()
       break
 
     case ActionTypes.ERASE_MARKERS:
-      eraseMarkers(action.settingID)
+      _eraseMarkers(action.settingID)
       MarkerStore.emitChange()
       break
 
     case ActionTypes.DRAW_MARKER:
-      drawMarker(action.id, action.settingID)
+      _drawMarker(action.id, action.settingID)
       MarkerStore.emitChange()
       break
 
     case ActionTypes.ERASE_MARKER:
-      eraseMarker(action.id, action.settingID)
+      _eraseMarker(action.id, action.settingID)
       MarkerStore.emitChange()
       break
 

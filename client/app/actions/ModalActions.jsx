@@ -21,6 +21,13 @@ const ModalActions = {
     AppDispatcher.dispatch({
       actionType: ActionTypes.CLOSE_MODAL
     })
+  },
+
+  cancelModal: (settingID) => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CANCEL_MODAL,
+      settingID: settingID
+    })
   }
 }
 

@@ -15,7 +15,7 @@ const defaultCondition = {
   status: "stop"
 }
 
-const TARGETS = {
+const TARGETS = [
   "Target",
   "021021K1KAm",
   "021022K1KAm",
@@ -32,7 +32,7 @@ const TARGETS = {
   "021021K2KBm",
   "021023K2KBm",
   "021024K2KBm",
-}
+ ]
 
 const FEATURES = [
   "AccelerationX",

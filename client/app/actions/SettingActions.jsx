@@ -4,15 +4,12 @@ import AppConstants from '../constants/AppConstants'
 const ActionTypes = AppConstants.ActionTypes
 
 const SettingActions = {
-  addNewSetting: (target, settingID, markers) => {
+  updateSetting: setting => {
     AppDispatcher.dispatch({
-      actionType: ActionTypes.ADD_NEW_SETTING,
-      target: target,
-      settingID: settingID,
-      markers: markers
+      actionType: ActionTypes.UPDATE_SETTING,
+      setting: setting
     })
-  },
-
+  }
 }
 
 export default SettingActions
