@@ -1,6 +1,6 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import AppConstants from '../constants/AppConstants'
-import SettingStore from '../constants/SettingStore'
+import SettingStore from '../stores/SettingStore'
 import { EventEmitter } from 'events'
 
 const ActionTypes = AppConstants.ActionTypes
