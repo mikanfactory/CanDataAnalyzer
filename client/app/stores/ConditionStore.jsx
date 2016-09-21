@@ -2,6 +2,7 @@ import AppDispatcher from '../dispatcher/AppDispatcher'
 import AppConstants from '../constants/AppConstants'
 import { EventEmitter } from 'events'
 import assign from 'object-assign'
+import uniqBy from 'lodash/uniqBy'
 
 import { defaultCondition } from '../constants/AppConstants'
 
@@ -13,7 +14,11 @@ let _store = {
   conditions: []
 }
 
-function _newCondition(sid) {
+function _updateCondition(condition) {
+  _store.conditions = uniqBy([..._store.conditions, condition], 'id')
+}
+
+function _createConditions(sid) {
   const cid = _getAndCountUpId()
   const condition = assign({}, defaultCondition, {id: cid, settingID: sid})
   _store.conditions = [..._store.conditions, condition]
@@ -23,6 +28,10 @@ function _getAndCountUpId() {
   const cid = _store.currentID
   _store.currentID += 1
   return cid
+}
+
+function _removeCondition(id) {
+  _store.conditions = _store.conditions.filter( c => c.id !== id )
 }
 
 class ConditionStoreClass extends EventEmitter {
@@ -42,8 +51,8 @@ class ConditionStoreClass extends EventEmitter {
     this.removeListener(CHANGE_EVENT, callback)
   }
 
-  getConditions() {
-    return _store.markers
+  getConditions(sid) {
+    return _store.conditions.filter( c => c.settingID === sid )
   }
 }
 
@@ -52,8 +61,17 @@ const ConditionStore = new ConditionStoreClass()
 ConditionStore.dispatchToken = AppDispatcher.register((action) => {
 
   switch (action.actionType) {
-    case ActionTypes.NEW_MODAL:
-      _newCondition(action.sid)
+    case ActionTypes.UPDATE_CONDITION:
+      _updateCondition(action.condition)
+      break
+
+    case ActionTypes.CREATE_MODAL:
+      _createConditions(action.sid)
+      ConditionStore.emitChange()
+      break
+
+    case ActionTypes.CANCEL_MODAL:
+      _removeCondition(action.id)
       ConditionStore.emitChange()
       break
 

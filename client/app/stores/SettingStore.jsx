@@ -2,11 +2,12 @@ import AppDispatcher from '../dispatcher/AppDispatcher'
 import AppConstants from '../constants/AppConstants'
 import { EventEmitter } from 'events'
 import assign from 'object-assign'
+import last from 'lodash/last'
+import include from 'lodash/include'
 
 import { defaultSetting } from '../constants/AppConstants'
 
 const ActionTypes = AppConstants.ActionTypes
-const ModalTypes = AppConstants.ModalTypes
 const CHANGE_EVENT = 'change'
 
 let _store = {
@@ -16,7 +17,7 @@ let _store = {
 
 function _newSetting() {
   const sid = _getAndCountUpId()
-  const setting = assign({}, defaultSetting, {modalType: ModalTypes.NEW, id: sid})
+  const setting = assign({}, defaultSetting, { id: sid })
   _store.settings = [..._store.settings, setting]
 }
 
@@ -24,6 +25,10 @@ function _getAndCountUpId() {
   const sid = _store.currentID
   _store.currentID += 1
   return sid
+}
+
+function _removeSetting(ids) {
+  _store.settings = _store.settings.filter( s => !include(ids, s.id) )
 }
 
 class SettingStoreClass extends EventEmitter {
@@ -43,8 +48,12 @@ class SettingStoreClass extends EventEmitter {
     this.removeListener(CHANGE_EVENT, callback)
   }
 
-  getSettings() {
-    return _store.markers
+  getSetting(id) {
+    return _store.settings.find( s => s.id === id )
+  }
+
+  getLatestSetting() {
+    return last(_store.settings)
   }
 }
 
@@ -53,8 +62,13 @@ const SettingStore = new SettingStoreClass()
 SettingStore.dispatchToken = AppDispatcher.register((action) => {
 
   switch (action.actionType) {
-    case ActionTypes.NEW_MODAL:
+    case ActionTypes.CREATE_MODAL:
       _newSetting()
+      SettingStore.emitChange()
+      break
+
+    case ActionTypes.CANCEL_MODAL:
+      _removeSetting(action.ids)
       SettingStore.emitChange()
       break
 

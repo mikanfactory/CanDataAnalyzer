@@ -31,7 +31,7 @@ function getStateFromStores(sid) {
   }
 }
 
-isMarkerDrawed(id, invs) {
+function isMarkerDrawed(id, invs) {
   const marker = invs.find(marker => marker.id === id)
   return !marker
 }

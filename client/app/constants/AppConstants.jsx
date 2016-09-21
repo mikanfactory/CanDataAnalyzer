@@ -15,7 +15,54 @@ const defaultCondition = {
   status: "stop"
 }
 
+const TARGETS = {
+  "Target",
+  "021021K1KAm",
+  "021022K1KAm",
+  "021023K1KAm",
+  "021024K1KAm",
+  "021025K1KAm",
+  "021026K1KAm",
+  "021027K1KAm",
+  "021028K1KAm",
+  "021029K1KAm",
+  "021030K1KAm",
+  "021031K1KAm",
+  "021101K1KAm",
+  "021021K2KBm",
+  "021023K2KBm",
+  "021024K2KBm",
+}
+
+const FEATURES = [
+  "AccelerationX",
+  "GPSLatitude",
+  "GPSLongtitude",
+  "MapLongtitude",
+  "MapLatitude",
+  "SpeedPerHourLowpass",
+  "BrakeOnOff",
+  "BrakeOnOff",
+  "AcceleratorOnOff",
+  "Steering Angle",
+  "AheadDistance",
+  "AheadRelativitySpeed"
+]
+
+const OPERATORS = [
+  "<", "<=", "=", ">=", ">"
+]
+
+const STATUS = [
+  "green", "yellow", "red",
+  "up", "down", "right", "left",
+  "straight", "stop",
+  "empty", "normal"
+]
+
+
 export { defaultSetting, defaultCondition }
+export { TARGETS, FEATURES, OPERATORS, STATUS }
 
 const AppConstants = {
   ModalTypes: {
@@ -26,21 +73,19 @@ const AppConstants = {
 
   ActionTypes: keyMirror({
     // Modal
-    NEW_MODAL: null,
+    CREATE_MODAL: null,
     OPEN_MODAL: null,
+    CANCEL_MODAL: null,
     CLOSE_MODAL: null,
 
     // GMap
     UPDATE_GOOGLE_MAP: null,
 
-    // Setting
-    ADD_NEW_SETTING: null,
-
     // Condition
-    ADD_NEW_CONDITION: null,
+    CREATE_CONDITION: null,
 
     // Markers
-    ADD_NEW_MARKERS: null,
+    CREATE_MARKERS: null,
     DRAW_MARKER: null,
     DRAW_MARKERS: null,
     ERASE_MARKER: null,
