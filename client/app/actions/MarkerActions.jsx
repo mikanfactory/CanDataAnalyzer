@@ -1,47 +1,26 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
-import MarkerConstants from '../constants/MarkerConstants'
+import AppConstants from '../constants/AppConstants'
 
-export default {
-  updateGoogleMap: gMap => {
-    AppDispatcher.dispatch({
-      actionType: MarkerConstants.UPDATE_GOOGLE_MAP,
-      gMap: gMap
-    })
-  },
+const ActionTypes = AppConstants.ActionTypes
 
-  addNewSetting: (target, settingID, markers) => {
-    AppDispatcher.dispatch({
-      actionType: MarkerConstants.ADD_NEW_SETTING,
-      target: target,
-      settingID: settingID,
-      markers: markers
-    })
-  },
-
-  addNewCondition: settingID => {
-    AppDispatcher.dispatch({
-      actionType: MarkerConstants.ADD_NEW_CONDITION,
-      settingID: settingID
-    })
-  },
-
+const MarkerActions = {
   drawMarkers: settingID => {
     AppDispatcher.dispatch({
-      actionType: MarkerConstants.DRAW_MARKERS,
+      actionType: ActionTypes.DRAW_MARKERS,
       settingID: settingID
     })
   },
 
   eraseMarkers: settingID => {
     AppDispatcher.dispatch({
-      actionType: MarkerConstants.ERASE_MARKERS,
+      actionType: ActionTypes.ERASE_MARKERS,
       settingID: settingID
     })
   },
 
   drawMarker: (id, settingID) => {
     AppDispatcher.dispatch({
-      actionType: MarkerConstants.DRAW_MARKER,
+      actionType: ActionTypes.DRAW_MARKER,
       id: id,
       settingID: settingID
     })
@@ -49,28 +28,11 @@ export default {
 
   eraseMarker: (id, settingID) => {
     AppDispatcher.dispatch({
-      actionType: MarkerConstants.ERASE_MARKER,
+      actionType: ActionTypes.ERASE_MARKER,
       id: id,
       settingID: settingID
     })
-  },
-
-  openModal: (settingID) => {
-    AppDispatcher.dispatch({
-      actionType: MarkerConstants.OPEN_MODAL,
-      settingID: settingID
-    })
-  },
-
-  closeModal: () => {
-    AppDispatcher.dispatch({
-      actionType: MarkerConstants.CLOSE_MODAL
-    })
-  },
-
-  newModal: () => {
-    AppDispatcher.dispatch({
-      actionType: MarkerConstants.NEW_MODAL
-    })
   }
 }
+
+export default MarkerActions
