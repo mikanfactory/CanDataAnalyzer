@@ -1,5 +1,5 @@
 import React from 'react'
-import MarkerActions from '../actions/MarkerActions'
+import GMapActions from '../actions/GMapActions'
 
 const GoogleMapStyle = {
   position: 'relative',
@@ -28,7 +28,7 @@ export default class GoogleMap extends React.Component {
       center: defaultCoordinate
     })
 
-    MarkerActions.updateGoogleMap(map)
+    GMapActions.updateGoogleMap(map)
   }
 
   render() {
