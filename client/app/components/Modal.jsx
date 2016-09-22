@@ -1,6 +1,6 @@
 import React from 'react'
 import Rodal from 'rodal'
-import ModalForm from './ModalForm'
+import ConditionForm from './ConditionForm'
 import ModalActions from '../actions/ModalActions'
 import SettingActions from '../actions/SettingActions'
 import MarkerActions from '../actions/MarkerActions'
@@ -119,7 +119,7 @@ export default class Modal extends React.Component {
   }
 
   getForm(condition, i) {
-    return <ModalForm key={i} {...condition} />
+    return <ConditionForm key={i} {...condition} />
   }
 
   getHeaderNode() {
