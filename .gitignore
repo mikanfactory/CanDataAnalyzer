@@ -9,3 +9,4 @@ Godeps/_workspace
 !.editorconfig
 data/*
 config/config.toml
+/TAGS

@@ -123,6 +123,12 @@ export default class Marker extends React.Component {
     if (this.state.isWindowPoped !== prevState.isWindowPoped) {
       this.state.isWindowPoped ? this.handleWindowOpen() : this.handleWindowClose()
     }
+
+    // changed image
+    if (this.props.image !== prevProps.image) {
+      this.handleMarkerUnmount()
+      this.handleNewMarkerMount()
+    }
   }
 
   render() {

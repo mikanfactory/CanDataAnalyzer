@@ -13,9 +13,10 @@ import { TARGETS } from '../constants/AppConstants.jsx'
 import { ModalStyle as s } from './Styles'
 
 import 'whatwg-fetch'
-import  { checkStatus } from '../utils/AppWebAPIUtils'
+import  { fetchMarkers } from '../utils/AppWebAPIUtils'
 import assign from 'object-assign'
 import last from 'lodash/last'
+import partial from 'lodash/partial'
 
 const ModalTypes = AppConstants.ModalTypes
 
@@ -69,20 +70,20 @@ export default class Modal extends React.Component {
     const cnds = this.state.conditions.filter( c => c.settingID === id )
     const data = assign({}, this.state.setting, { conditions: cnds })
 
-    fetch("/api/v1/markers", {
-      credentials: "same-origin",
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    })
-      .then(resp => checkStatus(resp, 200))
-      .then(resp => resp.json())
-      .then(markers => MarkerActions.createMarkers(markers))
-      .then(() => ModalActions.closeModal())
-      .catch(err => console.log('post setting error:', err))
+    if (this.state.modal.modalType === ModalTypes.NEW) {
+      fetchMarkers(data, markers => {
+        MarkerActions.createMarkers(markers)
+        ModalActions.closeModal()
+      })
+    }
+
+    if (this.state.modal.modalType === ModalTypes.EDIT) {
+      const updateMarkers = partial(MarkerActions.updateMarkers, id)
+      fetchMarkers(data, markers => {
+        updateMarkers(markers)
+        ModalActions.closeModal()
+      })
+    }
   }
 
   getForm(condition, i) {
