@@ -2,24 +2,7 @@ import React from 'react'
 import ConditionActions from '../actions/ConditionActions'
 import { FEATURES, OPERATORS, STATUS } from '../constants/AppConstants'
 import assign from 'object-assign'
-
-const ConditionStyle = {
-  paddingTop: "20px",
-}
-
-const RawTextStyle = {
-  fontSize: "24px",
-  margin: "0 20px"
-}
-
-const TextStyle = {
-  width: "50px",
-  fontSize: "20px",
-}
-
-const SelectStyle = {
-  marginRight: "20px"
-}
+import { ConditionFormStyle as s } from './Styles'
 
 export default class ModalForm extends React.Component {
   constructor(props) {
@@ -43,7 +26,7 @@ export default class ModalForm extends React.Component {
     const options = FEATURES.map(this.getOptions)
     return (
       <select className="form-control feature"
-              style={SelectStyle}
+              style={s.SelectStyle}
               defaultValue={this.props.feature}
               onChange={this.handleConditionChange.bind(this, 'feature')} >
         {options}
@@ -55,7 +38,7 @@ export default class ModalForm extends React.Component {
     const options = OPERATORS.map(this.getOptions)
     return (
       <select className="form-control operator"
-              style={SelectStyle}
+              style={s.SelectStyle}
               defaultValue={this.props.operator}
               onChange={this.handleConditionChange.bind(this, 'operator')} >
         {options}
@@ -69,7 +52,7 @@ export default class ModalForm extends React.Component {
              value={this.getValue}
              placeholder={this.props.value}
              onChange={this.handleConditionChange.bind(this, 'value')}
-             style={TextStyle} />
+             style={s.TextStyle} />
     )
   }
 
@@ -77,7 +60,7 @@ export default class ModalForm extends React.Component {
     const options = STATUS.map(this.getOptions)
     return (
       <select className="form-control status"
-              style={SelectStyle}
+              style={s.SelectStyle}
               defaultValue={this.props.status}
               onChange={this.handleConditionChange.bind(this, 'status')} >
         {options}
@@ -94,12 +77,12 @@ export default class ModalForm extends React.Component {
 
   render() {
     return (
-      <div key={this.props.id} style={ConditionStyle}>
-        <span style={RawTextStyle}>if</span>
+      <div key={this.props.id} style={s.ConditionStyle}>
+        <span style={s.RawTextStyle}>if</span>
         {this.getFeatureNode()}
         {this.getOperatorNode()}
         {this.getValueNode()}
-        <span style={RawTextStyle}>then</span>
+        <span style={s.RawTextStyle}>then</span>
         {this.getStatusNode()}
       </div>
     )

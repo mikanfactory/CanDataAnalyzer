@@ -31,6 +31,25 @@ const ToolBoxStyle = {
   }
 }
 
+const ConditionFormStyle = {
+  ConditionStyle: {
+    paddingTop: "20px",
+  },
+
+  RawTextStyle: {
+    fontSize: "24px",
+    margin: "0 20px"
+  },
+
+  TextStyle: {
+    width: "50px",
+    fontSize: "20px",
+  },
+
+  SelectStyle: {
+    marginRight: "20px"
+  }
+}
 
 const ModalStyle = {
     HeaderStyle: {
@@ -69,4 +88,4 @@ const ModalStyle = {
     }
 }
 
-export { ContainerStyle, ToolBoxStyle, GoogleMapStyle, ModalStyle }
+export { ContainerStyle, ToolBoxStyle, ConditionFormStyle, GoogleMapStyle, ModalStyle }
