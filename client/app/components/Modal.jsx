@@ -93,7 +93,7 @@ export default class Modal extends React.Component {
   }
 
   handleFetchMarkers() {
-    const id = this.state.settings.id
+    const id = this.state.setting.id
     const cnds = this.state.conditions.filter( c => c.settingID === id )
     const data = assign({}, this.state.setting, { conditions: cnds })
 
@@ -108,10 +108,8 @@ export default class Modal extends React.Component {
     })
       .then(resp => checkStatus(resp, 200))
       .then(resp => resp.json())
-      .then(markers => {
-        MarkerActions.createMarkers(markers)
-        ModalActions.closeModal()
-      })
+      .then(markers => MarkerActions.createMarkers(markers))
+      .then(() => ModalActions.closeModal())
       .catch(err => console.log('post setting error:', err))
   }
 

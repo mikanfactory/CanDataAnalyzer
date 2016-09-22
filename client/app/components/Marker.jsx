@@ -29,8 +29,6 @@ export default class Marker extends React.Component {
   constructor(props) {
     super(props)
 
-    this._isMarkerInitiallyRenderd = false
-
     this.state = {
       hover: false,
       marker: null,
@@ -113,6 +111,8 @@ export default class Marker extends React.Component {
       infoWindow: infoWindow,
       isWindowPoped: false
     })
+
+    marker.setMap(this.props.gMap)
   }
 
   handleMarkerMount() {
@@ -125,28 +125,18 @@ export default class Marker extends React.Component {
   }
 
   handleWindowOpen() {
-    this.state.infoWindow.open(this.state.gMap, this.state.marker)
+    this.state.infoWindow.open(this.props.gMap, this.state.marker)
   }
 
   handleWindowClose() {
     this.state.infoWindow.close()
   }
 
-  componentWillReceiveProps(nextProps) {
-    // if google maps marker has not rendered
-    if (!this._isMarkerInitiallyRenderd) {
-      this.handleNewMarkerMount(nextProps)
-    }
+  componentDidMount() {
+    this.handleNewMarkerMount()
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // if google maps marker has not rendered
-    if (!this._isMarkerInitiallyRenderd) {
-      this.handleMarkerMount()
-      this._isMarkerInitiallyRenderd = true
-      return
-    }
-
     // Click marker toggle button in MarkerList
     if (this.props.isMarkerDrawed !== prevProps.isMarkerDrawed) {
       this.props.isMarkerDrawed ? this.handleMarkerMount() : this.handleMarkerUnmount()
