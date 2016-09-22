@@ -1,3 +1,11 @@
+const ContainerStyle = {
+  ContainerStyle: {
+    position: 'relative',
+    width: '100%',
+    height: '100%'
+  }
+}
+
 const ModalStyle = {
     HeaderStyle: {
       fontSize: "32px",
@@ -35,4 +43,4 @@ const ModalStyle = {
     }
 }
 
-export { ModalStyle }
+export { ContainerStyle, ModalStyle }

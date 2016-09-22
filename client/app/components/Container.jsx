@@ -3,12 +3,7 @@ import Modal from "./Modal"
 import GoogleMap from './GoogleMap'
 import ToolBox from './AnalysisToolBox.jsx'
 import GMapStore from '../stores/GMapStore'
-
-const ContainerStyle = {
-  position: 'relative',
-  width: '100%',
-  height: '100%'
-}
+import { ContainerStyle as s } from './Styles'
 
 function getStateFromStores() {
   return {
@@ -38,7 +33,7 @@ export default class Container extends React.Component {
 
   render() {
     return (
-      <div className="Container" style={ContainerStyle}>
+      <div className="Container" style={s.ContainerStyle}>
         <GoogleMap />
         <ToolBox gMap={this.state.gMap} />
         <Modal />
