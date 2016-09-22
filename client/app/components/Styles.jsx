@@ -21,6 +21,17 @@ const GoogleMapStyle = {
   }
 }
 
+const ToolBoxStyle = {
+  ToolBoxStyle: {
+    position: 'relative',
+    float: 'left',
+    width: '25%',
+    height: '770px',
+    overflow: 'scroll'
+  }
+}
+
+
 const ModalStyle = {
     HeaderStyle: {
       fontSize: "32px",
@@ -58,4 +69,4 @@ const ModalStyle = {
     }
 }
 
-export { ContainerStyle, GoogleMapStyle, ModalStyle }
+export { ContainerStyle, ToolBoxStyle, GoogleMapStyle, ModalStyle }

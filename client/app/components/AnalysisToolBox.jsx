@@ -2,14 +2,7 @@ import React from 'react'
 import ToolBoxHeader from './ToolBoxHeader'
 import MarkerList from './MarkerList'
 import SettingStore from '../stores/SettingStore'
-
-const ToolBoxStyle = {
-  position: 'relative',
-  float: 'left',
-  width: '25%',
-  height: '770px',
-  overflow: 'scroll'
-}
+import { ToolBoxStyle as s } from './Styles'
 
 function getStateFromStores() {
   return {
@@ -44,7 +37,7 @@ export default class AnalysisToolBox extends React.Component {
     const markerListNodes = this.state.settings.map(this.getMarkerList)
 
     return (
-      <div className="AnalysisToolBox" style={ToolBoxStyle}>
+      <div className="AnalysisToolBox" style={s.ToolBoxStyle}>
         <ToolBoxHeader />
         {markerListNodes}
       </div>
