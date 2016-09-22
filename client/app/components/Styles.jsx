@@ -36,9 +36,13 @@ const ConditionFormStyle = {
     paddingTop: "20px",
   },
 
+  CaseTextStyle: {
+    fontSize: "24px",
+    marginLeft: "30px"
+  },
+
   RawTextStyle: {
     fontSize: "24px",
-    margin: "0 20px"
   },
 
   TextStyle: {
@@ -47,7 +51,6 @@ const ConditionFormStyle = {
   },
 
   SelectStyle: {
-    marginRight: "20px"
   }
 }
 

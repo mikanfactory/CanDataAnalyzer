@@ -1,6 +1,6 @@
 import React from 'react'
 import ConditionActions from '../actions/ConditionActions'
-import { FEATURES, OPERATORS, STATUS } from '../constants/AppConstants'
+import { NUMBERS, LOGICS, FEATURES, OPERATORS, STATUS } from '../constants/AppConstants'
 import assign from 'object-assign'
 import { ConditionFormStyle as s } from './Styles'
 
@@ -8,6 +8,8 @@ export default class ModalForm extends React.Component {
   constructor(props) {
     super(props)
 
+    this.getNumberNode = this.getNumberNode.bind(this)
+    this.getLogicNode = this.getLogicNode.bind(this)
     this.getFeatureNode = this.getFeatureNode.bind(this)
     this.getOperatorNode = this.getOperatorNode.bind(this)
     this.getValueNode = this.getValueNode.bind(this)
@@ -17,6 +19,28 @@ export default class ModalForm extends React.Component {
   getOptions(value, i) {
     return (
       <option key={i} value={value}>{value}</option>
+    )
+  }
+
+  getNumberNode() {
+    const options = NUMBERS.map(this.getOptions)
+    return (
+      <select className="form-control number"
+              style={s.SelectStyle}
+              defaultValue={"Single"}>
+        {options}
+      </select>
+    )
+  }
+
+  getLogicNode() {
+    const options = LOGICS.map(this.getOptions)
+    return (
+      <select className="form-control logic"
+              style={s.SelectStyle}
+              defaultValue={"and"}>
+        {options}
+      </select>
     )
   }
 
@@ -76,11 +100,13 @@ export default class ModalForm extends React.Component {
   render() {
     return (
       <div key={this.props.id} style={s.ConditionStyle}>
-        <span style={s.RawTextStyle}>if</span>
+        <span style={s.CaseTextStyle}>{"case "}</span>
+        {this.getNumberNode()}
+        <span style={s.RawTextStyle}>{"("}</span>
         {this.getFeatureNode()}
         {this.getOperatorNode()}
         {this.getValueNode()}
-        <span style={s.RawTextStyle}>then</span>
+        <span style={s.RawTextStyle}>{") => "}</span>
         {this.getStatusNode()}
       </div>
     )

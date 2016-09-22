@@ -170,7 +170,7 @@ export default class Modal extends React.Component {
     const formNodes = this.state.conditions.map(this.getForm)
 
     return (
-      <Rodal visible={!!this.state.setting} width={800} height={480}
+      <Rodal visible={!!this.state.setting} width={1300} height={720}
              onClose={this.handleModalCancel}>
         {this.getHeaderNode()}
         <div className="ModalBody" style={s.BodyStyle}>

@@ -20,6 +20,17 @@ const defaultModal = {
   settingID: 0
 }
 
+const NUMBERS = [
+  "Single",
+  "Double",
+  "Triple"
+]
+
+const LOGICS = [
+  "and",
+  "or"
+]
+
 const TARGETS = [
   "Target",
   "021021K1KAm",
@@ -43,10 +54,9 @@ const FEATURES = [
   "AccelerationX",
   "GPSLatitude",
   "GPSLongtitude",
-  "MapLongtitude",
   "MapLatitude",
+  "MapLongtitude",
   "SpeedPerHourLowpass",
-  "BrakeOnOff",
   "BrakeOnOff",
   "AcceleratorOnOff",
   "Steering Angle",
@@ -67,7 +77,7 @@ const STATUS = [
 
 
 export { defaultSetting, defaultCondition, defaultModal }
-export { TARGETS, FEATURES, OPERATORS, STATUS }
+export { NUMBERS, LOGICS, TARGETS, FEATURES, OPERATORS, STATUS }
 
 const AppConstants = {
   ModalTypes: {
