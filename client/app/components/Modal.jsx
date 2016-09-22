@@ -115,8 +115,8 @@ export default class Modal extends React.Component {
       .catch(err => console.log('post setting error:', err))
   }
 
-  getForm(condition) {
-    return <ModalForm {...condition} />
+  getForm(condition, i) {
+    return <ModalForm key={i} {...condition} />
   }
 
   getHeaderNode() {

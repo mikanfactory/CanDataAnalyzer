@@ -1,6 +1,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import AppConstants from '../constants/AppConstants'
 import SettingStore from '../stores/SettingStore'
+import ConditionStore from '../stores/ConditionStore'
 import { EventEmitter } from 'events'
 
 const ActionTypes = AppConstants.ActionTypes
@@ -11,9 +12,8 @@ let _store = {
   modal: {}
 }
 
-function _createModal() {
-  const setting = SettingStore.getLatestSetting()
-  _store.modal = { modalType: ModalTypes.NEW, settingID: setting.id }
+function _createModal(settingID) {
+  _store.modal = { modalType: ModalTypes.NEW, settingID: settingID }
 }
 
 function _openModal(sid) {
@@ -51,9 +51,9 @@ const ModalStore = new ModalStoreClass()
 ModalStore.dispatchToken = AppDispatcher.register((action) => {
 
   switch (action.actionType) {
-      // TODO: do it after create new setting
     case ActionTypes.CREATE_MODAL:
-      _createModal()
+      AppDispatcher.waitFor([SettingStore.dispatchToken, ConditionStore.dispatchToken])
+      _createModal(SettingStore.getLatestID())
       ModalStore.emitChange()
       break
 
@@ -67,8 +67,8 @@ ModalStore.dispatchToken = AppDispatcher.register((action) => {
       ModalStore.emitChange()
       break
 
-      // TODO: do it after remove setting and conditions
     case ActionTypes.CANCEL_MODAL:
+      AppDispatcher.waitFor([SettingStore.dispatchToken, ConditionStore.dispatchToken])
       _closeModal()
       ModalStore.emitChange()
       break

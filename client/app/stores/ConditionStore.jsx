@@ -1,5 +1,6 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import AppConstants from '../constants/AppConstants'
+import SettingStore from '../stores/SettingStore'
 import { EventEmitter } from 'events'
 import assign from 'object-assign'
 import uniqBy from 'lodash/uniqBy'
@@ -18,7 +19,7 @@ function _updateCondition(condition) {
   _store.conditions = uniqBy([..._store.conditions, condition], 'id')
 }
 
-function _createConditions(sid) {
+function _createCondition(sid) {
   const cid = _getAndCountUpId()
   const condition = assign({}, defaultCondition, { id: cid, settingID: sid })
   _store.conditions = [..._store.conditions, condition]
@@ -66,7 +67,8 @@ ConditionStore.dispatchToken = AppDispatcher.register((action) => {
       break
 
     case ActionTypes.CREATE_MODAL:
-      _createConditions(action.settingID)
+      AppDispatcher.waitFor([SettingStore.dispatchToken])
+      _createCondition(SettingStore.getLatestID())
       ConditionStore.emitChange()
       break
 

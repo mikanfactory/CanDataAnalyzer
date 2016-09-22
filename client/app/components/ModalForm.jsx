@@ -1,9 +1,7 @@
 import React from 'react'
-import AppConstants from '../constants/AppConstants'
 import ConditionActions from '../actions/ConditionActions'
+import { FEATURES, OPERATORS, STATUS } from '../constants/AppConstants'
 import assign from 'object-assign'
-
-const { FEATURES, OPERATORS, STATUS } = AppConstants
 
 const ConditionStyle = {
   paddingTop: "20px",
@@ -35,8 +33,14 @@ export default class ModalForm extends React.Component {
     this.getStatusNode = this.getStatusNode.bind(this)
   }
 
+  getOptions(value, i) {
+    return (
+      <option key={i} value={value}>{value}</option>
+    )
+  }
+
   getFeatureNode() {
-    const options = FEATURES.map( o => <option value={o}>{o}</option> )
+    const options = FEATURES.map(this.getOptions)
     return (
       <select className="form-control feature"
               style={SelectStyle}
@@ -48,7 +52,7 @@ export default class ModalForm extends React.Component {
   }
 
   getOperatorNode() {
-    const options = OPERATORS.map( o => <option value={o}>{o}</option> )
+    const options = OPERATORS.map(this.getOptions)
     return (
       <select className="form-control operator"
               style={SelectStyle}
@@ -70,7 +74,7 @@ export default class ModalForm extends React.Component {
   }
 
   getStatusNode() {
-    const options = STATUS.map( o => <option value={o}>{o}</option> )
+    const options = STATUS.map(this.getOptions)
     return (
       <select className="form-control status"
               style={SelectStyle}

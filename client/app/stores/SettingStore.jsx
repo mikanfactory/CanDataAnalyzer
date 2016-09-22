@@ -63,6 +63,11 @@ class SettingStoreClass extends EventEmitter {
   getLatestSetting() {
     return last(_store.settings)
   }
+
+  getLatestID() {
+    const s = last(_store.settings)
+    return s.id
+  }
 }
 
 const SettingStore = new SettingStoreClass()
