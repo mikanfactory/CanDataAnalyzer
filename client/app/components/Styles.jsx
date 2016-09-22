@@ -175,12 +175,34 @@ const ModalStyle = {
     }
 }
 
+const ToolBoxHeaderStyle = {
+  HeaderStyle: {
+    color: "#FFF",
+    backgroundColor: "#00BCD4",
+    fontWeight: "200",
+    lineHeight: "64px",
+    paddingLeft: "20px",
+    paddingRight: "10px",
+    textAlign: "right"
+  },
+
+  StringStyle: {
+    float: "left",
+    fontSize: "24px"
+  },
+
+  GlyphiconStyle: {
+    padding: "0 10px"
+  }
+}
+
 export {
-  ContainerStyle,
   ToolBoxStyle,
   ConditionFormStyle,
+  ContainerStyle,
+  GoogleMapStyle,
   MarkerStyle,
   MarkerListStyle,
-  GoogleMapStyle,
-  ModalStyle
+  ModalStyle,
+  ToolBoxHeaderStyle
 }
