@@ -27,16 +27,7 @@ export default class ModalForm extends React.Component {
   constructor(props) {
     super(props)
 
-    const { id, settingID, feature, operator, value, status } = this.props
-
-    this.state = {
-      id: id,
-      settingID: settingID,
-      feature: feature,
-      operator: operator,
-      value: value,
-      status: status
-    }
+    this.state = assign({}, this.props)
 
     this.getFeatureNode = this.getFeatureNode.bind(this)
     this.getOperatorNode = this.getOperatorNode.bind(this)

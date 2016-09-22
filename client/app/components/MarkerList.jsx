@@ -40,10 +40,8 @@ export default class MarkerList extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      isListOpened: true,
-      drawAllMarkers: true,
-    }
+    const defaultState = { isListOpened: true, drawAllMarkers: true }
+    this.state = assign({}, defaultState, getStateFromStores())
 
     this.getMarker = this.getMarker.bind(this)
     this.getOpenOrCloseIcon = this.getOpenOrCloseIcon.bind(this)
@@ -53,6 +51,7 @@ export default class MarkerList extends React.Component {
     this.handleMarkerDraw = this.handleMarkerDraw.bind(this)
     this.handleMarkerErase = this.handleMarkerErase.bind(this)
     this.handleModalOpen = this.handleModalOpen.bind(this)
+    this._onChange = this._onChange.bind(this)
   }
 
   getOpenOrCloseIcon() {

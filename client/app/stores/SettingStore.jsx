@@ -52,6 +52,14 @@ class SettingStoreClass extends EventEmitter {
     this.removeListener(CHANGE_EVENT, callback)
   }
 
+  getAllSettings() {
+    return _store.settings
+  }
+
+  getSetting(id) {
+    return _store.settings.find( s => s.id === id )
+  }
+
   getLatestSetting() {
     return last(_store.settings)
   }

@@ -64,21 +64,20 @@ function getStateFromStores() {
   }
 }
 
-function isVisible(modal) {
-  return !!modal
-}
-
 export default class Modal extends React.Component {
   constructor(props) {
     super(props)
+    this.state = getStateFromStores()
 
     this.getHeaderNode = this.getHeaderNode.bind(this)
     this.handleCreateCondition = this.handleCreateCondition.bind(this)
+    this.handleModalCancel = this.handleModalCancel.bind(this)
     this.handleFetchMarkers = this.handleFetchMarkers.bind(this)
+    this._onChange = this._onChange.bind(this)
   }
 
   handleCreateCondition() {
-    ConditionActions.createCondition(this.state.id)
+    ConditionActions.createCondition(this.state.setting.id)
   }
 
   // TODO
@@ -129,7 +128,7 @@ export default class Modal extends React.Component {
       header = "New"
     }
 
-    if (this.state.modal.modalType === ModalTypes.NEW) {
+    if (this.state.modal.modalType === ModalTypes.EDIT) {
       const { setting } = this.state
       header = "Edit: " + setting.target + setting.title
     }
@@ -193,20 +192,12 @@ export default class Modal extends React.Component {
     ConditionStore.addChangeListener(this._onChange);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      id: nextProps.id,
-      target: nextProps.target,
-      title: nextProps.title,
-      conditions: nextProps.conditions
-    })
-  }
-
   render() {
     const formNodes = this.state.conditions.map(this.getForm)
 
     return (
-      <Rodal visible={isVisible(this.state.modal)} width={800} height={480}>
+      <Rodal visible={!!this.state.setting} width={800} height={480}
+             onClose={this.handleModalCancel}>
         {this.getHeaderNode()}
         <div className="ModalBody" style={BodyStyle}>
           {this.getCreateAndRemoveButtons()}

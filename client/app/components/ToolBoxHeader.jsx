@@ -26,7 +26,7 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleModalOpen() {
-    ModalAction.newModal()
+    ModalAction.createModal()
   }
 
   render() {

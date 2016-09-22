@@ -8,20 +8,20 @@ const ModalTypes = AppConstants.ModalTypes
 const CHANGE_EVENT = 'change'
 
 let _store = {
-  visibleModal: {}
+  modal: {}
 }
 
 function _createModal() {
   const setting = SettingStore.getLatestSetting()
-  _store.visibleModal = { modalType: ModalTypes.NEW, settingID: setting.id }
+  _store.modal = { modalType: ModalTypes.NEW, settingID: setting.id }
 }
 
 function _openModal(sid) {
-  _store.visibleModal = { modalType: ModalTypes.EDIT, settingID: sid }
+  _store.modal = { modalType: ModalTypes.EDIT, settingID: sid }
 }
 
 function _closeModal() {
-  _store.visibleModal = null
+  _store.modal = { modalType: "", settingID: 0 }
 }
 
 class ModalStoreClass extends EventEmitter {
@@ -42,7 +42,7 @@ class ModalStoreClass extends EventEmitter {
   }
 
   getVisibleModal() {
-    return _store.visibleModal
+    return _store.modal
   }
 }
 

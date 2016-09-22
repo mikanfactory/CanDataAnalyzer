@@ -48,3 +48,5 @@ GMapStore.dispatchToken = AppDispatcher.register((action) => {
       // do nothing
   }
 })
+
+export default GMapStore

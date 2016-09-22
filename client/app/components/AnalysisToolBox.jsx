@@ -20,8 +20,10 @@ function getStateFromStores() {
 export default class AnalysisToolBox extends React.Component {
   constructor(props) {
     super(props)
+    this.state = getStateFromStores()
 
     this.getMarkerList = this.getMarkerList.bind(this)
+    this._onChange = this._onChange.bind(this)
   }
 
   getMarkerList(setting) {
