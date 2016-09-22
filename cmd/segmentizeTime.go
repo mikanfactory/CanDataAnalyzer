@@ -22,10 +22,9 @@ type Targets struct {
 }
 
 type Column struct {
-	Index        int64
-	Name         string
-	JapaneseName string `json:"jName"`
-	Read         bool
+	Index int64
+	Name  string
+	Read  bool
 }
 
 type Line struct {
@@ -76,6 +75,7 @@ func segmentizeTime(filename string, cacheInfo CacheInfo) {
 	}
 
 	validColumns := getValidColumns(cacheInfo)
+	allRecords = allRecords[headerLines:]
 
 	result := []Line{}
 	for i := 0; i < len(allRecords)/SegmentSize; i++ {
@@ -137,17 +137,13 @@ func calcStatistic(column Column, records *[][]string) Statistics {
 	var average float64
 	var variance float64
 	values := []float64{}
-	for i, record := range *records {
-		if i < headerLines {
-			continue
-		}
-
+	for _, record := range *records {
 		value, _ := strconv.ParseFloat(record[column.Index], 64)
 		values = append(values, value)
 		average += value
 	}
 
-	average = average / float64(SegmentSize)
+	average = average / float64(len(*records))
 	for _, v := range values {
 		variance += math.Pow(v-average, 2)
 	}
@@ -155,7 +151,7 @@ func calcStatistic(column Column, records *[][]string) Statistics {
 	return Statistics{
 		Name:     column.Name,
 		Average:  average,
-		Variance: variance / float64(SegmentSize),
+		Variance: variance / float64(len(*records)),
 	}
 }
 

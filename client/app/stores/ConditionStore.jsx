@@ -4,6 +4,7 @@ import SettingStore from '../stores/SettingStore'
 import { EventEmitter } from 'events'
 import assign from 'object-assign'
 import uniqBy from 'lodash/uniqBy'
+import sortBy from 'lodash/sortBy'
 
 import { defaultCondition } from '../constants/AppConstants'
 
@@ -16,7 +17,8 @@ let _store = {
 }
 
 function _updateCondition(condition) {
-  _store.conditions = uniqBy([condition, ..._store.conditions], 'id')
+  const cnds = uniqBy([condition, ..._store.conditions], 'id')
+  _store.conditions = sortBy(cnds, 'id')
 }
 
 function _createCondition(sid) {
