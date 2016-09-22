@@ -22,7 +22,7 @@ function _newSetting() {
 }
 
 function _updateSetting(setting) {
-  _store.settings = uniqBy([..._store.settings, setting], 'id')
+  _store.settings = uniqBy([setting, ..._store.settings], 'id')
 }
 
 function _getAndCountUpId() {
