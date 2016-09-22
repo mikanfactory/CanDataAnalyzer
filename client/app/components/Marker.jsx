@@ -1,29 +1,6 @@
 import React from 'react'
 import MarkerActions from '../actions/MarkerActions'
-
-const MarkerStyle = {
-  color: "#1F1F1F",
-  backgroundColor: "#FFF",
-  fontWeight: "200",
-  lineHeight: "46px",
-  paddingLeft: "20px",
-  paddingRight: "10px",
-  textAlign: "right"
-}
-
-const StringStyle = {
-  float: "left",
-  fontSize: "18px"
-}
-
-const GlyphiconStyle = {
-  padding: "0 10px",
-  visibility: "hidden"
-}
-
-const HoveredMarkerStyle = Object.assign({}, MarkerStyle, { backgroundColor: "#E8E8E8" })
-const HoveredGlyphiconStyle = Object.assign({}, GlyphiconStyle, { visibility: "visible" })
-const PaledGlyphiconStyle = Object.assign({}, HoveredMarkerStyle, { color: "#8B8B8B" })
+import { MarkerStyle as s } from './Styles'
 
 export default class Marker extends React.Component {
   constructor(props) {
@@ -54,7 +31,7 @@ export default class Marker extends React.Component {
   }
 
   getMarkerStyle() {
-    const style = this.state.hover ? HoveredMarkerStyle : MarkerStyle
+    const style = this.state.hover ? s.HoveredMarkerStyle : s.MarkerStyle
     const extension = this.props.isDisplayed ? {} : { display: "none" }
     return Object.assign({}, style, extension)
   }
@@ -62,13 +39,13 @@ export default class Marker extends React.Component {
   getGlyphiconStyle() {
     switch (true) {
       case this.state.hover && this.props.isMarkerDrawed:
-        return HoveredGlyphiconStyle
+        return s.HoveredGlyphiconStyle
       case this.state.hover && !this.props.isMarkerDrawed:
-        return PaledGlyphiconStyle
+        return s.PaledGlyphiconStyle
       case !this.state.hover && this.props.isMarkerDrawed:
-        return GlyphiconStyle
+        return s.GlyphiconStyle
       case !this.state.hover && !this.props.isMarkerDrawed:
-        return Object.assign({}, PaledGlyphiconStyle, { backgroundColor: "#FFF" })
+        return s.InvisibleMarkerStyle
     }
   }
 
@@ -158,7 +135,7 @@ export default class Marker extends React.Component {
            onClick={this.handleInfoWindowToggle}
            onMouseOver={this.handleMouseOver}
            onMouseOut={this.handleMouseOut}>
-            <span style={StringStyle}>{this.getTitle()}</span>
+            <span style={s.StringStyle}>{this.getTitle()}</span>
             <span className="glyphicon glyphicon-map-marker"
                   style={glyphiconStyle}
                   onClick={this.handleMarkerToggle}>

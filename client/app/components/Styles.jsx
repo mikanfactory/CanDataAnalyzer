@@ -51,6 +51,63 @@ const ConditionFormStyle = {
   }
 }
 
+const MarkerStyle = {
+  MarkerStyle: {
+    color: "#1F1F1F",
+    backgroundColor: "#FFF",
+    fontWeight: "200",
+    lineHeight: "46px",
+    paddingLeft: "20px",
+    paddingRight: "10px",
+    textAlign: "right"
+  },
+
+  StringStyle: {
+    float: "left",
+    fontSize: "18px"
+  },
+
+  GlyphiconStyle: {
+    padding: "0 10px",
+    visibility: "hidden"
+  },
+
+  HoveredMarkerStyle: {
+    color: "#1F1F1F",
+    backgroundColor: "#E8E8E8",
+    fontWeight: "200",
+    lineHeight: "46px",
+    paddingLeft: "20px",
+    paddingRight: "10px",
+    textAlign: "right"
+  },
+
+  HoveredGlyphiconStyle: {
+    padding: "0 10px",
+    visibility: "visible"
+  },
+
+  PaledGlyphiconStyle: {
+    color: "#8B8B8B",
+    backgroundColor: "#E8E8E8",
+    fontWeight: "200",
+    lineHeight: "46px",
+    paddingLeft: "20px",
+    paddingRight: "10px",
+    textAlign: "right"
+  },
+
+  InvisibleMarkerStyle: {
+    color: "#8B8B8B",
+    backgroundColor: "#FFF",
+    fontWeight: "200",
+    lineHeight: "46px",
+    paddingLeft: "20px",
+    paddingRight: "10px",
+    textAlign: "right"
+  }
+}
+
 const ModalStyle = {
     HeaderStyle: {
       fontSize: "32px",
@@ -88,4 +145,11 @@ const ModalStyle = {
     }
 }
 
-export { ContainerStyle, ToolBoxStyle, ConditionFormStyle, GoogleMapStyle, ModalStyle }
+export {
+  ContainerStyle,
+  ToolBoxStyle,
+  ConditionFormStyle,
+  MarkerStyle,
+  GoogleMapStyle,
+  ModalStyle
+}
