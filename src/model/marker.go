@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/csv"
 	"os"
+	"regexp"
 	"strconv"
 )
 
@@ -79,10 +80,15 @@ func readFile(target string) ([][]string, error) {
 
 func genDescriptionAnalyzer(header []string) descriptionAnalyzer {
 	names := header
+	matcher := regexp.MustCompile(`.* Var$`)
 
 	return func(record []string) string {
 		description := ""
 		for i, feature := range record {
+			// output only Average columns
+			if res := matcher.MatchString(names[i]); res == true {
+				continue
+			}
 			cmp := "<div class='feature'>" + names[i] + ": " + feature + "</div>"
 			description = description + cmp + "\n"
 		}
