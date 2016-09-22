@@ -55,13 +55,11 @@ export default class Modal extends React.Component {
     ConditionActions.removeCondition(cnd.id)
   }
 
-  handleModalClose() {
-    ModalActions.closeModal()
-  }
-
   handleModalCancel() {
-    if (this.state.modal.modalTypes === ModalTypes.NEW)
-      return ModalActions.cancelModal(this.state.setting.id)
+    if (this.state.modal.modalType === ModalTypes.NEW) {
+      ModalActions.cancelModal(this.state.setting.id)
+      return
+    }
 
     ModalActions.closeModal()
   }
@@ -94,26 +92,29 @@ export default class Modal extends React.Component {
   getHeaderNode() {
     if (!this.state.modal) return ""
 
-    let header = ""
 
     if (this.state.modal.modalType === ModalTypes.NEW) {
-      header = "New"
+      return (
+        <div className="ModalHeader" style={s.HeaderStyle}>
+          New {this.getTargetNode()} {this.getTitleNode()}
+        </div>
+      )
     }
 
     if (this.state.modal.modalType === ModalTypes.EDIT) {
       const { setting } = this.state
-      header = "Edit: " + setting.target + setting.title
+      const header = "Edit: " + setting.target + setting.title
+      return (
+        <div className="ModalHeader" style={s.HeaderStyle}>
+        {header}
+        </div>
+      )
     }
 
-    return (
-      <div className="ModalHeader" style={s.HeaderStyle}>
-        {header}
-      </div>
-    )
   }
 
   getTargetNode() {
-    const options = TARGETS.map( o => <option value={o}>{o}</option> )
+    const options = TARGETS.map( (o, i) => <option key={i} value={o}>{o}</option> )
     return (
       <select className="form-control target" style={s.TargetStyle}
               defaultValue="Target"
