@@ -4,25 +4,7 @@ import MarkerStore from '../stores/MarkerStore'
 import MarkerActions from '../actions/MarkerActions'
 import ModalActions from '../actions/ModalActions'
 import assign from 'object-assign'
-
-const ListHeaderStyle = {
-  color: "#1B1B1B",
-  backgroundColor: "#CCCCCC",
-  fontWeight: "200",
-  lineHeight: "46px",
-  paddingLeft: "20px",
-  paddingRight: "10px",
-  textAlign: "right"
-}
-
-const StringStyle = {
-  fontSize: "18px",
-  float: "left"
-}
-
-const GlyphiconStyle = { padding: "0 10px" }
-const PaledGlyphiconStyle = assign({}, GlyphiconStyle, { color: "#8B8B8B" })
-const ContainerStyle = { padding: "0" }
+import { MarkerListStyle as s } from './Styles'
 
 function getStateFromStores(sid) {
   return {
@@ -57,11 +39,11 @@ export default class MarkerList extends React.Component {
   getOpenOrCloseIcon() {
     return this.state.isListOpened ?
            <span className="glyphicon glyphicon-triangle-bottom"
-                 style={GlyphiconStyle}
+                 style={s.GlyphiconStyle}
                  onClick={this.handleListClose}>
            </span> :
            <span className="glyphicon glyphicon-triangle-top"
-                 style={GlyphiconStyle}
+                 style={s.GlyphiconStyle}
                  onClick={this.handleListOpen}>
            </span>
   }
@@ -69,11 +51,11 @@ export default class MarkerList extends React.Component {
   getDrawOrEraseIcon() {
     return this.state.drawAllMarkers ?
            <span className="glyphicon glyphicon-map-marker"
-                 style={GlyphiconStyle}
+                 style={s.GlyphiconStyle}
                  onClick={this.handleMarkerErase}>
            </span> :
            <span className="glyphicon glyphicon-map-marker"
-                 style={PaledGlyphiconStyle}
+                 style={s.PaledGlyphiconStyle}
                  onClick={this.handleMarkerDraw}>
            </span>
   }
@@ -123,18 +105,18 @@ export default class MarkerList extends React.Component {
 
     return (
       <div className="MarkerList">
-        <div className="MarkerListHeader" style={ListHeaderStyle}>
-          <span style={StringStyle}>{this.props.title}</span>
+        <div className="MarkerListHeader" style={s.ListHeaderStyle}>
+          <span style={s.StringStyle}>{this.props.title}</span>
           <span className="glyphicon glyphicon-cog"
-                style={GlyphiconStyle}
+                style={s.GlyphiconStyle}
                 onClick={this.handleModalOpen} >
           </span>
           {openOrCloseIcon}
           {drawOrEraseIcon}
           <span className="glyphicon glyphicon-trash"
-                style={GlyphiconStyle}></span>
+                style={s.GlyphiconStyle}></span>
         </div>
-        <div className="cnt" style={ContainerStyle}>{markerNodes}</div>
+        <div className="cnt" style={s.ContainerStyle}>{markerNodes}</div>
       </div>
     )
   }

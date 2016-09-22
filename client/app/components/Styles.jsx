@@ -108,6 +108,36 @@ const MarkerStyle = {
   }
 }
 
+const MarkerListStyle = {
+  ListHeaderStyle: {
+    color: "#1B1B1B",
+    backgroundColor: "#CCCCCC",
+    fontWeight: "200",
+    lineHeight: "46px",
+    paddingLeft: "20px",
+    paddingRight: "10px",
+    textAlign: "right"
+  },
+
+  StringStyle: {
+    fontSize: "18px",
+    float: "left"
+  },
+
+  GlyphiconStyle: {
+    padding: "0 10px"
+  },
+
+  PaledGlyphiconStyle: {
+    color: "#8B8B8B",
+    padding: "0 10px"
+  },
+
+  ContainerStyle: {
+    padding: "0"
+  }
+}
+
 const ModalStyle = {
     HeaderStyle: {
       fontSize: "32px",
@@ -150,6 +180,7 @@ export {
   ToolBoxStyle,
   ConditionFormStyle,
   MarkerStyle,
+  MarkerListStyle,
   GoogleMapStyle,
   ModalStyle
 }
