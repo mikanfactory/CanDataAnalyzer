@@ -13,9 +13,9 @@ type Targets struct {
 }
 
 func main() {
-	c := regexp.MustCompile(`\.gitkeep$`)
+	g := regexp.MustCompile(`\.gitkeep$`)
 	d := regexp.MustCompile(`\.DS_Store`)
-	g := regexp.MustCompile(`.*cache.*`)
+	c := regexp.MustCompile(`.*cache.*`)
 
 	files, _ := ioutil.ReadDir("../data")
 	targets := []string{}
