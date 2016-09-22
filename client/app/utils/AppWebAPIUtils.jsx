@@ -9,4 +9,20 @@ function checkStatus(resp, code) {
   }
 }
 
-export { checkStatus }
+function fetchMarkers(data, callback) {
+  fetch("/api/v1/markers", {
+    credentials: "same-origin",
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  })
+    .then(resp => checkStatus(resp, 200))
+    .then(resp => resp.json())
+    .then(markers => callback(markers))
+    .catch(err => console.log('post setting error:', err))
+}
+
+export { fetchMarkers }

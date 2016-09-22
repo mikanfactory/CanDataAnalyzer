@@ -16,7 +16,7 @@ let _store = {
 }
 
 function _updateCondition(condition) {
-  _store.conditions = uniqBy([..._store.conditions, condition], 'id')
+  _store.conditions = uniqBy([condition, ..._store.conditions], 'id')
 }
 
 function _createCondition(sid) {

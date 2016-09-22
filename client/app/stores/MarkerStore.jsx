@@ -17,6 +17,12 @@ function _createMarkers(markers) {
   _store.markers = [..._store.markers, ...markers]
 }
 
+function _updateMarkers(sid, markers) {
+  _store.markers = _store.markers
+                         .filter( m => m.settingID !== sid)
+  _store.markers = [..._store.markers, ...markers]
+}
+
 function _drawMarkers(sid) {
   _store.invisibleMarkers = _store.invisibleMarkers
                                   .filter( m => m.settingID !== sid )
@@ -76,6 +82,11 @@ MarkerStore.dispatchToken = AppDispatcher.register((action) => {
   switch (action.actionType) {
     case ActionTypes.CREATE_MARKERS:
       _createMarkers(action.markers)
+      MarkerStore.emitChange()
+      break
+
+    case ActionTypes.UPDATE_MARKERS:
+      _updateMarkers(action.settingID, action.markers)
       MarkerStore.emitChange()
       break
 

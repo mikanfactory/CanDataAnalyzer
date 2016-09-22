@@ -93,6 +93,7 @@ const AppConstants = {
 
     // Markers
     CREATE_MARKERS: null,
+    UPDATE_MARKERS: null,
     DRAW_MARKER: null,
     DRAW_MARKERS: null,
     ERASE_MARKER: null,
