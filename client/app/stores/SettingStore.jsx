@@ -3,6 +3,7 @@ import AppConstants from '../constants/AppConstants'
 import { EventEmitter } from 'events'
 import assign from 'object-assign'
 import uniqBy from 'lodash/uniqBy'
+import sortBy from 'lodash/sortBy'
 import last from 'lodash/last'
 
 import { defaultSetting } from '../constants/AppConstants'
@@ -22,7 +23,8 @@ function _newSetting() {
 }
 
 function _updateSetting(setting) {
-  _store.settings = uniqBy([setting, ..._store.settings], 'id')
+  const stgs = uniqBy([setting, ..._store.settings], 'id')
+  _store.settings = sortBy(stgs, 'id')
 }
 
 function _getAndCountUpId() {

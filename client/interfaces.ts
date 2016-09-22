@@ -21,12 +21,19 @@ interface Position {
 }
 
 interface Condition {
-  id:        number,            // unique
-  settingID: number,
+  id:         number,            // unique
+  settingID:  number,
+  detailsNum: number,
+  logics:     Array<string>,
+  status:     Status
+}
+
+interface Details {
+  id: number,
+  conditionID: number,
   feature:   string,
   operator:  Operator,
   value:     number,
-  status:    Status
 }
 
 interface Modal {

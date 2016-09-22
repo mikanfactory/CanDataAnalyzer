@@ -30,8 +30,13 @@ type Setting struct {
 
 // Condition denotes how to deal the status.
 type Condition struct {
+	Logics  []string `json:"logics"`
+	Status  string   `json:"status"`
+	Details []Detail `json:"details"`
+}
+
+type Detail struct {
 	Feature  string  `json:"feature"`
 	Operator string  `json:"operator"`
 	Value    float64 `json:"value"`
-	Status   string  `json:"status"`
 }

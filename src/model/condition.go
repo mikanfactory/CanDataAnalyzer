@@ -1,27 +1,23 @@
 package model
 
-import (
-	"fmt"
-	"strconv"
-)
-
 func (c *Condition) evalRecord(record []string, nameToIndex map[string]int64) bool {
-	featureName := fmt.Sprintf("%s Ave", c.Feature)
-	aveI := nameToIndex[featureName]
-	average, _ := strconv.ParseFloat(record[aveI], 64)
-
-	switch {
-	case c.Operator == "<":
-		return average < c.Value
-	case c.Operator == "<=":
-		return average <= c.Value
-	case c.Operator == "==":
-		return average == c.Value
-	case c.Operator == ">":
-		return average > c.Value
-	case c.Operator == ">=":
-		return average >= c.Value
-	default:
-		return false
+	// Single condition
+	if len(c.Logics) == 0 {
+		return c.Details[0].evalRecord(record, nameToIndex)
 	}
+
+	// Double or Triple conditions
+	acc := false
+	for i, detail := range c.Details {
+		switch {
+		case i == 0:
+			acc = detail.evalRecord(record, nameToIndex)
+		case c.Logics[i-1] == "and":
+			acc = acc && detail.evalRecord(record, nameToIndex)
+		case c.Logics[i-1] == "or":
+			acc = acc || detail.evalRecord(record, nameToIndex)
+		}
+	}
+
+	return acc
 }
