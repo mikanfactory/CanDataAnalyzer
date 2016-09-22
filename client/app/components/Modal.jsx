@@ -60,7 +60,10 @@ export default class Modal extends React.Component {
   }
 
   handleModalCancel() {
-    ModalActions.cancelModal(this.state.setting.id)
+    if (this.state.modal.modalTypes === ModalTypes.NEW)
+      return ModalActions.cancelModal(this.state.setting.id)
+
+    ModalActions.closeModal()
   }
 
   handleFetchMarkers() {
