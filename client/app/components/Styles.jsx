@@ -6,6 +6,21 @@ const ContainerStyle = {
   }
 }
 
+const GoogleMapStyle = {
+  GoogleMapStyle: {
+    position: 'relative',
+    float: 'left',
+    width: '75%',
+    height: '770px'
+  },
+
+  MapStyle: {
+    position: 'relative',
+    width: '100%',
+    height: '100%'
+  }
+}
+
 const ModalStyle = {
     HeaderStyle: {
       fontSize: "32px",
@@ -43,4 +58,4 @@ const ModalStyle = {
     }
 }
 
-export { ContainerStyle, ModalStyle }
+export { ContainerStyle, GoogleMapStyle, ModalStyle }
