@@ -83,8 +83,8 @@ export default class Marker extends React.Component {
   handleMarkerToggle() {
     const { id, settingID } = this.props
     this.props.isMarkerDrawed ?
-      MarkerActions.eraseMarker(settingID, id) :
-      MarkerActions.drawMarker(settingID, id)
+      MarkerActions.eraseMarker(id, settingID) :
+      MarkerActions.drawMarker(id, settingID)
   }
 
   handleInfoWindowToggle() {

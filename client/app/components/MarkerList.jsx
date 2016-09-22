@@ -96,12 +96,12 @@ export default class MarkerList extends React.Component {
 
   handleMarkerDraw() {
     this.setState({ drawAllMarkers: true })
-    MarkerActions.drawMarkers(this.props.title)
+    MarkerActions.drawMarkers(this.props.id)
   }
 
   handleMarkerErase() {
     this.setState({ drawAllMarkers: false })
-    MarkerActions.eraseMarkers(this.props.title)
+    MarkerActions.eraseMarkers(this.props.id)
   }
 
   handleModalOpen() {
