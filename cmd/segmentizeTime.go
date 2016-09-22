@@ -22,10 +22,9 @@ type Targets struct {
 }
 
 type Column struct {
-	Index        int64
-	Name         string
-	JapaneseName string `json:"jName"`
-	Read         bool
+	Index int64
+	Name  string
+	Read  bool
 }
 
 type Line struct {
