@@ -10,6 +10,7 @@ import SettingStore from '../stores/SettingStore'
 import ConditionStore from '../stores/ConditionStore'
 import AppConstants from '../constants/AppConstants'
 import { TARGETS } from '../constants/AppConstants.jsx'
+import { ModalStyle as s } from './Styles'
 
 import 'whatwg-fetch'
 import  { checkStatus } from '../utils/AppWebAPIUtils'
@@ -17,41 +18,6 @@ import assign from 'object-assign'
 import last from 'lodash/last'
 
 const ModalTypes = AppConstants.ModalTypes
-
-const HeaderStyle = {
-  fontSize: "32px",
-  borderBottom: "1px solid #e9e9e9"
-}
-
-const TargetStyle = {
-  marginLeft: "10px",
-  fontSize: "28px",
-  width: "300px",
-  display: "inline-block",
-}
-
-const BodyStyle = {
-  fontSize: "28px",
-  paddingTop: "20px"
-}
-
-const TitleStyle = {
-  width: "130px",
-  fontSize: "24px"
-}
-
-const OKButtonStyle = {
-  width: "90px",
-  position: "absolute",
-  bottom: "10%",
-  right: "17%"
-}
-
-const CancelButtonStyle = {
-  position: "absolute",
-  bottom: "10%",
-  right: "5%"
-}
 
 function getStateFromStores() {
   const modal = ModalStore.getVisibleModal()
@@ -137,7 +103,7 @@ export default class Modal extends React.Component {
     }
 
     return (
-      <div className="ModalHeader" style={HeaderStyle}>
+      <div className="ModalHeader" style={s.HeaderStyle}>
         {header}
       </div>
     )
@@ -146,7 +112,7 @@ export default class Modal extends React.Component {
   getTargetNode() {
     const options = TARGETS.map( o => <option value={o}>{o}</option> )
     return (
-      <select className="form-control target" style={TargetStyle}
+      <select className="form-control target" style={s.TargetStyle}
               defaultValue="Target"
               onChange={this.handleSettingChange.bind(this, "target")} >
         {options}
@@ -156,7 +122,7 @@ export default class Modal extends React.Component {
 
   getTitleNode() {
     return (
-      <input type="text" placeholder="Title" style={TitleStyle}
+      <input type="text" placeholder="Title" style={s.TitleStyle}
              onChange={this.handleSettingChange.bind(this, "title")} />
     )
   }
@@ -202,7 +168,7 @@ export default class Modal extends React.Component {
       <Rodal visible={!!this.state.setting} width={800} height={480}
              onClose={this.handleModalCancel}>
         {this.getHeaderNode()}
-        <div className="ModalBody" style={BodyStyle}>
+        <div className="ModalBody" style={s.BodyStyle}>
           {this.getCreateAndRemoveButtons()}
 
           <div className="ConditionsContainer">
@@ -213,10 +179,10 @@ export default class Modal extends React.Component {
         </div>
 
         <button className="btn btn-primary btn-lg"
-                style={OKButtonStyle}
+                style={s.OKButtonStyle}
                 onClick={this.handleFetchMarkers}>OK</button>
         <button className="btn btn-default btn-lg"
-                style={CancelButtonStyle}
+                style={s.CancelButtonStyle}
                 onClick={this.handleModalCancel}>Cancel</button>
       </Rodal>
     )
