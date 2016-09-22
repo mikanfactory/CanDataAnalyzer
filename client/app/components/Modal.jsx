@@ -14,6 +14,7 @@ import { TARGETS } from '../constants/AppConstants.jsx'
 import 'whatwg-fetch'
 import  { checkStatus } from '../utils/AppWebAPIUtils'
 import assign from 'object-assign'
+import last from 'lodash/last'
 
 const ModalTypes = AppConstants.ModalTypes
 
@@ -71,6 +72,7 @@ export default class Modal extends React.Component {
 
     this.getHeaderNode = this.getHeaderNode.bind(this)
     this.handleCreateCondition = this.handleCreateCondition.bind(this)
+    this.handleRemoveCondition = this.handleRemoveCondition.bind(this)
     this.handleModalCancel = this.handleModalCancel.bind(this)
     this.handleFetchMarkers = this.handleFetchMarkers.bind(this)
     this._onChange = this._onChange.bind(this)
@@ -80,8 +82,11 @@ export default class Modal extends React.Component {
     ConditionActions.createCondition(this.state.setting.id)
   }
 
-  // TODO
   handleRemoveCondition() {
+    if (this.state.conditions.length < 2)  return
+
+    const cnd = last(this.state.conditions)
+    ConditionActions.removeCondition(cnd.id)
   }
 
   handleModalClose() {
@@ -161,7 +166,7 @@ export default class Modal extends React.Component {
       <div style={{ width: "100%" }}>
         <span style={{ paddingRight: "20px" }}>Conditions</span>
         <span className="glyphicon glyphicon-plus-sign"
-              onClick={this.createCondition}>
+              onClick={this.handleCreateCondition}>
         </span>
         <span className="glyphicon glyphicon-minus-sign"
               style={{marginLeft: "10px"}}

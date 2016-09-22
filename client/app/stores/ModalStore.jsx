@@ -1,5 +1,6 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import AppConstants from '../constants/AppConstants'
+import { defaultModal } from '../constants/AppConstants'
 import SettingStore from '../stores/SettingStore'
 import ConditionStore from '../stores/ConditionStore'
 import { EventEmitter } from 'events'
@@ -9,11 +10,11 @@ const ModalTypes = AppConstants.ModalTypes
 const CHANGE_EVENT = 'change'
 
 let _store = {
-  modal: {}
+  modal: defaultModal
 }
 
-function _createModal(settingID) {
-  _store.modal = { modalType: ModalTypes.NEW, settingID: settingID }
+function _createModal(sid) {
+  _store.modal = { modalType: ModalTypes.NEW, settingID: sid }
 }
 
 function _openModal(sid) {
@@ -21,7 +22,7 @@ function _openModal(sid) {
 }
 
 function _closeModal() {
-  _store.modal = { modalType: "", settingID: 0 }
+  _store.modal = defaultModal
 }
 
 class ModalStoreClass extends EventEmitter {

@@ -10,7 +10,7 @@ const ModalActions = {
     })
   },
 
-  openModal: (settingID) => {
+  openModal: settingID => {
     AppDispatcher.dispatch({
       actionType: ActionTypes.OPEN_MODAL,
       settingID: settingID
@@ -23,7 +23,7 @@ const ModalActions = {
     })
   },
 
-  cancelModal: (settingID) => {
+  cancelModal: settingID => {
     AppDispatcher.dispatch({
       actionType: ActionTypes.CANCEL_MODAL,
       settingID: settingID

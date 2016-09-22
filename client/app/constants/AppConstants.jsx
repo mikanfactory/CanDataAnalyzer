@@ -15,6 +15,11 @@ const defaultCondition = {
   status: "stop"
 }
 
+const defaultModal = {
+  modalType: "",
+  settingID: 0
+}
+
 const TARGETS = [
   "Target",
   "021021K1KAm",
@@ -61,7 +66,7 @@ const STATUS = [
 ]
 
 
-export { defaultSetting, defaultCondition }
+export { defaultSetting, defaultCondition, defaultModal }
 export { TARGETS, FEATURES, OPERATORS, STATUS }
 
 const AppConstants = {
@@ -83,6 +88,8 @@ const AppConstants = {
 
     // Condition
     CREATE_CONDITION: null,
+    UPDATE_CONDITION: null,
+    REMOVE_CONDITION: null,
 
     // Markers
     CREATE_MARKERS: null,
