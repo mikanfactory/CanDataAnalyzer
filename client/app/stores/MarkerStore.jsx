@@ -1,58 +1,28 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
-import MarkerConstants from '../constants/MarkerConstants'
+import AppConstants from '../constants/AppConstants'
 import { EventEmitter } from 'events'
 import isEqual from 'lodash/isEqual'
 import uniqWith from 'lodash/uniqWith'
-import assign from 'object-assign'
 
+const ActionTypes = AppConstants.ActionTypes
 const CHANGE_EVENT = 'change'
-const MODAL_TYPE_EDIT = 'Edit'
-const MODAL_TYPE_NEW = 'New'
-
-const defaultSetting = {
-  id: 0,
-  target: "021021K1KAm",
-  title: "default"
-}
-
-const defaultCondition = {
-  id: 0,
-  settingID: 0,
-  feature: "AccelerationX",
-  operator: "<",
-  value: 10,
-  status: "stop"
-}
 
 let _store = {
-  mIndex: 1,
-  sIndex: 1,
-  cIndex: 1,
-  mlIndex: 1,
+  currentID: 1,
   markers: [],
-  gMap: {},
-  settings: [],
-  conditions: [],
   invisibleMarkers: [],
-  visibleModal: {}
 }
 
-function updateMap(gMap) {
-  _store.gMap = gMap
+function _createMarkers(markers) {
+  _store.markers = [..._store.markers, ...markers]
 }
 
-function addNewCondition(settingID) {
-  const id = getAndCountUp("cIndex")
-  const cnd = assign({}, defaultCondition, {id: id, settingID: settingID})
-  _store.conditions = [..._store.conditions, cnd]
-}
-
-function drawMarkers(sid) {
+function _drawMarkers(sid) {
   _store.invisibleMarkers = _store.invisibleMarkers
                                   .filter( m => m.settingID !== sid )
 }
 
-function eraseMarkers(sid) {
+function _eraseMarkers(sid) {
   const markers = _store.markers
                         .filter( m => m.settingID === sid )
                         .map( m => ({ settingID: sid, id: m.id }) )
@@ -60,51 +30,15 @@ function eraseMarkers(sid) {
   _store.invisibleMarkers = umarkers
 }
 
-function drawMarker(id, sid) {
+function _drawMarker(id, sid) {
   const invs = _store.invisibleMarkers
                      .filter( m => m.settingID !== sid || m.id !== id)
   _store.invisibleMarkers = invs
 }
 
-function eraseMarker(id, sid) {
+function _eraseMarker(id, sid) {
   const invs = [..._store.invisibleMarkers, { settingID: sid, id: id }]
   _store.invisibleMarkers = uniqWith(invs, isEqual)
-}
-
-function openModal(sid) {
-  const setting = _store.settings.find( s => s.id === sid )
-  setting.modalType = MODAL_TYPE_EDIT
-  _store.visibleModal = setting
-}
-
-function closeModal() {
-  _store.visibleModal = null
-}
-
-function newModal() {
-  const sid = getAndCountUp("sIndex")
-  const st = assign({}, defaultSetting, {modalType: MODAL_TYPE_NEW, id: sid})
-
-  const cid = getAndCountUp("cIndex")
-  const cnd = assign({}, defaultCondition, {id: cid, settingID: sid})
-
-  _store.visibleModal = st
-  _store.settings = [..._store.settings, st]
-  _store.conditions = [..._store.conditions, cnd]
-}
-
-function getCount(target) {
-  return _store[target]
-}
-
-function countUp(target) {
-  _store[target]++
-}
-
-function getAndCountUp(target) {
-  const id = _store[target]
-  _store[target] += 1
-  return id
 }
 
 class MarkerStoreClass extends EventEmitter {
@@ -124,78 +58,44 @@ class MarkerStoreClass extends EventEmitter {
     this.removeListener(CHANGE_EVENT, callback)
   }
 
-  getMap() {
-    return _store.gMap
-  }
-
-  getSettings() {
-    return _store.settings
-  }
-
-  getMarkers() {
+  getMarkers(settingID) {
     return _store.markers
+                 .filter( m => m.settingID == settingID )
   }
 
-  getInvisibles() {
+  getInvisibles(settingID) {
     return _store.invisibleMarkers
-  }
-
-  getVisibleModal() {
-    return _store.visibleModal
-  }
-
-  getConditions() {
-    return _store.conditions
+                 .filter( m => m.settingID == settingID )
   }
 }
 
 const MarkerStore = new MarkerStoreClass()
 
-AppDispatcher.register((action) => {
+MarkerStore.dispatchToken = AppDispatcher.register((action) => {
 
   switch (action.actionType) {
-    case MarkerConstants.UPDATE_GOOGLE_MAP:
-      updateMap(action.gMap)
+    case ActionTypes.CREATE_MARKERS:
+      _createMarkers(action.markers)
       MarkerStore.emitChange()
       break
 
-    case MarkerConstants.ADD_NEW_CONDITION:
-      addNewCondition(action.settingID)
+    case ActionTypes.DRAW_MARKERS:
+      _drawMarkers(action.settingID)
       MarkerStore.emitChange()
       break
 
-    case MarkerConstants.DRAW_MARKERS:
-      drawMarkers(action.settingID)
+    case ActionTypes.ERASE_MARKERS:
+      _eraseMarkers(action.settingID)
       MarkerStore.emitChange()
       break
 
-    case MarkerConstants.ERASE_MARKERS:
-      eraseMarkers(action.settingID)
+    case ActionTypes.DRAW_MARKER:
+      _drawMarker(action.id, action.settingID)
       MarkerStore.emitChange()
       break
 
-    case MarkerConstants.DRAW_MARKER:
-      drawMarker(action.id, action.settingID)
-      MarkerStore.emitChange()
-      break
-
-    case MarkerConstants.ERASE_MARKER:
-      eraseMarker(action.id, action.settingID)
-      MarkerStore.emitChange()
-      break
-
-    case MarkerConstants.OPEN_MODAL:
-      openModal(action.settingID)
-      MarkerStore.emitChange()
-      break
-
-    case MarkerConstants.CLOSE_MODAL:
-      closeModal()
-      MarkerStore.emitChange()
-      break
-
-    case MarkerConstants.NEW_MODAL:
-      newModal()
+    case ActionTypes.ERASE_MARKER:
+      _eraseMarker(action.id, action.settingID)
       MarkerStore.emitChange()
       break
 

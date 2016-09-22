@@ -1,30 +1,23 @@
 // If we introduce TypeScript, use for class.
 // Just use as reference.
 
-// integrating to setting...
-// interface MarkerLists {
-//   id:      number,              // unique
-//   target:  string,
-//   name:    string,              // unique
-//   markers: Array<Marker>
-// }
+interface Setting {
+  id:     number,               // unique
+  target: string,
+  title:  string,
+}
 
 interface Marker {
-  id:        number,             // unique in same marker lists
-  settingID: number,
-  position:  Position,
-  value:     string
+  id:          number,             // unique in same marker lists
+  settingID:   number,
+  image:       string,
+  position:    Position,
+  description: string
 }
 
 interface Position {
   lat: number,
   lng: number
-}
-
-interface Setting {
-  id:     number,               // unique
-  target: string,
-  title:  string,
 }
 
 interface Condition {

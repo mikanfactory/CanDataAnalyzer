@@ -1,22 +1,6 @@
 import React from 'react'
-import MarkerAction from '../actions/MarkerActions'
-
-const HeaderStyle = {
-  color: "#FFF",
-  backgroundColor: "#00BCD4",
-  fontWeight: "200",
-  lineHeight: "64px",
-  paddingLeft: "20px",
-  paddingRight: "10px",
-  textAlign: "right"
-}
-
-const StringStyle = {
-  float: "left",
-  fontSize: "24px"
-}
-
-const GlyphiconStyle = { padding: "0 10px" }
+import ModalAction from '../actions/ModalActions'
+import { ToolBoxHeaderStyle as s } from './Styles'
 
 export default class ToolBoxHeader extends React.Component {
   constructor(props) {
@@ -26,20 +10,20 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleModalOpen() {
-    MarkerAction.newModal()
+    ModalAction.createModal()
   }
 
   render() {
     return (
       <div>
-        <div className="ToolBoxHeader" style={HeaderStyle}>
-          <span style={StringStyle}>CanDataAnalyzer</span>
+        <div className="ToolBoxHeader" style={s.HeaderStyle}>
+          <span style={s.StringStyle}>CanDataAnalyzer</span>
           <span className="glyphicon glyphicon-plus"
-                style={GlyphiconStyle}
+                style={s.GlyphiconStyle}
                 onClick={this.handleModalOpen}>
           </span>
           <span className="glyphicon glyphicon-film"
-                style={GlyphiconStyle}
+                style={s.GlyphiconStyle}
                 onClick={this.handleModalOpen}>
           </span>
         </div>

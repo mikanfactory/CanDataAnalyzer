@@ -1,18 +1,6 @@
 import React from 'react'
-import MarkerActions from '../actions/MarkerActions'
-
-const GoogleMapStyle = {
-  position: 'relative',
-  float: 'left',
-  width: '75%',
-  height: '770px'
-}
-
-const MapStyle = {
-  position: 'relative',
-  width: '100%',
-  height: '100%'
-}
+import GMapActions from '../actions/GMapActions'
+import { GoogleMapStyle as s } from './Styles'
 
 export default class GoogleMap extends React.Component {
   constructor(props) {
@@ -28,13 +16,13 @@ export default class GoogleMap extends React.Component {
       center: defaultCoordinate
     })
 
-    MarkerActions.updateGoogleMap(map)
+    GMapActions.updateGoogleMap(map)
   }
 
   render() {
     return (
-      <div className="GoogleMap" style={GoogleMapStyle} >
-        <div style={MapStyle} ref="map">Loading map ...</div>
+      <div className="GoogleMap" style={s.GoogleMapStyle} >
+        <div style={s.MapStyle} ref="map">Loading map ...</div>
       </div>
     )
   }

@@ -1,35 +1,10 @@
 import React from 'react'
 import MarkerActions from '../actions/MarkerActions'
-
-const MarkerStyle = {
-  color: "#1F1F1F",
-  backgroundColor: "#FFF",
-  fontWeight: "200",
-  lineHeight: "46px",
-  paddingLeft: "20px",
-  paddingRight: "10px",
-  textAlign: "right"
-}
-
-const StringStyle = {
-  float: "left",
-  fontSize: "18px"
-}
-
-const GlyphiconStyle = {
-  padding: "0 10px",
-  visibility: "hidden"
-}
-
-const HoveredMarkerStyle = Object.assign({}, MarkerStyle, { backgroundColor: "#E8E8E8" })
-const HoveredGlyphiconStyle = Object.assign({}, GlyphiconStyle, { visibility: "visible" })
-const PaledGlyphiconStyle = Object.assign({}, HoveredMarkerStyle, { color: "#8B8B8B" })
+import { MarkerStyle as s } from './Styles'
 
 export default class Marker extends React.Component {
   constructor(props) {
     super(props)
-
-    this._isMarkerInitiallyRenderd = false
 
     this.state = {
       hover: false,
@@ -56,7 +31,7 @@ export default class Marker extends React.Component {
   }
 
   getMarkerStyle() {
-    const style = this.state.hover ? HoveredMarkerStyle : MarkerStyle
+    const style = this.state.hover ? s.HoveredMarkerStyle : s.MarkerStyle
     const extension = this.props.isDisplayed ? {} : { display: "none" }
     return Object.assign({}, style, extension)
   }
@@ -64,13 +39,13 @@ export default class Marker extends React.Component {
   getGlyphiconStyle() {
     switch (true) {
       case this.state.hover && this.props.isMarkerDrawed:
-        return HoveredGlyphiconStyle
+        return s.HoveredGlyphiconStyle
       case this.state.hover && !this.props.isMarkerDrawed:
-        return PaledGlyphiconStyle
+        return s.PaledGlyphiconStyle
       case !this.state.hover && this.props.isMarkerDrawed:
-        return GlyphiconStyle
+        return s.GlyphiconStyle
       case !this.state.hover && !this.props.isMarkerDrawed:
-        return Object.assign({}, PaledGlyphiconStyle, { backgroundColor: "#FFF" })
+        return s.InvisibleMarkerStyle
     }
   }
 
@@ -85,8 +60,8 @@ export default class Marker extends React.Component {
   handleMarkerToggle() {
     const { id, settingID } = this.props
     this.props.isMarkerDrawed ?
-      MarkerActions.eraseMarker(settingID, id) :
-      MarkerActions.drawMarker(settingID, id)
+      MarkerActions.eraseMarker(id, settingID) :
+      MarkerActions.drawMarker(id, settingID)
   }
 
   handleInfoWindowToggle() {
@@ -113,6 +88,8 @@ export default class Marker extends React.Component {
       infoWindow: infoWindow,
       isWindowPoped: false
     })
+
+    marker.setMap(this.props.gMap)
   }
 
   handleMarkerMount() {
@@ -125,28 +102,18 @@ export default class Marker extends React.Component {
   }
 
   handleWindowOpen() {
-    this.state.infoWindow.open(this.state.gMap, this.state.marker)
+    this.state.infoWindow.open(this.props.gMap, this.state.marker)
   }
 
   handleWindowClose() {
     this.state.infoWindow.close()
   }
 
-  componentWillReceiveProps(nextProps) {
-    // if google maps marker has not rendered
-    if (!this._isMarkerInitiallyRenderd) {
-      this.handleNewMarkerMount(nextProps)
-    }
+  componentDidMount() {
+    this.handleNewMarkerMount()
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // if google maps marker has not rendered
-    if (!this._isMarkerInitiallyRenderd) {
-      this.handleMarkerMount()
-      this._isMarkerInitiallyRenderd = true
-      return
-    }
-
     // Click marker toggle button in MarkerList
     if (this.props.isMarkerDrawed !== prevProps.isMarkerDrawed) {
       this.props.isMarkerDrawed ? this.handleMarkerMount() : this.handleMarkerUnmount()
@@ -168,7 +135,7 @@ export default class Marker extends React.Component {
            onClick={this.handleInfoWindowToggle}
            onMouseOver={this.handleMouseOver}
            onMouseOut={this.handleMouseOut}>
-            <span style={StringStyle}>{this.getTitle()}</span>
+            <span style={s.StringStyle}>{this.getTitle()}</span>
             <span className="glyphicon glyphicon-map-marker"
                   style={glyphiconStyle}
                   onClick={this.handleMarkerToggle}>
@@ -180,8 +147,8 @@ export default class Marker extends React.Component {
 
 Marker.propTypes = {
   gMap: React.PropTypes.object,
-  settingID: React.PropTypes.number,
   id: React.PropTypes.number,
+  settingID: React.PropTypes.number,
   image: React.PropTypes.string,
   position: React.PropTypes.object,
   description: React.PropTypes.string,

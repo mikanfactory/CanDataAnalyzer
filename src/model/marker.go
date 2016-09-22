@@ -45,6 +45,7 @@ func LoadMarkers(xs *[]Marker, setting Setting) error {
 
 		marker := Marker{
 			ID:          int64(i),
+			SettingID:   setting.ID,
 			Image:       getImage(record),
 			Position:    getPosition(record),
 			Description: getDescription(record),
