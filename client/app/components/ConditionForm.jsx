@@ -8,8 +8,6 @@ export default class ModalForm extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = assign({}, this.props)
-
     this.getFeatureNode = this.getFeatureNode.bind(this)
     this.getOperatorNode = this.getOperatorNode.bind(this)
     this.getValueNode = this.getValueNode.bind(this)
@@ -71,7 +69,7 @@ export default class ModalForm extends React.Component {
   handleConditionChange(key, e) {
     const tmp = {}
     tmp[key] = key === "value" ? parseFloat(e.target.value) :  e.target.value
-    const cnd = assign({}, this.state, tmp)
+    const cnd = assign({}, this.props, tmp)
     ConditionActions.updateCondition(cnd)
   }
 
