@@ -14,7 +14,7 @@ const ConditionActions = {
   updateCondition: condition => {
     AppDispatcher.dispatch({
       actionType: ActionTypes.UPDATE_CONDITION,
-      condtion: condition
+      condition: condition
     })
   },
 
