@@ -6,7 +6,7 @@ const ActionTypes = AppConstants.ActionTypes
 const CHANGE_EVENT = 'change'
 
 let _store = {
-  gMap: {}
+  gMap: {},
 }
 
 function _updateMap(gMap) {
