@@ -5,8 +5,6 @@ import { ToolBoxHeaderStyle as s } from './Styles'
 export default class ToolBoxHeader extends React.Component {
   constructor(props) {
     super(props)
-
-    this.handleModalOpen = this.handleModalOpen.bind(this)
   }
 
   handleModalOpen() {
