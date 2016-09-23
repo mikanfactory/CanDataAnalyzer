@@ -2,7 +2,7 @@ package model
 
 func (c *Condition) evalRecord(record []string, nameToIndex map[string]int64) bool {
 	// Single condition
-	if len(c.Logics) == 0 {
+	if len(c.Details) == 1 {
 		return c.Details[0].evalRecord(record, nameToIndex)
 	}
 

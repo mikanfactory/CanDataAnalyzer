@@ -13,7 +13,8 @@ const CHANGE_EVENT = 'change'
 
 let _store = {
   currentID: 1,
-  conditions: []
+  conditions: [],
+  details: []
 }
 
 function _updateCondition(condition) {

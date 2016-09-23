@@ -21,11 +21,11 @@ interface Position {
 }
 
 interface Condition {
-  id:         number,            // unique
-  settingID:  number,
-  detailsNum: number,
-  logics:     Array<string>,
-  status:     Status
+  id:            number,            // unique
+  settingID:     number,
+  detailNumber:  number,
+  logics:        Array<string>,
+  status:        Status
 }
 
 interface Details {

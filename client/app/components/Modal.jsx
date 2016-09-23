@@ -20,6 +20,7 @@ import partial from 'lodash/partial'
 
 const ModalTypes = AppConstants.ModalTypes
 
+// TODO:
 function getStateFromStores() {
   const modal = ModalStore.getVisibleModal()
   const setting = SettingStore.getSetting(modal.settingID)
@@ -86,6 +87,7 @@ export default class Modal extends React.Component {
     }
   }
 
+  // TODO:
   getForm(condition, i) {
     return <ConditionForm key={i} {...condition} />
   }
@@ -107,7 +109,7 @@ export default class Modal extends React.Component {
       const header = "Edit: " + setting.target + "  " + setting.title
       return (
         <div className="ModalHeader" style={s.HeaderStyle}>
-        {header}
+          {header}
         </div>
       )
     }

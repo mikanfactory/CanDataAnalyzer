@@ -14,6 +14,7 @@ export default class ModalForm extends React.Component {
     this.getOperatorNode = this.getOperatorNode.bind(this)
     this.getValueNode = this.getValueNode.bind(this)
     this.getStatusNode = this.getStatusNode.bind(this)
+    this.getDetailNode = this.getDetailNode.bind(this)
   }
 
   getOptions(value, i) {
@@ -27,53 +28,55 @@ export default class ModalForm extends React.Component {
     return (
       <select className="form-control number"
               style={s.SelectStyle}
-              defaultValue={"Single"}>
+              defaultValue={"Single"}
+              onChange={this.handleConditionChange.bind(this, 'detailNumber')} >
         {options}
       </select>
     )
   }
 
-  getLogicNode() {
+  getLogicNode(id) {
     const options = LOGICS.map(this.getOptions)
     return (
       <select className="form-control logic"
               style={s.SelectStyle}
-              defaultValue={"and"}>
+              defaultValue={"and"}
+              onChange={this.handleConditionChange.bind(this, 'logics', id)} >
         {options}
       </select>
     )
   }
 
-  getFeatureNode() {
+  getFeatureNode(detail) {
     const options = FEATURES.map(this.getOptions)
     return (
       <select className="form-control feature"
               style={s.SelectStyle}
-              defaultValue={this.props.feature}
-              onChange={this.handleConditionChange.bind(this, 'feature')} >
+              defaultValue={detail.feature}
+              onChange={this.handleDetailChange.bind(this, 'feature', detail.id)} >
         {options}
       </select>
     )
   }
 
-  getOperatorNode() {
+  getOperatorNode(detail) {
     const options = OPERATORS.map(this.getOptions)
     return (
       <select className="form-control operator"
               style={s.SelectStyle}
-              defaultValue={this.props.operator}
-              onChange={this.handleConditionChange.bind(this, 'operator')} >
+              defaultValue={detail.feature}
+              onChange={this.handleDetailChange.bind(this, 'operator', detail.id)} >
         {options}
       </select>
     )
   }
 
-  getValueNode() {
+  getValueNode(detail) {
     return (
       <input type="text"
              value={this.getValue}
-             placeholder={this.props.value}
-             onChange={this.handleConditionChange.bind(this, 'value')}
+             placeholder={detail.feature}
+             onChange={this.handleDetailChange.bind(this, 'value', detail.id)}
              style={s.TextStyle} />
     )
   }
@@ -90,11 +93,70 @@ export default class ModalForm extends React.Component {
     )
   }
 
+  getDetailNode() {
+    switch (this.props.detailNumber) {
+      case 1:
+        let detail1 = this.props.details[0]
+      return (
+        <div>
+          {this.getFeatureNode(detail1)}
+          {this.getOperatorNode(detail1)}
+          {this.getValueNode(detail1)}
+        </div>
+      )
+      case 2:
+        let detail1 = this.props.details[0]
+        let detail2 = this.props.details[1]
+      return (
+        <div>
+          {this.getFeatureNode(detail1)}
+          {this.getOperatorNode(detail1)}
+          {this.getValueNode(detail1)}
+          {this.getLogicNode(0)}
+          {this.getFeatureNode(detail2)}
+          {this.getOperatorNode(detail2)}
+          {this.getValueNode(detail2)}
+        </div>
+      )
+      case 3:
+        let detail1 = this.props.details[0]
+        let detail2 = this.props.details[1]
+        let detail3 = this.props.details[2]
+      return (
+        <div>
+          {this.getFeatureNode(detail1)}
+          {this.getOperatorNode(detail1)}
+          {this.getValueNode(detail1)}
+          {this.getLogicNode(0)}
+          {this.getFeatureNode(detail2)}
+          {this.getOperatorNode(detail2)}
+          {this.getValueNode(detail2)}
+          {this.getLogicNode(1)}
+          {this.getFeatureNode(detail3)}
+          {this.getOperatorNode(detail3)}
+          {this.getValueNode(detail3)}
+        </div>
+      )
+    }
+  }
+
   handleConditionChange(key, e) {
     const tmp = {}
-    tmp[key] = key === "value" ? parseFloat(e.target.value) :  e.target.value
+    tmp[key] = key === "detailNumber" ? parseFloat(e.target.value) :  e.target.value
     const cnd = assign({}, this.props, tmp)
+
+    // TODO: if detailNumber changed, add new detail
     ConditionActions.updateCondition(cnd)
+  }
+
+  handleDetailChange(key, id, e) {
+    const prevDetail = this.props.details[id]
+    const tmp = {}
+    tmp[key] = key === "valu" ? parseFloat(e.target.value) : e.target.value
+    const nextDetail = assign({}, prevDetail, tmp)
+
+    // TODO:
+    ConditionActions.updateDetail(nextDetail)
   }
 
   render() {
@@ -117,8 +179,8 @@ export default class ModalForm extends React.Component {
 ModalForm.propTypes = {
   id: React.PropTypes.number,
   settingID: React.PropTypes.number,
-  feature: React.PropTypes.string,
-  operator: React.PropTypes.string,
-  value: React.PropTypes.number,
+  detailNumber: React.PropTypes.number,
+  logics: React.PropTypes.array,
   status: React.PropTypes.string,
+  details: React.PropTypes.array
 }
