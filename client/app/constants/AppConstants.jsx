@@ -55,7 +55,7 @@ const FEATURES = [
 ]
 
 const OPERATORS = [
-  "<", "<=", "=", ">=", ">"
+  "<", "<=", "==", ">=", ">"
 ]
 
 const STATUS = [
