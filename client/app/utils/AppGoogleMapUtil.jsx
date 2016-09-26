@@ -1,4 +1,4 @@
-function createRectangle(bounds) {
+function createRectangle(gMap, bounds) {
   return new window.google.maps.Rectangle({
     strokeColor: '#FF0000',
     strokeOpacity: 0.8,
@@ -6,12 +6,13 @@ function createRectangle(bounds) {
     fillColor: '#FF0000',
     fillOpacity: 0,
     bounds: bounds,
+    map: gMap,
     draggable: true,
     editable: true
   })
 }
 
-function createRectangles(gridPoints) {
+function createRectangles(gMap, gridPoints) {
   return gridPoints.map( row =>
     row.map( bounds =>
       new window.google.maps.Rectangle({
@@ -20,6 +21,7 @@ function createRectangles(gridPoints) {
         strokeWeight: 2,
         fillColor: '#FFF',
         fillOpacity: 0,
+        map: gMap,
         bounds: bounds
       })
     )

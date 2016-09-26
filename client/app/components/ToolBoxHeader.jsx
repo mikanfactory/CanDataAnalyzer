@@ -14,6 +14,7 @@ export default class ToolBoxHeader extends React.Component {
     }
 
     this.handleGridLayerDisplay = this.handleGridLayerDisplay.bind(this)
+    this.handleGridLayerToggle = this.handleGridLayerToggle.bind(this)
   }
 
   handleModalOpen() {
@@ -22,10 +23,10 @@ export default class ToolBoxHeader extends React.Component {
 
   handleGridLayerToggle() {
     this.state.isGridLayerVisible?
-    this.handleGridLayerDisplay() :
-    this.handleGridLayerErase()
+    this.handleGridLayerErase() :
+    this.handleGridLayerDisplay()
 
-    this.setState({ isGridLayerVisible: !this.isGridLayerVisible })
+    this.setState({ isGridLayerVisible: !this.state.isGridLayerVisible })
   }
 
   handleGridLayerDisplay() {
