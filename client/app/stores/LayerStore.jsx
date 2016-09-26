@@ -81,6 +81,18 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
       LayerStore.emitChange()
       break
 
+    case ActionTypes.CHANGE_RECT_TO_GRID:
+      _destroy_rectangle()
+      _create_grid_points(actions.gridPoints)
+      LayerStore.emitChange()
+      break
+
+    case ActionTypes.CHANGE_GRID_TO_RECT:
+      _destroy_grid_points()
+      _create_rectangle(actions.bounds)
+      LayerStore.emitChange()
+      break
+
     default:
       // do nothing
   }

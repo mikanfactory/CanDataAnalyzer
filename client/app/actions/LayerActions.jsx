@@ -28,6 +28,20 @@ const LayerActions = {
     AppDispatcher.dispatch({
       actionType: ActionTypes.DESTROY_RECTANGLE_LAYER
     })
+  },
+
+  changeRectToGrid: gridPoints => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CHANGE_RECT_TO_GRID,
+      gridPoints: gridPoints
+    })
+  },
+
+  changeGridToRect: bounds => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CHANGE_GRID_TO_RECT,
+      bounds: bounds
+    })
   }
 }
 

@@ -106,6 +106,8 @@ const AppConstants = {
     DESTROY_GRID_POINTS: null,
     CREATE_RECTANGLE_LAYER: null,
     DESTROY_RECTANGLE_LAYER: null,
+    CHANGE_RECT_TO_GRID: null,
+    CHANGE_GRID_TO_RECT: null
   }),
 }
 
