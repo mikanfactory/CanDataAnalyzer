@@ -91,13 +91,18 @@ const AppConstants = {
     UPDATE_CONDITION: null,
     REMOVE_CONDITION: null,
 
-    // Markers
+    // Marker
     CREATE_MARKERS: null,
     UPDATE_MARKERS: null,
     DRAW_MARKER: null,
     DRAW_MARKERS: null,
     ERASE_MARKER: null,
-    ERASE_MARKERS: null
+    ERASE_MARKERS: null,
+
+    // Layer
+    CREATE_LAYERS: null,
+    DESTROY_LAYERS: null,
+    UPDATE_LAYERS: null,
   }),
 }
 
