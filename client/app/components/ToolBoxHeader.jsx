@@ -10,15 +10,34 @@ export default class ToolBoxHeader extends React.Component {
     super(props)
 
     this.state = {
-      isGridLayerVisible: false
+      isLayerVisible: false
     }
 
     this.handleGridLayerDisplay = this.handleGridLayerDisplay.bind(this)
     this.handleGridLayerToggle = this.handleGridLayerToggle.bind(this)
+    this.handleLayerDisplay = this.handleLayerDisplay.bind(this)
+    this.handleLayerToggle = this.handleLayerToggle.bind(this)
   }
 
   handleModalOpen() {
     ModalAction.createModal()
+  }
+
+  handleLayerToggle() {
+    this.state.isLayerVisible ?
+    this.handleLayerErase() :
+    this.handleLayerDisplay()
+
+    this.setState({ isLayerVisible: !this.state.isLayerVisible })
+  }
+
+  handleLayerDisplay() {
+    const bounds = this.props.gMap.getBounds()
+    LayerAction.createRectangle(bounds)
+  }
+
+  handleLayerErase() {
+    LayerAction.destroyRectangle()
   }
 
   handleGridLayerToggle() {
@@ -45,7 +64,7 @@ export default class ToolBoxHeader extends React.Component {
           <span style={s.StringStyle}>CanDataAnalyzer</span>
           <span className="glyphicon glyphicon-th"
                 style={s.GlyphiconStyle}
-                onClick={this.handleGridLayerToggle}>
+                onClick={this.handleLayerToggle}>
           </span>
           <span className="glyphicon glyphicon-plus"
                 style={s.GlyphiconStyle}

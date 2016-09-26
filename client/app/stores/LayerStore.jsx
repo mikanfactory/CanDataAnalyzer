@@ -51,6 +51,10 @@ class LayerStoreClass extends EventEmitter {
   getDivideSize() {
     return _store.divideSize
   }
+
+  getRectangleBounds() {
+    return _store.rectangleBounds
+  }
 }
 
 const LayerStore = new LayerStoreClass
@@ -67,12 +71,12 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
       LayerStore.emitChange()
       break
 
-    case ActionTypes.CREATE_RECTANGLE:
+    case ActionTypes.CREATE_RECTANGLE_LAYER:
       _create_rectangle(actions.bounds)
       LayerStore.emitChange()
       break
 
-    case ActionTypes.DESTROY_RECTANGLE:
+    case ActionTypes.DESTROY_RECTANGLE_LAYER:
       _destroy_rectangle()
       LayerStore.emitChange()
       break

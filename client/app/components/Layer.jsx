@@ -9,6 +9,7 @@ function getStateFromStores() {
   return {
     gridPoints: LayerStore.getGridPoints(),
     divideSize: LayerStore.getDivideSize(),
+    rectangleBounds: LayerStore.getRectangleBounds()
   }
 }
 
@@ -16,11 +17,28 @@ export default class Layer extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = assign({}, getStateFromStores(), { visibleGridPoints: [] })
+    const s = {
+      visibleGridPoints: [],
+      visibleRectangle: {}
+    }
+    this.state = assign({}, getStateFromStores(), s)
 
     this.drawGridLayer = this.drawGridLayer.bind(this)
     this.eraseGridLayer = this.eraseGridLayer.bind(this)
+    this.drawRectangle = this.drawRectangle.bind(this)
+    this.eraseRectangle = this.eraseRectangle.bind(this)
     this._onChange = this._onChange.bind(this)
+  }
+
+  drawRectangle() {
+    const { rectangleBounds } = this.state
+    const rectangle = createRectangle(this.props.gMap, rectangleBounds)
+    this.setState({ visibleRectangle: rectangle })
+  }
+
+  eraseRectangle() {
+    this.state.visibleRectangle.setMap(null)
+    this.setState({ visibleRectangle: {} })
   }
 
   drawGridLayer() {
@@ -47,6 +65,12 @@ export default class Layer extends React.Component {
       isEmpty(this.state.visibleGridPoints) ?
       this.drawGridLayer() :
       this.eraseGridLayer()
+    }
+
+    if (!isEqual(this.state.rectangleBounds, prevState.rectangleBounds)) {
+      isEmpty(this.state.visibleRectangle) ?
+      this.drawRectangle() :
+      this.eraseRectangle()
     }
   }
 
