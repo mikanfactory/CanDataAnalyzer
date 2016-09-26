@@ -8,6 +8,7 @@ const CHANGE_EVENT = 'change'
 let _store = {
   gridPoints: [],
   divideSize: defaultDivideSize,
+  rectangleBounds: {}
 }
 
 function _create_grid_points(gridPoints) {
@@ -16,6 +17,14 @@ function _create_grid_points(gridPoints) {
 
 function _destroy_grid_points() {
   _store.gridPoints = []
+}
+
+function _create_rectangle(bounds) {
+  _store.rectangleBounds = bounds
+}
+
+function _destroy_rectangle() {
+  _store.rectangleBounds = {}
 }
 
 class LayerStoreClass extends EventEmitter {
@@ -53,8 +62,18 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
       LayerStore.emitChange()
       break
 
-      case ActionTypes.DESTROY_GRID_POINTS:
+    case ActionTypes.DESTROY_GRID_POINTS:
       _destroy_grid_points()
+      LayerStore.emitChange()
+      break
+
+    case ActionTypes.CREATE_RECTANGLE:
+      _create_rectangle(actions.bounds)
+      LayerStore.emitChange()
+      break
+
+    case ActionTypes.DESTROY_RECTANGLE:
+      _destroy_rectangle()
       LayerStore.emitChange()
       break
 

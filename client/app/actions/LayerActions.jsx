@@ -15,6 +15,19 @@ const LayerActions = {
     AppDispatcher.dispatch({
       actionType: ActionTypes.DESTROY_GRID_POINTS
     })
+  },
+
+  createRectangle: bounds => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CREATE_RECTANGLE_LAYER,
+      bounds: bounds
+    })
+  },
+
+  destroyRectangle: () => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.DESTROY_RECTANGLE_LAYER
+    })
   }
 }
 
