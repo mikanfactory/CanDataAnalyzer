@@ -6,11 +6,16 @@ const ActionTypes = AppConstants.ActionTypes
 const CHANGE_EVENT = 'change'
 
 let _store = {
-  layers: []
+  gridPoints: [],
+  divideSize: 10,
 }
 
-function _create_layers(layers) {
-  _store.layers = layers
+function _create_grid_points(bounds) {
+  _store.gridPoints = bounds
+}
+
+function _destroy_grid_points() {
+  _store.gridPoints = []
 }
 
 class LayerStoreClass extends EventEmitter {
@@ -30,8 +35,12 @@ class LayerStoreClass extends EventEmitter {
     this.removeChangeListener(CHANGE_EVENT, callback)
   }
 
-  getLayers() {
-    return _store.layers
+  getGridPoints() {
+    return _store.gridPoints
+  }
+
+  getDivideSize() {
+    return _store.divideSize
   }
 }
 
@@ -39,8 +48,13 @@ const LayerStore = new LayerStoreClass
 
 LayerStore.dispatchToken = AppDispatcher.register((actions) => {
   switch (actions.actionType) {
-    case ActionTypes.CREATE_LAYERS:
-      _create_layers(actions.layers)
+    case ActionTypes.CREATE_GRID_POINTS:
+      _create_grid_points(actions.bounds)
+      LayerStore.emitChange()
+      break
+
+      case ActionTypes.DESTROY_GRID_POINTS
+      _destroy_grid_points()
       LayerStore.emitChange()
       break
 

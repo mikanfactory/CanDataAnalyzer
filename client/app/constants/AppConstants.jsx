@@ -100,9 +100,10 @@ const AppConstants = {
     ERASE_MARKERS: null,
 
     // Layer
-    CREATE_LAYERS: null,
-    DESTROY_LAYERS: null,
-    UPDATE_LAYERS: null,
+    CREATE_GRID_POINTS: null,
+    DESTROY_GRID_POINTS: null,
+    CREATE_RECTANGLE_LAYER: null,
+    DESTROY_RECTANGLE_LAYER: null,
   }),
 }
 
