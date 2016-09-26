@@ -1,6 +1,9 @@
 import React from 'react'
 import LayerStore from '../stores/LayerStore'
-import { createRectangle, createRectangles } from '../utils/AppGoogleMapUtil'
+import LayerAction from '../actions/LayerActions'
+import { createRectangle, createRectangles, createGridPoints } from '../utils/AppGoogleMapUtil'
+import { defaultDivideSize } from '../constants/AppConstants'
+
 import assign from 'object-assign'
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
@@ -33,6 +36,12 @@ export default class Layer extends React.Component {
   drawRectangle() {
     const { rectangleBounds } = this.state
     const rectangle = createRectangle(this.props.gMap, rectangleBounds)
+
+    rectangle.addListener('dblclick', () => {
+      const gridPoints = createGridPoints(this.props.gMap, defaultDivideSize)
+      LayerAction.changeRectToGrid(gridPoints)
+    })
+
     this.setState({ visibleRectangle: rectangle })
   }
 
@@ -44,6 +53,14 @@ export default class Layer extends React.Component {
   drawGridLayer() {
     const { gridPoints } = this.state
     const rectangles = createRectangles(this.props.gMap, gridPoints)
+
+    rectangles.forEach( row => row.map( g => {
+      g.addListener('dblclick', () => {
+        const bounds = this.props.gMap.getBounds()
+        LayerAction.changeGridToRect(bounds)
+      })
+    }))
+
     this.setState({ visibleGridPoints: rectangles })
   }
 
