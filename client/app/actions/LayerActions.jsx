@@ -4,16 +4,16 @@ import AppConstants from '../constants/AppConstants'
 const ActionTypes = AppConstants.ActionTypes
 
 const LayerActions = {
-  createGridPoints: bounds => {
+  createGridPoints: gridPoints => {
     AppDispatcher.dispatch({
       actionType: ActionTypes.CREATE_GRID_POINTS,
-      bounds: bounds
+      gridPoints: gridPoints
     })
   },
 
   destroyGridPoints: () => {
     AppDispatcher.dispatch({
-      actionType: ActionTypes.DESTROY_GRID_POINTS,
+      actionType: ActionTypes.DESTROY_GRID_POINTS
     })
   }
 }

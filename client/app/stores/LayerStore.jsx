@@ -1,17 +1,17 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import AppConstants from '../constants/AppConstants'
 import { EventEmitter } from 'events'
-
+import { defaultDivideSize } from '../constants/AppConstants'
 const ActionTypes = AppConstants.ActionTypes
 const CHANGE_EVENT = 'change'
 
 let _store = {
   gridPoints: [],
-  divideSize: 10,
+  divideSize: defaultDivideSize,
 }
 
-function _create_grid_points(bounds) {
-  _store.gridPoints = bounds
+function _create_grid_points(gridPoints) {
+  _store.gridPoints = gridPoints
 }
 
 function _destroy_grid_points() {
@@ -49,11 +49,11 @@ const LayerStore = new LayerStoreClass
 LayerStore.dispatchToken = AppDispatcher.register((actions) => {
   switch (actions.actionType) {
     case ActionTypes.CREATE_GRID_POINTS:
-      _create_grid_points(actions.bounds)
+      _create_grid_points(actions.gridPoints)
       LayerStore.emitChange()
       break
 
-      case ActionTypes.DESTROY_GRID_POINTS
+      case ActionTypes.DESTROY_GRID_POINTS:
       _destroy_grid_points()
       LayerStore.emitChange()
       break

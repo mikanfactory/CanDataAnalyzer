@@ -15,6 +15,8 @@ const defaultCondition = {
   status: "stop"
 }
 
+const defaultDivideSize = 10
+
 const defaultModal = {
   modalType: "",
   settingID: 0
@@ -66,7 +68,7 @@ const STATUS = [
 ]
 
 
-export { defaultSetting, defaultCondition, defaultModal }
+export { defaultSetting, defaultCondition, defaultModal, defaultDivideSize }
 export { TARGETS, FEATURES, OPERATORS, STATUS }
 
 const AppConstants = {

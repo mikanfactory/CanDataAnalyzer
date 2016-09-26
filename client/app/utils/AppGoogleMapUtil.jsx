@@ -26,7 +26,8 @@ function createRectangles(gridPoints) {
   )
 }
 
-function createGridPoints(bounds, divideSize) {
+function createGridPoints(gMap, divideSize) {
+  const bounds = gMap.getBounds()
   const NE = bounds.getNorthEast()
   const SW = bounds.getSouthWest()
 
