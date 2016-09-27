@@ -102,6 +102,11 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
       LayerStore.emitChange()
       break
 
+    case ActionTypes.UPDATE_BOUNDS:
+      _setBounds(actions.bounds)
+      LayerStore.emitChange()
+      break
+
     default:
       // do nothing
   }

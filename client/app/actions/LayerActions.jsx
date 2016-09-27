@@ -42,6 +42,13 @@ const LayerActions = {
       actionType: ActionTypes.CHANGE_GRID_TO_RECT,
       bounds: bounds
     })
+  },
+
+  updateBounds: bounds => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.UPDATE_BOUNDS,
+      bounds: bounds
+    })
   }
 }
 

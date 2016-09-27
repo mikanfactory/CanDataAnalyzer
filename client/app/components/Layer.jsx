@@ -38,7 +38,13 @@ export default class Layer extends React.Component {
     const rectangle = createRectangle(this.props.gMap, bounds)
 
     rectangle.addListener('dblclick', () => {
-      LayerAction.changeRectToGrid(bounds)
+      const newBounds = rectangle.getBounds()
+      LayerAction.changeRectToGrid(newBounds)
+    })
+
+    rectangle.addListener('bounds_changed', () => {
+      const newBounds = rectangle.getBounds()
+      LayerAction.updateBounds(newBounds)
     })
 
     this.setState({ visibleRectangle: rectangle })
