@@ -55,6 +55,18 @@ const LayerActions = {
     AppDispatcher.dispatch({
       actionType: ActionTypes.DESTROY_ALL_LAYER
     })
+  },
+
+  createHeatmapLayer: () => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CREATE_HEATMAP_LAYER
+    })
+  },
+
+  destroyHeatmapLayer: () => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.DESTROY_HEATMAP_LAYER
+    })
   }
 }
 
