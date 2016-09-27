@@ -1,3 +1,5 @@
+import { defaultDivideSize } from '../constants/AppConstants'
+
 function createRectangle(gMap, bounds) {
   return new window.google.maps.Rectangle({
     strokeColor: '#FF0000',
@@ -28,8 +30,7 @@ function createRectangles(gMap, gridPoints) {
   )
 }
 
-function createGridPoints(gMap, divideSize) {
-  const bounds = gMap.getBounds()
+function createGridPoints(bounds, divideSize) {
   const NE = bounds.getNorthEast()
   const SW = bounds.getSouthWest()
 
@@ -48,4 +49,32 @@ function createGridPoints(gMap, divideSize) {
   )
 }
 
-export { createRectangle, createRectangles, createGridPoints }
+function getSmallerBounds(gMap) {
+  const bounds = gMap.getBounds()
+  const NE = bounds.getNorthEast()
+  const SW = bounds.getSouthWest()
+
+  const dividerWidth = {
+    lat: (NE.lat() - SW.lat())/(defaultDivideSize*2),
+    lng: (NE.lng() - SW.lng())/(defaultDivideSize*2)
+  }
+
+  const newNE = {
+    lat: NE.lat() - dividerWidth.lat,
+    lng: NE.lng() - dividerWidth.lng
+  }
+
+  const newSW = {
+    lat: SW.lat() + dividerWidth.lat,
+    lng: SW.lng() + dividerWidth.lng
+  }
+
+  return new window.google.maps.LatLngBounds(newSW, newNE)
+}
+
+export {
+  createRectangle,
+  createRectangles,
+  createGridPoints,
+  getSmallerBounds
+}
