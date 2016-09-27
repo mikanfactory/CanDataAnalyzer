@@ -1,7 +1,9 @@
 import React from 'react'
 import LayerStore from '../stores/LayerStore'
+import MarkerStore from '../stores/MarkerStore'
 import LayerAction from '../actions/LayerActions'
 import { createRectangle, createRectangles, createGridPoints, getSmallerBounds } from '../utils/AppGoogleMapUtil'
+import convertMarkersToWeightedLocations from '../utils/AppAlgorithmUtil'
 import { defaultDivideSize } from '../constants/AppConstants'
 
 import assign from 'object-assign'
@@ -81,9 +83,12 @@ export default class Layer extends React.Component {
   }
 
   drawHeatmap() {
-    const points = getPoints()
+    const { bounds } = this.state
+    const gridPoints = createGridPoints(bounds, defaultDivideSize)
+    const markers = MarkerStore.getAllMarkers()
+    const wls = convertMarkersToWeightedLocations(markers, gridPoints)
     const heatmap = new window.google.maps.visualization.HeatmapLayer({
-      data: points,
+      data: wls,
       map: this.props.gMap,
       radius: defaultRadiusSize,
     })

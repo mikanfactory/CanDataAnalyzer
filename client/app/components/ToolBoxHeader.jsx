@@ -4,31 +4,13 @@ import LayerAction from '../actions/LayerActions'
 import { getSmallerBounds } from '../utils/AppGoogleMapUtil'
 import { ToolBoxHeaderStyle as s } from './Styles'
 
-function getPoints() {
-  return _getPoints().map( px => {
-    return new window.google.maps.LatLng(...px)
-  })
-}
-
-function _getPoints() {
-  return [...Array(100).keys()].map( () => {
-    return [
-      36.08 + 0.01*getRandomArbitary(-1, 1),
-      140.21 + 0.01*getRandomArbitary(-1, 1)
-    ]
-  })
-}
-
-function getRandomArbitary(min, max) {
-  return Math.random() * (max - min) + min;
-}
-
 export default class ToolBoxHeader extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      isLayerVisible: false
+      isLayerVisible: false,
+      isHeatmapVisible: false
     }
 
     this.handleLayerToggle = this.handleLayerToggle.bind(this)
@@ -57,11 +39,19 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleHeatmapToggle() {
-    const heatmap = new window.google.maps.visualization.HeatmapLayer({
-      data: getPoints(),
-      map: this.props.gMap,
-      radius: 100,
-    })
+    this.state.isHeatmapVisible ?
+    this.handleHeatmapErase() :
+    this.handleHeatmapDisplay()
+
+    this.setState({ isHeatmapVisible: !this.state.isHeatmapVisible })
+  }
+
+  handleHeatmapDisplay() {
+    LayerAction.createHeatmapLayer()
+  }
+
+  handleHeatmapErase() {
+    LayerAction.destroyHeatmapLayer()
   }
 
   render() {

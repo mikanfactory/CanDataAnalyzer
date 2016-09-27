@@ -131,7 +131,7 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
       LayerStore.emitChange()
       break
 
-    case ActionTypes.CREATE_HEATMAP_LAYER:
+    case ActionTypes.DESTROY_HEATMAP_LAYER:
       _destroy_heatmap_layer()
       LayerStore.emitChange()
       break
