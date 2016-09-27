@@ -17,34 +17,6 @@ export default class GoogleMap extends React.Component {
       disableDoubleClickZoom: true
     })
 
-    const edge = {
-      lat: defaultCoordinate.lat + 0.1,
-      lng: defaultCoordinate.lng - 0.1
-    }
-    const originalPoints = [...Array(10).keys()].map(i => [...Array(10).keys()])
-    const gridPoints = originalPoints.map( (row, i) =>
-      row.map( j => ({
-        north: edge.lat - 0.001*i,
-        south: edge.lat - 0.001*(i+1),
-        east:  edge.lng + 0.001*(j+1),
-        west:  edge.lng + 0.001*j
-      }))
-    )
-
-    gridPoints.map( row =>
-      row.map( coord => {
-        new window.google.maps.Rectangle({
-          strokeColor: '#FF0000',
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: '#FF0000',
-          fillOpacity: 0.35,
-          map: map,
-          bounds: coord,
-        })
-      })
-    )
-
     GMapActions.updateGoogleMap(map)
   }
 
@@ -56,7 +28,3 @@ export default class GoogleMap extends React.Component {
     )
   }
 }
-
-/* GoogleMap.propTypes = {
- *   gMap: React.PropTypes.Object
- * }*/

@@ -25,7 +25,7 @@ var statusToFilename = map[string]string{
 	"straight": "./static/icon/straight.png",
 	"stop":     "./static/icon/stop_car.png",
 	"empty":    "./static/icon/empty.png",
-	"normal":   "./static/icon/normal.png",
+	"none":     "none",
 }
 
 // LoadMarkers load markers from csv file specified by target argument.
@@ -126,7 +126,7 @@ func genImageAnalyzer(header []string, conditions []Condition) imageAnalyzer {
 			}
 		}
 
-		return statusToFilename["normal"]
+		return statusToFilename["none"]
 	}
 }
 
