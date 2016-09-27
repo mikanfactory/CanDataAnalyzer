@@ -15,6 +15,8 @@ const defaultCondition = {
   status: "stop"
 }
 
+const defaultDivideSize = 10
+
 const defaultModal = {
   modalType: "",
   settingID: 0
@@ -66,7 +68,7 @@ const STATUS = [
 ]
 
 
-export { defaultSetting, defaultCondition, defaultModal }
+export { defaultSetting, defaultCondition, defaultModal, defaultDivideSize }
 export { TARGETS, FEATURES, OPERATORS, STATUS }
 
 const AppConstants = {
@@ -91,13 +93,23 @@ const AppConstants = {
     UPDATE_CONDITION: null,
     REMOVE_CONDITION: null,
 
-    // Markers
+    // Marker
     CREATE_MARKERS: null,
     UPDATE_MARKERS: null,
     DRAW_MARKER: null,
     DRAW_MARKERS: null,
     ERASE_MARKER: null,
-    ERASE_MARKERS: null
+    ERASE_MARKERS: null,
+
+    // Layer
+    CREATE_GRID_LAYER: null,
+    DESTROY_GRID_LAYER: null,
+    CREATE_RECTANGLE_LAYER: null,
+    DESTROY_RECTANGLE_LAYER: null,
+    CHANGE_RECT_TO_GRID: null,
+    CHANGE_GRID_TO_RECT: null,
+    UPDATE_BOUNDS: null,
+    DESTROY_ALL_LAYER: null
   }),
 }
 
