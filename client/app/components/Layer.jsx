@@ -21,6 +21,22 @@ function getStateFromStores() {
   }
 }
 
+function zoomToRadius(zoom) {
+  let zoomToRadiusMap = {
+    13: 80,
+    14: 100,
+    15: 120,
+    16: 150,
+    17: 300,
+    18: 400,
+    19: 800,
+    20: 1200
+  }
+
+  const radius = zoomToRadiusMap[zoom]
+  return radius ? radius : 100
+}
+
 export default class Layer extends React.Component {
   constructor(props) {
     super(props)
@@ -28,7 +44,7 @@ export default class Layer extends React.Component {
     const s = {
       visibleGridPoints: [],
       visibleRectangle: {},
-      visibleHeatmap: {}
+      visibleHeatmap: {},
     }
     this.state = assign({}, getStateFromStores(), s)
 
@@ -87,13 +103,19 @@ export default class Layer extends React.Component {
     const gridPoints = createGridPoints(bounds, defaultDivideSize)
     const markers = MarkerStore.getAllMarkers()
     const wls = convertMarkersToWeightedLocations(markers, gridPoints)
+    const radius = zoomToRadius(this.props.gMap.getZoom())
     const heatmap = new window.google.maps.visualization.HeatmapLayer({
       data: wls,
       map: this.props.gMap,
-      radius: defaultRadiusSize,
+      radius: radius
     })
 
-    this.setState({ visibleHeatmap: heatmap})
+    this.props.gMap.addListener('bounds_changed', () => {
+      const radius = zoomToRadius(this.props.gMap.getZoom())
+      this.state.visibleHeatmap.setOptions({ radius: radius })
+    })
+
+    this.setState({ visibleHeatmap: heatmap })
   }
 
   eraseHeatmap() {

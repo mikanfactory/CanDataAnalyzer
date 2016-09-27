@@ -49,7 +49,6 @@ const FEATURES = [
   "MapLatitude",
   "SpeedPerHourLowpass",
   "BrakeOnOff",
-  "BrakeOnOff",
   "AcceleratorOnOff",
   "Steering Angle",
   "AheadDistance",
@@ -64,7 +63,7 @@ const STATUS = [
   "green", "yellow", "red",
   "up", "down", "right", "left",
   "straight", "stop",
-  "empty", "normal"
+  "empty", "none"
 ]
 
 

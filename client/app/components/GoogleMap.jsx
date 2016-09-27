@@ -8,11 +8,11 @@ export default class GoogleMap extends React.Component {
   }
 
   componentDidMount() {
-    const defaultCoordinate = { lat: 36.18, lng: 140.28 }
+    const defaultCoordinate = { lat: 36.08912, lng: 140.19674 }
     const node = this.refs.map
 
     const map = new window.google.maps.Map(node, {
-      zoom: 10,
+      zoom: 15,
       center: defaultCoordinate,
       disableDoubleClickZoom: true
     })
