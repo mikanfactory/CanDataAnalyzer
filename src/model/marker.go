@@ -106,6 +106,7 @@ func genPositonAnalyzer(header []string) positionAnalyzer {
 		lat, _ := strconv.ParseFloat(record[latI], 64)
 		lng, _ := strconv.ParseFloat(record[lngI], 64)
 
+		// convert Tokyo Datum to WGS84
 		lngW := lng - lat*0.000046038 - lng*0.000083043 + 0.010040
 		latW := lat - lat*0.00010695 + lng*0.000017464 + 0.0046017
 

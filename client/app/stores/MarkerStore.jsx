@@ -111,7 +111,7 @@ MarkerStore.dispatchToken = AppDispatcher.register((action) => {
       break
 
     default:
-      return true
+      // do nothing
   }
 })
 

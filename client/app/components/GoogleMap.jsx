@@ -13,7 +13,8 @@ export default class GoogleMap extends React.Component {
 
     const map = new window.google.maps.Map(node, {
       zoom: 10,
-      center: defaultCoordinate
+      center: defaultCoordinate,
+      disableDoubleClickZoom: true
     })
 
     const edge = {
