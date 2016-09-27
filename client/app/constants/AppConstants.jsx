@@ -109,6 +109,7 @@ const AppConstants = {
     CHANGE_RECT_TO_GRID: null,
     CHANGE_GRID_TO_RECT: null,
     UPDATE_BOUNDS: null,
+    DESTROY_ALL_LAYER: null
   }),
 }
 

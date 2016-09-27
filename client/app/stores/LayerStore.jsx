@@ -107,6 +107,12 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
       LayerStore.emitChange()
       break
 
+    case ActionTypes.DESTROY_ALL_LAYER:
+      _destroy_grid_layer()
+      _destroy_rectangle()
+      LayerStore.emitChange()
+      break
+
     default:
       // do nothing
   }

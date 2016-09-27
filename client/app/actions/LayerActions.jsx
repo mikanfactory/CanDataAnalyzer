@@ -49,6 +49,12 @@ const LayerActions = {
       actionType: ActionTypes.UPDATE_BOUNDS,
       bounds: bounds
     })
+  },
+
+  destroyAllLayer: () => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.DESTROY_ALL_LAYER
+    })
   }
 }
 

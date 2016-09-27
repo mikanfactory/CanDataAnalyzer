@@ -33,7 +33,7 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleLayerErase() {
-    LayerAction.destroyRectangle()
+    LayerAction.destroyAllLayer()
   }
 
   render() {
