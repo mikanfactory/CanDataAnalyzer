@@ -1,7 +1,7 @@
 import React from 'react'
 import LayerStore from '../stores/LayerStore'
 import LayerAction from '../actions/LayerActions'
-import { createRectangle, createRectangles, createGridPoints } from '../utils/AppGoogleMapUtil'
+import { createRectangle, createRectangles, createGridPoints, getSmallerBounds } from '../utils/AppGoogleMapUtil'
 import { defaultDivideSize } from '../constants/AppConstants'
 
 import assign from 'object-assign'
@@ -10,9 +10,9 @@ import isEmpty from 'lodash/isEmpty'
 
 function getStateFromStores() {
   return {
-    gridPoints: LayerStore.getGridPoints(),
-    divideSize: LayerStore.getDivideSize(),
-    rectangleBounds: LayerStore.getRectangleBounds()
+    bounds: LayerStore.getBounds(),
+    isGridLayerVisible: LayerStore.getGridLayerVisibility(),
+    isRectangleVisible: LayerStore.getRectangleVisibility()
   }
 }
 
@@ -34,12 +34,11 @@ export default class Layer extends React.Component {
   }
 
   drawRectangle() {
-    const { rectangleBounds } = this.state
-    const rectangle = createRectangle(this.props.gMap, rectangleBounds)
+    const { bounds } = this.state
+    const rectangle = createRectangle(this.props.gMap, bounds)
 
     rectangle.addListener('dblclick', () => {
-      const gridPoints = createGridPoints(this.props.gMap, defaultDivideSize)
-      LayerAction.changeRectToGrid(gridPoints)
+      LayerAction.changeRectToGrid(bounds)
     })
 
     this.setState({ visibleRectangle: rectangle })
@@ -51,12 +50,12 @@ export default class Layer extends React.Component {
   }
 
   drawGridLayer() {
-    const { gridPoints } = this.state
+    const { bounds } = this.state
+    const gridPoints = createGridPoints(bounds, defaultDivideSize)
     const rectangles = createRectangles(this.props.gMap, gridPoints)
 
     rectangles.forEach( row => row.map( g => {
       g.addListener('dblclick', () => {
-        const bounds = this.props.gMap.getBounds()
         LayerAction.changeGridToRect(bounds)
       })
     }))
@@ -78,13 +77,13 @@ export default class Layer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!isEqual(this.state.gridPoints, prevState.gridPoints)) {
+    if (!isEqual(this.state.isGridLayerVisible, prevState.isGridLayerVisible)) {
       isEmpty(this.state.visibleGridPoints) ?
       this.drawGridLayer() :
       this.eraseGridLayer()
     }
 
-    if (!isEqual(this.state.rectangleBounds, prevState.rectangleBounds)) {
+    if (!isEqual(this.state.isRectangleVisible, prevState.isRectangleVisible)) {
       isEmpty(this.state.visibleRectangle) ?
       this.drawRectangle() :
       this.eraseRectangle()
@@ -93,7 +92,9 @@ export default class Layer extends React.Component {
 
   render() {
     return (
-      <div className="Layer" style={{height: 0, width: 0}}></div>
+      <div className="Layer" style={{height: 0, width: 0}}>
+        <div id="dummyMap"></div>
+      </div>
     )
   }
 

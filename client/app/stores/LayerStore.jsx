@@ -13,19 +13,19 @@ let _store = {
 }
 
 function _create_grid_layer() {
-  _store.gridPoints = true
+  _store.isGridLayerVisible = true
 }
 
 function _destroy_grid_layer() {
-  _store.gridPoints = false
+  _store.isGridLayerVisible = false
 }
 
 function _create_rectangle() {
-  _store.rectangleBounds = true
+  _store.isRectangleVisibile = true
 }
 
 function _destroy_rectangle() {
-  _store.rectangleBounds = false
+  _store.isRectangleVisibile = false
 }
 
 function _setBounds(bounds) {
@@ -66,13 +66,13 @@ const LayerStore = new LayerStoreClass
 
 LayerStore.dispatchToken = AppDispatcher.register((actions) => {
   switch (actions.actionType) {
-    case ActionTypes._CREATE_GRID_LAYER:
+    case ActionTypes.CREATE_GRID_LAYER:
       _create_grid_layer()
       _setBounds(actions.bounds)
       LayerStore.emitChange()
       break
 
-    case ActionTypes._DESTROY_GRID_LAYER:
+    case ActionTypes.DESTROY_GRID_LAYER:
       _destroy_grid_layer()
       LayerStore.emitChange()
       break
