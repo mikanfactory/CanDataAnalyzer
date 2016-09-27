@@ -6,25 +6,30 @@ const ActionTypes = AppConstants.ActionTypes
 const CHANGE_EVENT = 'change'
 
 let _store = {
-  gridPoints: [],
+  bounds: {},
+  isGridLayerVisible: false,
+  isRectangleVisibile: false,
   divideSize: defaultDivideSize,
-  rectangleBounds: {}
 }
 
-function _create_grid_points(gridPoints) {
-  _store.gridPoints = gridPoints
+function _create_grid_layer() {
+  _store.gridPoints = true
 }
 
-function _destroy_grid_points() {
-  _store.gridPoints = []
+function _destroy_grid_layer() {
+  _store.gridPoints = false
 }
 
-function _create_rectangle(bounds) {
-  _store.rectangleBounds = bounds
+function _create_rectangle() {
+  _store.rectangleBounds = true
 }
 
 function _destroy_rectangle() {
-  _store.rectangleBounds = {}
+  _store.rectangleBounds = false
+}
+
+function _setBounds(bounds) {
+  _store.bounds = bounds
 }
 
 class LayerStoreClass extends EventEmitter {
@@ -44,16 +49,16 @@ class LayerStoreClass extends EventEmitter {
     this.removeChangeListener(CHANGE_EVENT, callback)
   }
 
-  getGridPoints() {
-    return _store.gridPoints
+  getBounds() {
+    return _store.bounds
   }
 
-  getDivideSize() {
-    return _store.divideSize
+  getGridLayerVisibility() {
+    return _store.isGridLayerVisible
   }
 
-  getRectangleBounds() {
-    return _store.rectangleBounds
+  getRectangleVisibility() {
+    return _store.isRectangleVisibile
   }
 }
 
@@ -61,18 +66,20 @@ const LayerStore = new LayerStoreClass
 
 LayerStore.dispatchToken = AppDispatcher.register((actions) => {
   switch (actions.actionType) {
-    case ActionTypes.CREATE_GRID_POINTS:
-      _create_grid_points(actions.gridPoints)
+    case ActionTypes._CREATE_GRID_LAYER:
+      _create_grid_layer()
+      _setBounds(actions.bounds)
       LayerStore.emitChange()
       break
 
-    case ActionTypes.DESTROY_GRID_POINTS:
-      _destroy_grid_points()
+    case ActionTypes._DESTROY_GRID_LAYER:
+      _destroy_grid_layer()
       LayerStore.emitChange()
       break
 
     case ActionTypes.CREATE_RECTANGLE_LAYER:
       _create_rectangle(actions.bounds)
+      _setBounds(actions.bounds)
       LayerStore.emitChange()
       break
 
@@ -83,13 +90,15 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
 
     case ActionTypes.CHANGE_RECT_TO_GRID:
       _destroy_rectangle()
-      _create_grid_points(actions.gridPoints)
+      _create_grid_layer()
+      _setBounds(actions.bounds)
       LayerStore.emitChange()
       break
 
     case ActionTypes.CHANGE_GRID_TO_RECT:
-      _destroy_grid_points()
-      _create_rectangle(actions.bounds)
+      _destroy_grid_layer()
+      _create_rectangle()
+      _setBounds(actions.bounds)
       LayerStore.emitChange()
       break
 

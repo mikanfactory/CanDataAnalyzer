@@ -102,8 +102,8 @@ const AppConstants = {
     ERASE_MARKERS: null,
 
     // Layer
-    CREATE_GRID_POINTS: null,
-    DESTROY_GRID_POINTS: null,
+    CREATE_GRID_LAYER: null,
+    DESTROY_GRID_LAYER: null,
     CREATE_RECTANGLE_LAYER: null,
     DESTROY_RECTANGLE_LAYER: null,
     CHANGE_RECT_TO_GRID: null,

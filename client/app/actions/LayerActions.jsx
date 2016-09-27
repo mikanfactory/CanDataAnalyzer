@@ -4,20 +4,20 @@ import AppConstants from '../constants/AppConstants'
 const ActionTypes = AppConstants.ActionTypes
 
 const LayerActions = {
-  createGridPoints: gridPoints => {
+  createGridPoints: bounds => {
     AppDispatcher.dispatch({
-      actionType: ActionTypes.CREATE_GRID_POINTS,
-      gridPoints: gridPoints
+      actionType: ActionTypes.CREATE_GRID_LAYER,
+      bounds: bounds
     })
   },
 
   destroyGridPoints: () => {
     AppDispatcher.dispatch({
-      actionType: ActionTypes.DESTROY_GRID_POINTS
+      actionType: ActionTypes.DESTROY_GRID_LAYER
     })
   },
 
-  createRectangle: bounds => {
+  createRectangle: (bounds) => {
     AppDispatcher.dispatch({
       actionType: ActionTypes.CREATE_RECTANGLE_LAYER,
       bounds: bounds
@@ -30,10 +30,10 @@ const LayerActions = {
     })
   },
 
-  changeRectToGrid: gridPoints => {
+  changeRectToGrid: bounds => {
     AppDispatcher.dispatch({
       actionType: ActionTypes.CHANGE_RECT_TO_GRID,
-      gridPoints: gridPoints
+      bounds: bounds
     })
   },
 
