@@ -8,11 +8,14 @@ import assign from 'object-assign'
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
 
+const defaultRadiusSize = 100
+
 function getStateFromStores() {
   return {
     bounds: LayerStore.getBounds(),
     isGridLayerVisible: LayerStore.getGridLayerVisibility(),
-    isRectangleVisible: LayerStore.getRectangleVisibility()
+    isRectangleVisible: LayerStore.getRectangleVisibility(),
+    isHeatmapVisible: LayerStore.getHeatmapVisibility()
   }
 }
 
@@ -22,7 +25,8 @@ export default class Layer extends React.Component {
 
     const s = {
       visibleGridPoints: [],
-      visibleRectangle: {}
+      visibleRectangle: {},
+      visibleHeatmap: {}
     }
     this.state = assign({}, getStateFromStores(), s)
 
@@ -30,6 +34,8 @@ export default class Layer extends React.Component {
     this.eraseGridLayer = this.eraseGridLayer.bind(this)
     this.drawRectangle = this.drawRectangle.bind(this)
     this.eraseRectangle = this.eraseRectangle.bind(this)
+    this.drawHeatmap = this.drawHeatmap.bind(this)
+    this.eraseHeatmap = this.eraseHeatmap.bind(this)
     this._onChange = this._onChange.bind(this)
   }
 
@@ -74,6 +80,22 @@ export default class Layer extends React.Component {
     this.setState({ visibleGridPoints: [] })
   }
 
+  drawHeatmap() {
+    const points = getPoints()
+    const heatmap = new window.google.maps.visualization.HeatmapLayer({
+      data: points,
+      map: this.props.gMap,
+      radius: defaultRadiusSize,
+    })
+
+    this.setState({ visibleHeatmap: heatmap})
+  }
+
+  eraseHeatmap() {
+    this.state.visibleHeatmap.setMap(null)
+    this.setState({ visibleHeatmap: {} })
+  }
+
   componentDidMount() {
     LayerStore.addChangeListener(this._onChange)
   }
@@ -83,16 +105,25 @@ export default class Layer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // draw/erase grid layer
     if (!isEqual(this.state.isGridLayerVisible, prevState.isGridLayerVisible)) {
       isEmpty(this.state.visibleGridPoints) ?
       this.drawGridLayer() :
       this.eraseGridLayer()
     }
 
+    // draw/erase rectangle
     if (!isEqual(this.state.isRectangleVisible, prevState.isRectangleVisible)) {
       isEmpty(this.state.visibleRectangle) ?
       this.drawRectangle() :
       this.eraseRectangle()
+    }
+
+    // draw/erase heatmap
+    if (!isEqual(this.state.isHeatmapVisible, prevState.isHeatmapVisible)) {
+      isEmpty(this.state.visibleHeatmap) ?
+      this.drawHeatmap() :
+      this.eraseHeatmap()
     }
   }
 
