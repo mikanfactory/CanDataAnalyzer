@@ -1,19 +1,40 @@
 import React from 'react'
 import LayerStore from '../stores/LayerStore'
+import MarkerStore from '../stores/MarkerStore'
 import LayerAction from '../actions/LayerActions'
 import { createRectangle, createRectangles, createGridPoints, getSmallerBounds } from '../utils/AppGoogleMapUtil'
+import convertMarkersToWeightedLocations from '../utils/AppAlgorithmUtil'
 import { defaultDivideSize } from '../constants/AppConstants'
 
 import assign from 'object-assign'
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
 
+const defaultRadiusSize = 100
+
 function getStateFromStores() {
   return {
     bounds: LayerStore.getBounds(),
     isGridLayerVisible: LayerStore.getGridLayerVisibility(),
-    isRectangleVisible: LayerStore.getRectangleVisibility()
+    isRectangleVisible: LayerStore.getRectangleVisibility(),
+    isHeatmapVisible: LayerStore.getHeatmapVisibility()
   }
+}
+
+function zoomToRadius(zoom) {
+  let zoomToRadiusMap = {
+    13: 80,
+    14: 100,
+    15: 120,
+    16: 150,
+    17: 300,
+    18: 400,
+    19: 800,
+    20: 1200
+  }
+
+  const radius = zoomToRadiusMap[zoom]
+  return radius ? radius : 100
 }
 
 export default class Layer extends React.Component {
@@ -22,7 +43,8 @@ export default class Layer extends React.Component {
 
     const s = {
       visibleGridPoints: [],
-      visibleRectangle: {}
+      visibleRectangle: {},
+      visibleHeatmap: {},
     }
     this.state = assign({}, getStateFromStores(), s)
 
@@ -30,6 +52,8 @@ export default class Layer extends React.Component {
     this.eraseGridLayer = this.eraseGridLayer.bind(this)
     this.drawRectangle = this.drawRectangle.bind(this)
     this.eraseRectangle = this.eraseRectangle.bind(this)
+    this.drawHeatmap = this.drawHeatmap.bind(this)
+    this.eraseHeatmap = this.eraseHeatmap.bind(this)
     this._onChange = this._onChange.bind(this)
   }
 
@@ -74,6 +98,31 @@ export default class Layer extends React.Component {
     this.setState({ visibleGridPoints: [] })
   }
 
+  drawHeatmap() {
+    const { bounds } = this.state
+    const gridPoints = createGridPoints(bounds, defaultDivideSize)
+    const markers = MarkerStore.getAllMarkers()
+    const wls = convertMarkersToWeightedLocations(markers, gridPoints)
+    const radius = zoomToRadius(this.props.gMap.getZoom())
+    const heatmap = new window.google.maps.visualization.HeatmapLayer({
+      data: wls,
+      map: this.props.gMap,
+      radius: radius
+    })
+
+    this.props.gMap.addListener('bounds_changed', () => {
+      const radius = zoomToRadius(this.props.gMap.getZoom())
+      this.state.visibleHeatmap.setOptions({ radius: radius })
+    })
+
+    this.setState({ visibleHeatmap: heatmap })
+  }
+
+  eraseHeatmap() {
+    this.state.visibleHeatmap.setMap(null)
+    this.setState({ visibleHeatmap: {} })
+  }
+
   componentDidMount() {
     LayerStore.addChangeListener(this._onChange)
   }
@@ -83,16 +132,25 @@ export default class Layer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // draw/erase grid layer
     if (!isEqual(this.state.isGridLayerVisible, prevState.isGridLayerVisible)) {
       isEmpty(this.state.visibleGridPoints) ?
       this.drawGridLayer() :
       this.eraseGridLayer()
     }
 
+    // draw/erase rectangle
     if (!isEqual(this.state.isRectangleVisible, prevState.isRectangleVisible)) {
       isEmpty(this.state.visibleRectangle) ?
       this.drawRectangle() :
       this.eraseRectangle()
+    }
+
+    // draw/erase heatmap
+    if (!isEqual(this.state.isHeatmapVisible, prevState.isHeatmapVisible)) {
+      isEmpty(this.state.visibleHeatmap) ?
+      this.drawHeatmap() :
+      this.eraseHeatmap()
     }
   }
 

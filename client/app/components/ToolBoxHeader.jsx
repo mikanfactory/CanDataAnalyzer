@@ -9,10 +9,12 @@ export default class ToolBoxHeader extends React.Component {
     super(props)
 
     this.state = {
-      isLayerVisible: false
+      isLayerVisible: false,
+      isHeatmapVisible: false
     }
 
     this.handleLayerToggle = this.handleLayerToggle.bind(this)
+    this.handleHeatmapToggle = this.handleHeatmapToggle.bind(this)
   }
 
   handleModalOpen() {
@@ -36,18 +38,38 @@ export default class ToolBoxHeader extends React.Component {
     LayerAction.destroyAllLayer()
   }
 
+  handleHeatmapToggle() {
+    this.state.isHeatmapVisible ?
+    this.handleHeatmapErase() :
+    this.handleHeatmapDisplay()
+
+    this.setState({ isHeatmapVisible: !this.state.isHeatmapVisible })
+  }
+
+  handleHeatmapDisplay() {
+    LayerAction.createHeatmapLayer()
+  }
+
+  handleHeatmapErase() {
+    LayerAction.destroyHeatmapLayer()
+  }
+
   render() {
     return (
       <div>
         <div className="ToolBoxHeader" style={s.HeaderStyle}>
           <span style={s.StringStyle}>CanDataAnalyzer</span>
+          <span className="glyphicon glyphicon-plus"
+                style={s.GlyphiconStyle}
+                onClick={this.handleModalOpen}>
+          </span>
           <span className="glyphicon glyphicon-th"
                 style={s.GlyphiconStyle}
                 onClick={this.handleLayerToggle}>
           </span>
-          <span className="glyphicon glyphicon-plus"
+          <span className="glyphicon glyphicon-fire"
                 style={s.GlyphiconStyle}
-                onClick={this.handleModalOpen}>
+                onClick={this.handleHeatmapToggle}>
           </span>
           <span className="glyphicon glyphicon-film"
                 style={s.GlyphiconStyle}

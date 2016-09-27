@@ -14,7 +14,8 @@ let _store = {
 }
 
 function _createMarkers(markers) {
-  _store.markers = [..._store.markers, ...markers]
+  const ms = markers.filter( m => m.image !== "none" )
+  _store.markers = [..._store.markers, ...ms]
 }
 
 function _updateMarkers(sid, markers) {
@@ -62,6 +63,10 @@ class MarkerStoreClass extends EventEmitter {
 
   removeChangeListener(callback) {
     this.removeListener(CHANGE_EVENT, callback)
+  }
+
+  getAllMarkers() {
+    return _store.markers
   }
 
   getMarkers(settingID) {

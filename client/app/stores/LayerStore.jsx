@@ -9,6 +9,7 @@ let _store = {
   bounds: {},
   isGridLayerVisible: false,
   isRectangleVisibile: false,
+  isHeatmapVisible: false,
   divideSize: defaultDivideSize,
 }
 
@@ -30,6 +31,14 @@ function _destroy_rectangle() {
 
 function _setBounds(bounds) {
   _store.bounds = bounds
+}
+
+function _create_heatmap_layer() {
+  _store.isHeatmapVisible = true
+}
+
+function _destroy_heatmap_layer() {
+  _store.isHeatmapVisible = false
 }
 
 class LayerStoreClass extends EventEmitter {
@@ -59,6 +68,10 @@ class LayerStoreClass extends EventEmitter {
 
   getRectangleVisibility() {
     return _store.isRectangleVisibile
+  }
+
+  getHeatmapVisibility() {
+    return _store.isHeatmapVisible
   }
 }
 
@@ -110,6 +123,16 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
     case ActionTypes.DESTROY_ALL_LAYER:
       _destroy_grid_layer()
       _destroy_rectangle()
+      LayerStore.emitChange()
+      break
+
+    case ActionTypes.CREATE_HEATMAP_LAYER:
+      _create_heatmap_layer()
+      LayerStore.emitChange()
+      break
+
+    case ActionTypes.DESTROY_HEATMAP_LAYER:
+      _destroy_heatmap_layer()
       LayerStore.emitChange()
       break
 
