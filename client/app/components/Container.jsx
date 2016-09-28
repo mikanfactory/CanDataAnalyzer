@@ -1,6 +1,7 @@
 import React from 'react'
 import Modal from "./Modal"
 import GoogleMap from './GoogleMap'
+import Layer from './Layer'
 import ToolBox from './AnalysisToolBox.jsx'
 import GMapStore from '../stores/GMapStore'
 import { ContainerStyle as s } from './Styles'
@@ -35,6 +36,7 @@ export default class Container extends React.Component {
     return (
       <div className="Container" style={s.ContainerStyle}>
         <GoogleMap />
+        <Layer gMap={this.state.gMap} />
         <ToolBox gMap={this.state.gMap} />
         <Modal />
       </div>

@@ -38,7 +38,7 @@ export default class AnalysisToolBox extends React.Component {
 
     return (
       <div className="AnalysisToolBox" style={s.ToolBoxStyle}>
-        <ToolBoxHeader />
+        <ToolBoxHeader gMap={this.props.gMap} />
         {markerListNodes}
       </div>
     )
