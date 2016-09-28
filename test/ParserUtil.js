@@ -163,3 +163,21 @@ describe("case line", () => {
     })
   })
 })
+
+describe("default line", () => {
+  it("matches default string and colon", () => {
+    const s1 = p.stream("default:\n")
+    const r1 = p.parse(u.defaultLine, s1)
+    assert.isOk(p.isResult(r1), "parser output is not ParseResult")
+    assert.deepEqual(r1.value, "default")
+  })
+})
+
+describe("return line", () => {
+  it("matches return string and image", () => {
+    const s1 = p.stream("return red:\n")
+    const r1 = p.parse(u.returnLine, s1)
+    assert.isOk(p.isResult(r1), "parser output is not ParseResult")
+    assert.deepEqual(r1.value, "red")
+  })
+})

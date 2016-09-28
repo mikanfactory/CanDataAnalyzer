@@ -53,8 +53,25 @@ export const conditions = p.expected(p.either([condition3, condition2, condition
 export const caseLine = p.expected(p.seq(function*() {
   yield p.string("case")
   yield p.spaces1
-  const {value: s} = yield p.either(conditions, p.many1(p.alphanum))
+  const {value: s} = yield conditions
   yield p.string(":")
   yield eol
+
   return s
 }), "a case line")
+
+export const defaultLine = p.expected(p.seq(function*() {
+  yield p.string("default:")
+  yield eol
+
+  return "default"
+}), "a default line")
+
+export const returnLine = p.expected(p.seq(function*() {
+  yield p.spaces
+  yield p.string("return")
+  yield p.spaces1
+  const {value: image} = yield p.many1(p.alphanum)
+  yield p.spaces
+  return image
+}), "a return line")
