@@ -3,7 +3,7 @@ import LayerStore from '../stores/LayerStore'
 import MarkerStore from '../stores/MarkerStore'
 import LayerAction from '../actions/LayerActions'
 import { createRectangle, createRectangles, createGridPoints, getSmallerBounds } from '../utils/AppGoogleMapUtil'
-import convertMarkersToWeightedLocations from '../utils/AppAlgorithmUtil'
+import { convertMarkersToWeightedLocations } from '../utils/AppAlgorithmUtil'
 import { defaultDivideSize } from '../constants/AppConstants'
 
 import assign from 'object-assign'

@@ -6,7 +6,7 @@ func (c *Condition) evalRecord(record []string, nameToIndex map[string]int64) bo
 		return c.Details[0].evalRecord(record, nameToIndex)
 	}
 
-	// Double or Triple conditions
+	// Double or more conditions
 	acc := false
 	for i, detail := range c.Details {
 		switch {
