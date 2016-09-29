@@ -21,18 +21,17 @@ interface Position {
 }
 
 interface Condition {
-  id:            number,            // unique
-  settingID:     number,
-  logics:        Array<string>,
-  status:        Status
+  id:        number,            // unique
+  settingID: number,
+  ast:       AST,
+  status:    string
 }
 
-interface Details {
-  id: number,
-  conditionID: number,
-  feature:   string,
-  operator:  Operator,
-  value:     number,
+interface AST {
+  name: string,
+  data: string | number,
+  left: AST,
+  right: AST,
 }
 
 interface Modal {

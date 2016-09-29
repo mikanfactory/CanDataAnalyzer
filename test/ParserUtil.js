@@ -14,16 +14,6 @@ class ASTNode {
   }
 }
 
-const validString =
-  `switch (true)
-case foo == 10 && bar === 20:
-  return "blue"
-case foo > 10:
-return "red"
-default:
-return "green"
-`
-
 describe("EOL", () => {
   const eol1 = `
 `
@@ -129,12 +119,32 @@ describe("Arithmetic Operators", () => {
 })
 
 describe("case line", () => {
+  const brakeAST = new ASTNode(
+    "Condition",
+    "==",
+    new ASTNode("Literal", "BrakeOnOff"),
+    new ASTNode("Literal", 1)
+  )
+
+  const accelAST = new ASTNode(
+    "Condition",
+    "==",
+    new ASTNode("Literal", "AcceleratorOnOff"),
+    new ASTNode("Literal", 0)
+  )
+
+  const speedAST = new ASTNode(
+    "Condition",
+    ">",
+    new ASTNode("Literal", "SpeedPerHourLowpass"),
+    new ASTNode("Literal", 50)
+  )
+
   it("matches 1 condition", () => {
     const s1 = p.stream("case BrakeOnOff == 1:\n")
     const r1 = p.parse(u.caseLine, s1)
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
-    const expected = new ASTNode("Condition", "==", "BrakeOnOff", 1)
-    assert.deepEqual(r1.value, expected)
+    assert.deepEqual(r1.value, brakeAST)
   })
   it("matches 2 conditions", () => {
     const s1 = p.stream("case BrakeOnOff == 1 || AcceleratorOnOff == 0:\n")
@@ -143,12 +153,32 @@ describe("case line", () => {
     const expected = new ASTNode(
       "Conditions",
       "||",
-      new ASTNode("Condition", "==", "BrakeOnOff", 1),
-      new ASTNode("Condition", "==", "AcceleratorOnOff", 0)
+      brakeAST,
+      accelAST
     )
     assert.deepEqual(r1.value, expected)
   })
-  it("matches 3 conditions", () => {
+  it("matches 3 conditions [&&, ||]", () => {
+    const str = [
+      "case",
+      "SpeedPerHourLowpass > 50",
+      "||",
+      "BrakeOnOff == 1",
+      "&&",
+      "AcceleratorOnOff == 0:\n"
+    ].join(" ")
+    const s1 = p.stream(str)
+    const r1 = p.parse(u.caseLine, s1)
+    assert.isOk(p.isResult(r1), "parser output is not ParseResult")
+    const expected = new ASTNode(
+      "Conditions",
+      "&&",
+      new ASTNode("Conditions", "||", speedAST, brakeAST),
+      accelAST
+    )
+    assert.deepEqual(r1.value, expected)
+  })
+  it("matches 3 conditions [||, &&]", () => {
     const str = [
       "case",
       "SpeedPerHourLowpass > 50",
@@ -163,17 +193,12 @@ describe("case line", () => {
     const expected = new ASTNode(
       "Conditions",
       "||",
-      new ASTNode(
-        "Conditions",
-        "&&",
-        new ASTNode("Condition", ">", "SpeedPerHourLowpass", 50),
-        new ASTNode("Condition", "==", "BrakeOnOff", 1)
-      ),
-      new ASTNode("Condition", "==", "AcceleratorOnOff", 0)
+      new ASTNode("Conditions", "&&", speedAST, brakeAST),
+      accelAST
     )
     assert.deepEqual(r1.value, expected)
   })
-  it("matches complex conditions", () => {
+  it("matches complex conditions [&& (||)]", () => {
     const str = [
       "case",
       "SpeedPerHourLowpass > 50",
@@ -185,18 +210,35 @@ describe("case line", () => {
     const s1 = p.stream(str)
     const r1 = p.parse(u.caseLine, s1)
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
-    const expected = new ASTNode(
-      "Conditions",
-      "&&",
-      new ASTNode("Condition", ">", "SpeedPerHourLowpass", 50),
-      new ASTNode(
-        "Bracket",
-        "||",
-        new ASTNode("Condition", "==", "BrakeOnOff", 1),
-        new ASTNode("Condition", "==", "AcceleratorOnOff", 0)
-      )
+    const expected = new ASTNode("Conditions", "&&", speedAST,
+                                 new ASTNode("Bracket", "||", brakeAST, accelAST)
     )
     assert.deepEqual(r1.value, expected)
+  })
+  it("matches complex conditions [(&&) ||]", () => {
+    const str = [
+      "case",
+      "(SpeedPerHourLowpass > 50",
+      "&&",
+      "BrakeOnOff == 1)",
+      "||",
+      "AcceleratorOnOff == 0:\n"
+    ].join(" ")
+    const s1 = p.stream(str)
+    const r1 = p.parse(u.caseLine, s1)
+    /* assert.isOk(p.isResult(r1), "parser output is not ParseResult")
+     * const expected = new ASTNode(
+     *   "Conditions",
+     *   "&&",
+     *   new ASTNode("Condition", ">", "SpeedPerHourLowpass", 50),
+     *   new ASTNode(
+     *     "Bracket",
+     *     "||",
+     *     new ASTNode("Condition", "==", "BrakeOnOff", 1),
+     *     new ASTNode("Condition", "==", "AcceleratorOnOff", 0)
+     *   )
+     * )
+     * assert.deepEqual(r1.value, expected)*/
   })
 })
 

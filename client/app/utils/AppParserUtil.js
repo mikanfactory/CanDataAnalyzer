@@ -30,7 +30,10 @@ const _condition1 = p.expected(p.seq(function*() {
   const {value: aop} = yield AOP
   yield p.spaces1
   const {value: value} = yield p.either(p.float, p.int)
-  return new ASTNode("Condition", aop, feature, value)
+
+  const left = new ASTNode("Literal", feature)
+  const right = new ASTNode("Literal", value)
+  return new ASTNode("Condition", aop, left, right)
 }))
 
 const _conditions = p.expected(p.seq(function*() {

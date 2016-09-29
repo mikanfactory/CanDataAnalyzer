@@ -39,8 +39,8 @@ function toString(position) {
   return `{lat: ${position.lat}, lng: ${position.lng}}`
 }
 
-describe('findGridIndex', function() {
-  it('returns valid index', function() {
+describe('findGridIndex', () => {
+  it('returns valid index', () => {
     const markers = _getDummyMarker()
     const gridPoints = _getDummyGridPoints()
 
@@ -61,16 +61,16 @@ describe('findGridIndex', function() {
   })
 })
 
-describe('convertMarkersToGridIndices', function() {
-  it('returns valid index list', function() {
+describe('convertMarkersToGridIndices', () => {
+  it('returns valid index list', () => {
     const expected = [...Array(100).keys()].map( i => ({ index: i })).reverse()
     const actual = u.convertMarkersToGridIndices(_getDummyMarker(), _getDummyGridPoints())
     assert.deepEqual(expected, actual)
   })
 })
 
-describe('convertIndicesToCounts', function() {
-  it('returns valid hash', function() {
+describe('convertIndicesToCounts', () => {
+  it('returns valid hash', () => {
     const expected = [...Array(100).keys()].reduce( (acc, val) => {
       acc[val] = 1
       return acc

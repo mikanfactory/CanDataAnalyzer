@@ -30,13 +30,13 @@ type Setting struct {
 
 // Condition denotes how to deal the status.
 type Condition struct {
-	Logics  []string `json:"logics"`
-	Status  string   `json:"status"`
-	Details []Detail `json:"details"`
+	Status string `json:"status"`
+	AST    AST    `json:"ast"`
 }
 
-type Detail struct {
-	Feature  string  `json:"feature"`
-	Operator string  `json:"operator"`
-	Value    float64 `json:"value"`
+// AST is abstruct syntax tree
+type AST struct {
+	Data  string `json:"data"`
+	Left  *AST   `json:"left"`
+	Right *AST   `json:"right"`
 }
