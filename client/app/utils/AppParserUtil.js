@@ -1,5 +1,4 @@
 import * as p from 'eulalie'
-import * as t from './ParserTypes'
 
 export const isEOL = (c) => /^\n$/.test(c)
 export const eol = p.expected(p.sat(isEOL), "a EOL")
@@ -16,23 +15,24 @@ export const LOP = p.expected(p.either(and, or), "a logical operator")
 export const AOP = p.expected(p.either([eq, neq, atLeast, atMost, greaterThan, lessThan]),
                               "a arithmetic operator")
 
-const _condition = p.expected(p.seq(function*() {
+const _condition1 = p.expected(p.seq(function*() {
   const {value: feature} = yield p.many1(p.alphanum)
   yield p.spaces1
   const {value: aop} = yield AOP
   yield p.spaces1
   const {value: value} = yield p.either(p.float, p.int)
-  return new t.Condition(feature, aop, value)
+  return { data: aop, left: feature, right: value }
 }))
 
-const _conditionWithLOP = p.expected(p.seq(function*() {
-  yield p.spaces
+const _conditions = p.expected(p.seq(function*() {
+  const {value: expr2} = yield _condition1
+  yield p.spaces1
   const {value: lop} = yield LOP
   yield p.spaces1
-  const {value: condition} = yield _condition
+  const {value: expr1} = yield p.either(_conditions, _condition1)
 
-  return new t.ConditionWithLOP(lop, condition)
-}), "a logical oprator and condition")
+  return { data: lop, left: expr1, right: expr2 }
+}), "one or more conditions")
 
 /* const _bracket = p.expected(p.seq(function*() {
  *   yield p.string("(")
@@ -40,28 +40,17 @@ const _conditionWithLOP = p.expected(p.seq(function*() {
  *   yield p.string(")")
  *
  *   return conditions
- * }), "a expr included in bracket")
- * */
-export const expr = p.expected(p.either([_condition, _conditionWithLOP]))
+ * }), "a expr included in bracket")*/
+
+export const expr = p.expected(p.either([_conditions, _condition1]), "one or more expressions")
 
 export const caseLine = p.expected(p.seq(function*() {
   yield p.string("case")
   yield p.spaces1
-  const {value: s} = yield p.manyA(expr)
+  const {value: ast} = yield expr
   yield p.string(":")
   yield eol
-
-  return s.reduce((acc, expr) => {
-    switch (true) {
-      case t.isCondition(expr):
-        acc.details = [expr]
-        return acc
-      case t.isConditionWithLOP(expr):
-        acc.logics = [...acc.logics, expr.lop]
-        acc.details = [...acc.details, expr.condition]
-        return acc
-    }
-  }, { logics: [], details: [] })
+  return ast
 }), "a case line")
 
 export const defaultLine = p.expected(p.seq(function*() {
