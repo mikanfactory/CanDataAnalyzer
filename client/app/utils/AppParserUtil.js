@@ -1,5 +1,14 @@
 import * as p from 'eulalie'
 
+class ASTNode {
+  constructor(name, data, left, right) {
+    this.name = name
+    this.data = data
+    this.left = left
+    this.right = right
+  }
+}
+
 export const isEOL = (c) => /^\n$/.test(c)
 export const eol = p.expected(p.sat(isEOL), "a EOL")
 export const and = p.expected(p.string("&&"), "and operator")
@@ -21,28 +30,35 @@ const _condition1 = p.expected(p.seq(function*() {
   const {value: aop} = yield AOP
   yield p.spaces1
   const {value: value} = yield p.either(p.float, p.int)
-  return { data: aop, left: feature, right: value }
+  return new ASTNode("Condition", aop, feature, value)
 }))
 
 const _conditions = p.expected(p.seq(function*() {
-  const {value: expr2} = yield _condition1
+  const {value: expr1} = yield _condition1
   yield p.spaces1
   const {value: lop} = yield LOP
   yield p.spaces1
-  const {value: expr1} = yield p.either(_conditions, _condition1)
+  const {value: expr2} = yield expr
 
-  return { data: lop, left: expr1, right: expr2 }
+  return new ASTNode("Conditions", lop, expr1, expr2)
 }), "one or more conditions")
 
-/* const _bracket = p.expected(p.seq(function*() {
- *   yield p.string("(")
- *   const {value: conditions} = yield expr
- *   yield p.string(")")
- *
- *   return conditions
- * }), "a expr included in bracket")*/
+const _bracket = p.expected(p.seq(function*() {
+  yield p.char("(")
+  yield p.spaces
+  const {value: expr1} = yield _condition1
+  yield p.spaces1
+  const {value: lop} = yield LOP
+  yield p.spaces1
+  const {value: expr2} = yield expr
+  yield p.spaces
+  yield p.char(")")
 
-export const expr = p.expected(p.either([_conditions, _condition1]), "one or more expressions")
+  return new ASTNode("Bracket", lop, expr1, expr2)
+}), "a condition included in ()")
+
+export const expr = p.expected(p.either([_bracket, _conditions, _condition1]),
+                               "one or more expressions")
 
 export const caseLine = p.expected(p.seq(function*() {
   yield p.string("case")
