@@ -4,6 +4,7 @@
 import { assert } from "chai"
 import * as u from "../client/app/utils/AppParserUtil"
 import * as p from "eulalie"
+import zip from 'lodash/zip'
 
 class ASTNode {
   constructor(name, data, left, right) {
@@ -119,26 +120,9 @@ describe("Arithmetic Operators", () => {
 })
 
 describe("case line", () => {
-  const brakeAST = new ASTNode(
-    "Condition",
-    "==",
-    new ASTNode("Literal", "BrakeOnOff"),
-    new ASTNode("Literal", 1)
-  )
-
-  const accelAST = new ASTNode(
-    "Condition",
-    "==",
-    new ASTNode("Literal", "AcceleratorOnOff"),
-    new ASTNode("Literal", 0)
-  )
-
-  const speedAST = new ASTNode(
-    "Condition",
-    ">",
-    new ASTNode("Literal", "SpeedPerHourLowpass"),
-    new ASTNode("Literal", 50)
-  )
+  const brakeAST = new ASTNode("Condition", "==", "BrakeOnOff", 1)
+  const accelAST = new ASTNode("Condition", "==", "AcceleratorOnOff", 0)
+  const speedAST = new ASTNode("Condition", ">", "SpeedPerHourLowpass", 50)
 
   it("matches 1 condition", () => {
     const s1 = p.stream("case BrakeOnOff == 1:\n")
@@ -210,35 +194,89 @@ describe("case line", () => {
     const s1 = p.stream(str)
     const r1 = p.parse(u.caseLine, s1)
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
-    const expected = new ASTNode("Conditions", "&&", speedAST,
-                                 new ASTNode("Bracket", "||", brakeAST, accelAST)
+    const expected = new ASTNode(
+      "Conditions",
+      "&&",
+      new ASTNode("Bracket", "||", brakeAST, accelAST),
+      speedAST
     )
     assert.deepEqual(r1.value, expected)
   })
-  it("matches complex conditions [(&&) ||]", () => {
+})
+
+describe("toJSON", () => {
+  it("convert AST node to flatten expressions", () => {
     const str = [
       "case",
-      "(SpeedPerHourLowpass > 50",
-      "&&",
-      "BrakeOnOff == 1)",
+      "SpeedPerHourLowpass > 50",
       "||",
+      "BrakeOnOff == 1",
+      "&&",
       "AcceleratorOnOff == 0:\n"
     ].join(" ")
     const s1 = p.stream(str)
     const r1 = p.parse(u.caseLine, s1)
-    /* assert.isOk(p.isResult(r1), "parser output is not ParseResult")
-     * const expected = new ASTNode(
-     *   "Conditions",
-     *   "&&",
-     *   new ASTNode("Condition", ">", "SpeedPerHourLowpass", 50),
-     *   new ASTNode(
-     *     "Bracket",
-     *     "||",
-     *     new ASTNode("Condition", "==", "BrakeOnOff", 1),
-     *     new ASTNode("Condition", "==", "AcceleratorOnOff", 0)
-     *   )
-     * )
-     * assert.deepEqual(r1.value, expected)*/
+    assert.isOk(p.isResult(r1), "parser output is not ParseResult")
+
+    const fs = ["SpeedPerHourLowpass", "BrakeOnOff", "AcceleratorOnOff"]
+    const os = [">", "==", "=="]
+    const vs = [50, 1, 0]
+    const expect = zip(fs, os, vs).map( (m) => {
+      return { conditionID: 1, feature: m[0], operator: m[1], value: m[2] }
+    })
+    assert.deepEqual(u.toJSON(r1.value, 1), expect)
+  })
+  it("matches complex conditions [&& (||)]", () => {
+    const str = [
+      "case",
+      "SpeedPerHourLowpass > 50",
+      "&&",
+      "(BrakeOnOff == 1",
+      "||",
+      "AcceleratorOnOff == 0):\n"
+    ].join(" ")
+    const s1 = p.stream(str)
+    const r1 = p.parse(u.caseLine, s1)
+    assert.isOk(p.isResult(r1), "parser output is not ParseResult")
+
+    const fs = ["BrakeOnOff", "AcceleratorOnOff", "SpeedPerHourLowpass"]
+    const os = ["==", "==", ">"]
+    const vs = [1, 0, 50]
+    const expect = zip(fs, os, vs).map( (m) => {
+      return { conditionID: 1, feature: m[0], operator: m[1], value: m[2] }
+    })
+    assert.deepEqual(u.toJSON(r1.value, 1), expect)
+  })
+})
+
+describe("getLOPs", () => {
+  it("returns logical operators", () => {
+    const str = [
+      "case",
+      "SpeedPerHourLowpass > 50",
+      "||",
+      "BrakeOnOff == 1",
+      "&&",
+      "AcceleratorOnOff == 0:\n"
+    ].join(" ")
+    const s1 = p.stream(str)
+    const r1 = p.parse(u.caseLine, s1)
+    assert.isOk(p.isResult(r1), "parser output is not ParseResult")
+    assert.deepEqual(u.getLOPs(r1.value), ["||", "&&"])
+  })
+  it("matches complex conditions [&& (||)]", () => {
+    const str = [
+      "case",
+      "SpeedPerHourLowpass > 50",
+      "&&",
+      "(BrakeOnOff == 1",
+      "||",
+      "AcceleratorOnOff == 0):\n"
+    ].join(" ")
+    const s1 = p.stream(str)
+    const r1 = p.parse(u.caseLine, s1)
+    assert.isOk(p.isResult(r1), "parser output is not ParseResult")
+    assert.deepEqual(u.getLOPs(r1.value), ["||", "&&"])
   })
 })
 

@@ -23,15 +23,15 @@ interface Position {
 interface Condition {
   id:        number,            // unique
   settingID: number,
-  ast:       AST,
+  LOPs:      Array<string>,
   status:    string
 }
 
-interface AST {
-  name: string,
-  data: string | number,
-  left: AST,
-  right: AST,
+interface Expr {
+  conditionID: number,
+  feature:     string,
+  operator:    string,
+  value:       number
 }
 
 interface Modal {

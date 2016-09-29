@@ -1,4 +1,6 @@
 import * as p from 'eulalie'
+import compact from 'lodash/compact'
+import flatten from 'lodash/flatten'
 
 class ASTNode {
   constructor(name, data, left, right) {
@@ -7,6 +9,41 @@ class ASTNode {
     this.left = left
     this.right = right
   }
+}
+
+export function toJSON(node, conditionID) {
+  let [left, right] = [undefined, undefined]
+  if (node.name === "Condition") {
+    return {
+      conditionID: conditionID,
+      feature: node.left,
+      operator: node.data,
+      value: node.right
+    }
+  }
+
+  if (node.left) {
+    left = toJSON(node.left, conditionID)
+  }
+
+  if (node.right) {
+    right = toJSON(node.right, conditionID)
+  }
+
+  return compact(flatten([left, right]))
+}
+
+export function getLOPs(node) {
+  let [left, right] = [undefined, undefined]
+  if (node.left && node.left.name === "Conditions" || node.left.name === "Bracket") {
+    left = node.left.data
+  }
+
+  if (node.right && node.right.name === "Conditions" || node.right.name === "Bracket") {
+    right = node.right.data
+  }
+
+  return compact([left, right, node.data])
 }
 
 export const isEOL = (c) => /^\n$/.test(c)
@@ -31,9 +68,7 @@ const _condition1 = p.expected(p.seq(function*() {
   yield p.spaces1
   const {value: value} = yield p.either(p.float, p.int)
 
-  const left = new ASTNode("Literal", feature)
-  const right = new ASTNode("Literal", value)
-  return new ASTNode("Condition", aop, left, right)
+  return new ASTNode("Condition", aop, feature, value)
 }))
 
 const _conditions = p.expected(p.seq(function*() {
@@ -46,6 +81,10 @@ const _conditions = p.expected(p.seq(function*() {
   if (expr2.name === "Conditions") {
     let left = new ASTNode("Conditions", lop, expr1, expr2.left)
     return new ASTNode("Conditions", expr2.data, left, expr2.right)
+  }
+
+  if (expr2.name === "Bracket") {
+    return new ASTNode("Conditions", lop, expr2, expr1)
   }
 
   return new ASTNode("Conditions", lop, expr1, expr2)
