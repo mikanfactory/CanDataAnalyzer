@@ -1,4 +1,5 @@
 import * as p from 'eulalie'
+import * as t from './ParserTypes'
 
 export const isEOL = (c) => /^\n$/.test(c)
 export const eol = p.expected(p.sat(isEOL), "a EOL")
@@ -11,53 +12,56 @@ export const atMost = p.expected(p.string("<="), "at most operator")
 export const greaterThan = p.expected(p.string(">"), "greater than operator")
 export const lessThan = p.expected(p.string("<"), "less than operator")
 
-export const logicalOp = p.either(and, or)
-export const arithmeticOp = p.either([eq, neq, atLeast, atMost, greaterThan, lessThan])
+export const LOP = p.expected(p.either(and, or), "a logical operator")
+export const AOP = p.expected(p.either([eq, neq, atLeast, atMost, greaterThan, lessThan]),
+                              "a arithmetic operator")
 
 const _condition = p.expected(p.seq(function*() {
   const {value: feature} = yield p.many1(p.alphanum)
   yield p.spaces1
-  const {value: aop} = yield arithmeticOp
+  const {value: aop} = yield AOP
   yield p.spaces1
-  const {value: val} = yield p.either(p.int, p.float)
-  return { feature: feature, operator: aop, value: val }
+  const {value: value} = yield p.either(p.float, p.int)
+  return new t.Condition(feature, aop, value)
 }))
 
-export const condition1 = p.expected(p.seq(function*() {
-  const {value: c1} = yield _condition
-  return { logics: [], details: [c1] }
-}))
-
-export const condition2 = p.expected(p.seq(function*() {
-  const {value: c1} = yield _condition
+const _conditionWithLOP = p.expected(p.seq(function*() {
+  yield p.spaces
+  const {value: lop} = yield LOP
   yield p.spaces1
-  const {value: lop} = yield logicalOp
-  yield p.spaces1
-  const {value: c2} = yield _condition
-  return { logics: [lop], details: [c1, c2] }
-}))
+  const {value: condition} = yield _condition
 
-export const condition3 = p.expected(p.seq(function*() {
-  const {value: c12} = yield condition2
-  yield p.spaces1
-  const {value: op2} = yield logicalOp
-  yield p.spaces1
-  const {value: c3} = yield _condition
+  return new t.ConditionWithLOP(lop, condition)
+}), "a logical oprator and condition")
 
-  const [op1, details] = [c12.logics[0], c12.details]
-  return { logics: [op1, op2], details: [...details, c3] }
-}))
-
-export const conditions = p.expected(p.either([condition3, condition2, condition1]))
+/* const _bracket = p.expected(p.seq(function*() {
+ *   yield p.string("(")
+ *   const {value: conditions} = yield expr
+ *   yield p.string(")")
+ *
+ *   return conditions
+ * }), "a expr included in bracket")
+ * */
+export const expr = p.expected(p.either([_condition, _conditionWithLOP]))
 
 export const caseLine = p.expected(p.seq(function*() {
   yield p.string("case")
   yield p.spaces1
-  const {value: s} = yield conditions
+  const {value: s} = yield p.manyA(expr)
   yield p.string(":")
   yield eol
 
-  return s
+  return s.reduce((acc, expr) => {
+    switch (true) {
+      case t.isCondition(expr):
+        acc.details = [expr]
+        return acc
+      case t.isConditionWithLOP(expr):
+        acc.logics = [...acc.logics, expr.lop]
+        acc.details = [...acc.details, expr.condition]
+        return acc
+    }
+  }, { logics: [], details: [] })
 }), "a case line")
 
 export const defaultLine = p.expected(p.seq(function*() {

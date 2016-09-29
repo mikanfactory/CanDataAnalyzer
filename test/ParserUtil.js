@@ -54,12 +54,12 @@ describe("Logical Operators", () => {
   })
   it("logical oprerators", () => {
     const s1 = p.stream("&&")
-    const r1 = p.parse(u.logicalOp, s1)
+    const r1 = p.parse(u.LOP, s1)
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
     assert.equal(r1.value, "&&")
 
     const s2 = p.stream("||")
-    const r2 = p.parse(u.logicalOp, s2)
+    const r2 = p.parse(u.LOP, s2)
     assert.isOk(p.isResult(r2), "parser output is not ParseResult")
     assert.equal(r2.matched, "||")
   })
@@ -104,17 +104,17 @@ describe("Arithmetic Operators", () => {
   })
   it("arithmetic operators", () => {
     const s1 = p.stream("<=")
-    const r1 = p.parse(u.arithmeticOp, s1)
+    const r1 = p.parse(u.AOP, s1)
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
     assert.equal(r1.value, "<=")
 
     const s2 = p.stream("!=")
-    const r2 = p.parse(u.arithmeticOp, s2)
+    const r2 = p.parse(u.AOP, s2)
     assert.isOk(p.isResult(r2), "parser output is not ParseResult")
     assert.equal(r2.value, "!=")
 
     const s3 = p.stream("||")
-    const r3 = p.parse(u.arithmeticOp, s3)
+    const r3 = p.parse(u.AOP, s3)
     assert.isOk(p.isError(r3), "parser output is not ParseError")
   })
 })
@@ -126,7 +126,7 @@ describe("case line", () => {
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
     assert.deepEqual(r1.value, {
       logics: [],
-      details: [{ feature: "BrakeOnOff", operator: "==", value: 1 }]
+      details: [{ name: "Condition", feature: "BrakeOnOff", aop: "==", value: 1 }]
     })
   })
   it("matches 2 conditions", () => {
@@ -136,8 +136,8 @@ describe("case line", () => {
     assert.deepEqual(r1.value, {
       logics: ["||"],
       details: [
-        { feature: "BrakeOnOff", operator: "==", value: 1 },
-        { feature: "AcceleratorOnOff", operator: "==", value: 0 }
+        { name: "Condition", feature: "BrakeOnOff", aop: "==", value: 1 },
+        { name: "Condition", feature: "AcceleratorOnOff", aop: "==", value: 0 }
       ]
     })
   })
@@ -156,9 +156,9 @@ describe("case line", () => {
     assert.deepEqual(r1.value, {
       logics: ["&&", "||"],
       details: [
-        { feature: "SpeedPerHourLowpass", operator: ">", value: 50 },
-        { feature: "BrakeOnOff", operator: "==", value: 1 },
-        { feature: "AcceleratorOnOff", operator: "==", value: 0 }
+        { name: "Condition", feature: "SpeedPerHourLowpass", aop: ">", value: 50 },
+        { name: "Condition", feature: "BrakeOnOff", aop: "==", value: 1 },
+        { name: "Condition", feature: "AcceleratorOnOff", aop: "==", value: 0 }
       ]
     })
   })
