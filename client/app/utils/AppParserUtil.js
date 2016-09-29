@@ -40,6 +40,11 @@ const _conditions = p.expected(p.seq(function*() {
   yield p.spaces1
   const {value: expr2} = yield expr
 
+  if (expr2.name === "Conditions") {
+    let left = new ASTNode("Conditions", lop, expr1, expr2.left)
+    return new ASTNode("Conditions", expr2.data, left, expr2.right)
+  }
+
   return new ASTNode("Conditions", lop, expr1, expr2)
 }), "one or more conditions")
 

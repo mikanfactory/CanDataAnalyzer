@@ -162,14 +162,14 @@ describe("case line", () => {
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
     const expected = new ASTNode(
       "Conditions",
-      "&&",
-      new ASTNode("Condition", ">", "SpeedPerHourLowpass", 50),
+      "||",
       new ASTNode(
         "Conditions",
-        "||",
-        new ASTNode("Condition", "==", "BrakeOnOff", 1),
-        new ASTNode("Condition", "==", "AcceleratorOnOff", 0)
-      )
+        "&&",
+        new ASTNode("Condition", ">", "SpeedPerHourLowpass", 50),
+        new ASTNode("Condition", "==", "BrakeOnOff", 1)
+      ),
+      new ASTNode("Condition", "==", "AcceleratorOnOff", 0)
     )
     assert.deepEqual(r1.value, expected)
   })
