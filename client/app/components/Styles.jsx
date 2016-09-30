@@ -150,6 +150,7 @@ const ModalStyle = {
     TargetStyle: {
       marginLeft: "10px",
       fontSize: "28px",
+      height: "40px",
       width: "300px",
       display: "inline-block",
     },
@@ -162,6 +163,12 @@ const ModalStyle = {
     TitleStyle: {
       width: "130px",
       fontSize: "24px"
+    },
+
+    TextAreaStyle: {
+      width: "80%",
+      height: "445px",
+      margin: "0 20px"
     },
 
     OKButtonStyle: {

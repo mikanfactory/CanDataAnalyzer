@@ -9,10 +9,12 @@ const defaultSetting = {
 const defaultCondition = {
   id: 0,
   settingID: 0,
-  feature: "AccelerationX",
-  operator: "<",
-  value: 10,
-  status: "stop"
+  text: `switch (true) {
+  case BrakeOnOff == 1:
+    return red
+}`,
+  LOPs: [],
+  status: ""
 }
 
 const defaultDivideSize = 10
@@ -99,9 +101,7 @@ const AppConstants = {
     UPDATE_GOOGLE_MAP: null,
 
     // Condition
-    CREATE_CONDITION: null,
     UPDATE_CONDITION: null,
-    REMOVE_CONDITION: null,
 
     // Marker
     CREATE_MARKERS: null,

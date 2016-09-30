@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-func (c *Detail) evalRecord(record []string, nameToIndex map[string]int64) bool {
+func (c *Expr) evalRecord(record []string, nameToIndex map[string]int64) bool {
 	featureName := fmt.Sprintf("%s Ave", c.Feature)
 	aveI := nameToIndex[featureName]
 	average, _ := strconv.ParseFloat(record[aveI], 64)
