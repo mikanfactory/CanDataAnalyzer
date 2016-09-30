@@ -15,11 +15,17 @@ import reduce from 'lodash/reduce'
 // -> [{ location: LatLng, weight: number }, ...]
 //
 
-function _convertMarkersToGridIndices(markers, gridPoints) {
-  return markers.map( m => _findGridIndex(m, gridPoints) )
+export function convertMarkersToWeightedLocations(markers, gridPoints) {
+  const xs = convertMarkersToGridIndices(markers, gridPoints)
+  const ys = convertIndicesToCounts(xs)
+  return convertCountsToWeightedLocations(ys, gridPoints)
 }
 
-function _convertIndicesToCounts(indices) {
+export function convertMarkersToGridIndices(markers, gridPoints) {
+  return markers.map( m => findGridIndex(m, gridPoints) )
+}
+
+export function convertIndicesToCounts(indices) {
   const xs = groupBy(indices, 'index')
   return reduce(xs, function(acc, val, key) {
     acc[key] = val.length
@@ -27,7 +33,7 @@ function _convertIndicesToCounts(indices) {
   }, {})
 }
 
-function _convertCountsToWeightedLocations(counts, gridPoints) {
+function convertCountsToWeightedLocations(counts, gridPoints) {
   const divideSize = gridPoints.length
 
   return reduce(counts, function(acc, val, key) {
@@ -38,7 +44,7 @@ function _convertCountsToWeightedLocations(counts, gridPoints) {
   }, [])
 }
 
-function _findGridIndex(marker, gridPoints) {
+export function findGridIndex(marker, gridPoints) {
   const divideSize = gridPoints.length
 
   for (let i = 0; i < divideSize; i++) {
@@ -48,13 +54,11 @@ function _findGridIndex(marker, gridPoints) {
     }
     for (let j = 0; j < divideSize; j++) {
       const bounds = gridPoints[i][j]
-      if (bounds.west < marker.position.lng) {
+      if (bounds.west <= marker.position.lng) {
         return { index: i*divideSize + j }
       }
     }
   }
-
-  throw new Error("Couldn't find index of the grid!!")
 }
 
 function _convertIndexToGrid(index, divideSize) {
@@ -68,11 +72,3 @@ function _getCenter(gridPoint) {
   const lng = (gridPoint.east + gridPoint.west)/2
   return new window.google.maps.LatLng({ lat: lat, lng: lng })
 }
-
-function convertMarkersToWeightedLocations(markers, gridPoints) {
-  const xs = _convertMarkersToGridIndices(markers, gridPoints)
-  const ys = _convertIndicesToCounts(xs)
-  return _convertCountsToWeightedLocations(ys, gridPoints)
-}
-
-export default convertMarkersToWeightedLocations

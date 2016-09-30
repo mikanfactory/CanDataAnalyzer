@@ -10,3 +10,4 @@ Godeps/_workspace
 data/*
 config/config.toml
 /TAGS
+npm-debug.log

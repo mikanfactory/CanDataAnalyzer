@@ -13,7 +13,7 @@ const CHANGE_EVENT = 'change'
 
 let _store = {
   currentID: 1,
-  conditions: []
+  conditions: [],
 }
 
 function _updateCondition(condition) {
@@ -33,12 +33,8 @@ function _getAndCountUpId() {
   return cid
 }
 
-function _removeConditions(sid) {
+function _removeCondition(sid) {
   _store.conditions = _store.conditions.filter( c => c.settingID !== sid )
-}
-
-function _removeCondition(id) {
-  _store.conditions = _store.conditions.filter( c => c.id !== id )
 }
 
 class ConditionStoreClass extends EventEmitter {
@@ -58,8 +54,8 @@ class ConditionStoreClass extends EventEmitter {
     this.removeListener(CHANGE_EVENT, callback)
   }
 
-  getConditions(sid) {
-    return _store.conditions.filter( c => c.settingID === sid )
+  getCondition(sid) {
+    return _store.conditions.find( c => c.settingID === sid )
   }
 }
 
@@ -68,18 +64,8 @@ const ConditionStore = new ConditionStoreClass()
 ConditionStore.dispatchToken = AppDispatcher.register((action) => {
 
   switch (action.actionType) {
-    case ActionTypes.CREATE_CONDITION:
-      _createCondition(action.settingID)
-      ConditionStore.emitChange()
-      break
-
     case ActionTypes.UPDATE_CONDITION:
       _updateCondition(action.condition)
-      ConditionStore.emitChange()
-      break
-
-    case ActionTypes.REMOVE_CONDITION:
-      _removeCondition(action.id)
       ConditionStore.emitChange()
       break
 
@@ -90,7 +76,7 @@ ConditionStore.dispatchToken = AppDispatcher.register((action) => {
       break
 
     case ActionTypes.CANCEL_MODAL:
-      _removeConditions(action.settingID)
+      _removeCondition(action.settingID)
       ConditionStore.emitChange()
       break
 

@@ -5,6 +5,7 @@ interface Setting {
   id:     number,               // unique
   target: string,
   title:  string,
+  text:   string,
 }
 
 interface Marker {
@@ -22,11 +23,15 @@ interface Position {
 
 interface Condition {
   id:        number,            // unique
-  settingID: number,
-  feature:   string,
-  operator:  Operator,
-  value:     number,
-  status:    Status
+  LOPs:      Array<string>,
+  status:    string
+}
+
+interface Expr {
+  conditionID: number,
+  feature:     string,
+  operator:    string,
+  value:       number
 }
 
 interface Modal {

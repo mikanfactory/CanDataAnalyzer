@@ -36,9 +36,13 @@ const ConditionFormStyle = {
     paddingTop: "20px",
   },
 
+  CaseTextStyle: {
+    fontSize: "24px",
+    marginLeft: "30px"
+  },
+
   RawTextStyle: {
     fontSize: "24px",
-    margin: "0 20px"
   },
 
   TextStyle: {
@@ -47,7 +51,6 @@ const ConditionFormStyle = {
   },
 
   SelectStyle: {
-    marginRight: "20px"
   }
 }
 
@@ -147,6 +150,7 @@ const ModalStyle = {
     TargetStyle: {
       marginLeft: "10px",
       fontSize: "28px",
+      height: "40px",
       width: "300px",
       display: "inline-block",
     },
@@ -159,6 +163,12 @@ const ModalStyle = {
     TitleStyle: {
       width: "130px",
       fontSize: "24px"
+    },
+
+    TextAreaStyle: {
+      width: "95%",
+      height: "445px",
+      margin: "20px"
     },
 
     OKButtonStyle: {

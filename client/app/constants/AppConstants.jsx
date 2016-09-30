@@ -3,16 +3,15 @@ import keyMirror from 'keymirror'
 const defaultSetting = {
   id: 0,
   target: "021021K1KAm",
-  title: "default"
-}
-
-const defaultCondition = {
-  id: 0,
-  settingID: 0,
-  feature: "AccelerationX",
-  operator: "<",
-  value: 10,
-  status: "stop"
+  title: "default",
+  text: `switch (true) {
+  case SpeedPerHourLowpass > 50 && (BrakeOnOff == 1 || AccelOnOff == 1):
+    return red
+  case SpeedPerHourLowpass < 10:
+    return stop
+  default:
+    return none
+}`
 }
 
 const defaultDivideSize = 10
@@ -21,6 +20,17 @@ const defaultModal = {
   modalType: "",
   settingID: 0
 }
+
+const NUMBERS = [
+  "Single",
+  "Double",
+  "Triple"
+]
+
+const LOGICS = [
+  "and",
+  "or"
+]
 
 const TARGETS = [
   "Target",
@@ -45,8 +55,8 @@ const FEATURES = [
   "AccelerationX",
   "GPSLatitude",
   "GPSLongtitude",
-  "MapLongtitude",
   "MapLatitude",
+  "MapLongtitude",
   "SpeedPerHourLowpass",
   "BrakeOnOff",
   "AcceleratorOnOff",
@@ -67,8 +77,8 @@ const STATUS = [
 ]
 
 
-export { defaultSetting, defaultCondition, defaultModal, defaultDivideSize }
-export { TARGETS, FEATURES, OPERATORS, STATUS }
+export { defaultSetting, defaultModal, defaultDivideSize }
+export { NUMBERS, LOGICS, TARGETS, FEATURES, OPERATORS, STATUS }
 
 const AppConstants = {
   ModalTypes: {
@@ -88,9 +98,7 @@ const AppConstants = {
     UPDATE_GOOGLE_MAP: null,
 
     // Condition
-    CREATE_CONDITION: null,
     UPDATE_CONDITION: null,
-    REMOVE_CONDITION: null,
 
     // Marker
     CREATE_MARKERS: null,
