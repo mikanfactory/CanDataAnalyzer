@@ -1,6 +1,5 @@
 import React from 'react'
 import Rodal from 'rodal'
-import ConditionForm from './ConditionForm'
 import ModalActions from '../actions/ModalActions'
 import SettingActions from '../actions/SettingActions'
 import MarkerActions from '../actions/MarkerActions'
@@ -20,16 +19,15 @@ import partial from 'lodash/partial'
 
 const ModalTypes = AppConstants.ModalTypes
 
-// TODO:
 function getStateFromStores() {
   const modal = ModalStore.getVisibleModal()
   const setting = SettingStore.getSetting(modal.settingID)
-  const conditions = ConditionStore.getConditions(modal.settingID)
+  const condition = ConditionStore.getCondition(modal.settingID)
 
   return {
     modal: modal,
     setting: setting,
-    conditions: conditions
+    condition: condition
   }
 }
 
@@ -39,22 +37,11 @@ export default class Modal extends React.Component {
     this.state = getStateFromStores()
 
     this.getHeaderNode = this.getHeaderNode.bind(this)
-    this.handleCreateCondition = this.handleCreateCondition.bind(this)
-    this.handleRemoveCondition = this.handleRemoveCondition.bind(this)
+    this.getTextArea = this.getTextArea.bind(this)
     this.handleModalCancel = this.handleModalCancel.bind(this)
+    this.handleConditionChange = this.handleConditionChange.bind(this)
     this.handleFetchMarkers = this.handleFetchMarkers.bind(this)
     this._onChange = this._onChange.bind(this)
-  }
-
-  handleCreateCondition() {
-    ConditionActions.createCondition(this.state.setting.id)
-  }
-
-  handleRemoveCondition() {
-    if (this.state.conditions.length < 2)  return
-
-    const cnd = last(this.state.conditions)
-    ConditionActions.removeCondition(cnd.id)
   }
 
   handleModalCancel() {
@@ -87,11 +74,6 @@ export default class Modal extends React.Component {
     }
   }
 
-  // TODO:
-  getForm(condition, i) {
-    return <ConditionForm key={i} {...condition} />
-  }
-
   getHeaderNode() {
     if (!this.state.modal) return ""
 
@@ -117,7 +99,9 @@ export default class Modal extends React.Component {
   }
 
   getTargetNode() {
-    const options = TARGETS.map( (o, i) => <option key={i} value={o}>{o}</option> )
+    const options = TARGETS.map( (o, i) =>
+      <option key={i} value={o}>{o}</option>
+    )
     return (
       <select className="form-control target" style={s.TargetStyle}
               defaultValue="Target"
@@ -134,18 +118,14 @@ export default class Modal extends React.Component {
     )
   }
 
-  getCreateAndRemoveButtons() {
+  getTextArea() {
+    if (!this.state.condition) return
+
     return (
-      <div style={{ width: "100%" }}>
-        <span style={{ paddingRight: "20px" }}>Conditions</span>
-        <span className="glyphicon glyphicon-plus-sign"
-              onClick={this.handleCreateCondition}>
-        </span>
-        <span className="glyphicon glyphicon-minus-sign"
-              style={{marginLeft: "10px"}}
-              onClick={this.handleRemoveCondition}>
-        </span>
-      </div>
+      <textarea defaultValue={this.state.condition.text}
+                style={s.TextAreaStyle}
+                onChange={this.handleConditionChange}>
+      </textarea>
     )
   }
 
@@ -154,6 +134,13 @@ export default class Modal extends React.Component {
     tmp[key] = e.target.value
     const setting = assign({}, this.state.setting, tmp)
     SettingActions.updateSetting(setting)
+  }
+
+  handleConditionChange(e) {
+    const condition = assign({},
+                             this.state.condition,
+                             {text: e.target.value})
+    ConditionActions.updateCondition(condition)
   }
 
   componentDidMount() {
@@ -169,18 +156,17 @@ export default class Modal extends React.Component {
   }
 
   render() {
-    const formNodes = this.state.conditions.map(this.getForm)
-
     return (
       <Rodal visible={!!this.state.setting} width={1300} height={720}
              onClose={this.handleModalCancel}>
         {this.getHeaderNode()}
         <div className="ModalBody" style={s.BodyStyle}>
-          {this.getCreateAndRemoveButtons()}
-
           <div className="ConditionsContainer">
+            <div style={{ width: "100%" }}>
+              <span style={{ paddingRight: "20px" }}>Conditions</span>
+            </div>
             <form className="form-inline">
-              {formNodes}
+              {this.getTextArea()}
             </form>
           </div>
         </div>
