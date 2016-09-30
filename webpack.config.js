@@ -11,6 +11,7 @@ module.exports = {
   },
   module: {
     loaders: [
+      { test: /\.json$/, loader: 'json' },
       {
         test: /\.js(x?)$/,
         cacheDirectory: true,
