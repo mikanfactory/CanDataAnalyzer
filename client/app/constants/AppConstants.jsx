@@ -1,4 +1,10 @@
 import keyMirror from 'keymirror'
+import targets from '../../../config/targets.json'
+import features from '../../../config/cacheConfig.json'
+
+const validFeatures = features.columns
+                              .filter( c => c.read )
+                              .map( c => c.name )
 
 const defaultSetting = {
   id: 0,
@@ -34,35 +40,11 @@ const LOGICS = [
 
 const TARGETS = [
   "Target",
-  "021021K1KAm",
-  "021022K1KAm",
-  "021023K1KAm",
-  "021024K1KAm",
-  "021025K1KAm",
-  "021026K1KAm",
-  "021027K1KAm",
-  "021028K1KAm",
-  "021029K1KAm",
-  "021030K1KAm",
-  "021031K1KAm",
-  "021101K1KAm",
-  "021021K2KBm",
-  "021023K2KBm",
-  "021024K2KBm",
+  ...targets.names
  ]
 
 const FEATURES = [
-  "AccelerationX",
-  "GPSLatitude",
-  "GPSLongtitude",
-  "MapLatitude",
-  "MapLongtitude",
-  "SpeedPerHourLowpass",
-  "BrakeOnOff",
-  "AcceleratorOnOff",
-  "Steering Angle",
-  "AheadDistance",
-  "AheadRelativitySpeed"
+  ...validFeatures
 ]
 
 const OPERATORS = [
