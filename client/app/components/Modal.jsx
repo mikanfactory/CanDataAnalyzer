@@ -106,7 +106,7 @@ export default class Modal extends React.Component {
 
     if (this.state.modal.modalType === ModalTypes.EDIT) {
       const { setting } = this.state
-      const header = "Edit: " + setting.target + "  " + setting.title
+      const header = `Edit: ${setting.target}  ${setting.title}`
       return (
         <div className="ModalHeader" style={s.HeaderStyle}>
           {header}

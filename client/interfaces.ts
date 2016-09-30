@@ -8,7 +8,7 @@ interface Setting {
 }
 
 interface Marker {
-  id:          number,             // unique in same marker lists
+  id:          number,          // unique in same marker lists
   settingID:   number,
   image:       string,
   position:    Position,
@@ -21,19 +21,17 @@ interface Position {
 }
 
 interface Condition {
-  id:            number,            // unique
-  settingID:     number,
-  detailNumber:  number,
-  logics:        Array<string>,
-  status:        Status
+  id:        number,            // unique
+  settingID: number,
+  LOPs:      Array<string>,
+  status:    string
 }
 
-interface Details {
-  id: number,
+interface Expr {
   conditionID: number,
-  feature:   string,
-  operator:  Operator,
-  value:     number,
+  feature:     string,
+  operator:    string,
+  value:       number
 }
 
 interface Modal {
@@ -41,24 +39,11 @@ interface Modal {
   settingID: number
 }
 
-enum Operator {
-  Equal                = "=",
-  GreaterThan          = ">",
-  GreaterThanOrEqualTo = ">="
-  LessThan             = "<",
-  LessThanOrEqualTo    = "<="
-}
+type Operator = "=" | ">" | ">=" | "<" | "<="
 
-enum Status {
-  Green    = "green",
-  Yello    = "yellow",
-  Red      = "red",
-  Up       = "up",
-  Down     = "down",
-  Right    = "right",
-  Left     = "left",
-  Straight = "straight",
-  Stop     = "stop",
-  Empty    = "empty",
-  Normal   = "normal"
-}
+type Status =
+  "green" | "yellow" | "red" |
+  "up" | "down" |
+  "right" | "left" |
+  "straight" | "stop" |
+  "empty" | "normal"
