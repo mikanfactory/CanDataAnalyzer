@@ -14,12 +14,21 @@ class ASTNode {
 export function toJSON(node, conditionID) {
   let [left, right] = [undefined, undefined]
   if (node.name === "Condition") {
-    return {
+    return [{
       conditionID: conditionID,
       feature: node.left,
       operator: node.data,
       value: node.right
-    }
+    }]
+  }
+
+  if (node.name === "Default") {
+    return [{
+      conditionID: conditionID,
+      feature: node.data,
+      operator: "",
+      value: 0
+    }]
   }
 
   if (node.left) {
@@ -34,16 +43,23 @@ export function toJSON(node, conditionID) {
 }
 
 export function getLOPs(node) {
-  let [left, right] = [undefined, undefined]
-  if (node.left && node.left.name === "Conditions" || node.left.name === "Bracket") {
+  let [data, left, right] = [undefined, undefined, undefined]
+  if (node.left && (node.left.name === "Conditions" || node.left.name === "Bracket")) {
     left = node.left.data
   }
 
-  if (node.right && node.right.name === "Conditions" || node.right.name === "Bracket") {
+  if (node.right && (node.right.name === "Conditions" || node.right.name === "Bracket")) {
     right = node.right.data
   }
 
-  return compact([left, right, node.data])
+  if (node.name !== "Default" && node.name !== "Condition") {
+    data = node.data
+  }
+
+  return compact([left, right, data])
+}
+
+export function parseAll(text) {
 }
 
 export const isEOL = (c) => /^\n$/.test(c)
@@ -113,6 +129,7 @@ export const caseLine = p.expected(p.seq(function*() {
   const {value: ast} = yield expr
   yield p.string(":")
   yield eol
+
   return ast
 }), "a case line")
 
@@ -120,7 +137,7 @@ export const defaultLine = p.expected(p.seq(function*() {
   yield p.string("default:")
   yield eol
 
-  return "default"
+  return new ASTNode("Default", "default", "", 0)
 }), "a default line")
 
 export const returnLine = p.expected(p.seq(function*() {
@@ -129,5 +146,23 @@ export const returnLine = p.expected(p.seq(function*() {
   yield p.spaces1
   const {value: image} = yield p.many1(p.alphanum)
   yield p.spaces
+
   return image
 }), "a return line")
+
+export function conditionBlock(id) {
+  return p.expected(p.seq(function*() {
+    const {value: ast} = yield p.either([defaultLine, caseLine])
+    const {value: image} = yield returnLine
+
+    const exprs = toJSON(ast, id)
+    const LOPs = getLOPs(ast)
+    return { exprs: exprs, LOPs: LOPs, status: image }
+  }), "a pair of case or default line and return line")
+}
+
+export const switchSentence = p.expected(p.seq(function*() {
+  yield p.string("switch (true) {")
+  const {value: v} = p.many1(conditionBlock)
+  yield p.string("}")
+}))

@@ -285,15 +285,55 @@ describe("default line", () => {
     const s1 = p.stream("default:\n")
     const r1 = p.parse(u.defaultLine, s1)
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
-    assert.deepEqual(r1.value, "default")
+    assert.deepEqual(r1.value, new ASTNode("Default", "default", "", 0))
   })
 })
 
 describe("return line", () => {
   it("matches return string and image", () => {
-    const s1 = p.stream("return red:\n")
+    const s1 = p.stream("return red\n")
     const r1 = p.parse(u.returnLine, s1)
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
     assert.deepEqual(r1.value, "red")
+  })
+})
+
+describe("conditionBlock", () => {
+  const oneCaseLine = `case BrakeOnOff == 1:
+return red
+`
+  const defaultLine = `default:
+return red
+`
+  it("matches default line", () => {
+    const s1 = p.stream(defaultLine)
+    const r1 = p.parse(u.conditionBlock(1), s1)
+    assert.isOk(p.isResult(r1), "parser output is not ParseResult")
+    assert.deepEqual(r1.value, {
+      exprs: [{
+        conditionID: 1,
+        feature: "default",
+        operator: "",
+        value: 0
+      }],
+      LOPs: [],
+      status: "red"
+    })
+  })
+
+  it("matches one case line", () => {
+    const s1 = p.stream(oneCaseLine)
+    const r1 = p.parse(u.conditionBlock(1), s1)
+    assert.isOk(p.isResult(r1), "parser output is not ParseResult")
+    assert.deepEqual(r1.value, {
+      exprs: [{
+        conditionID: 1,
+        feature: "BrakeOnOff",
+        operator: "==",
+        value: 1
+      }],
+      LOPs: [],
+      status: "red"
+    })
   })
 })
