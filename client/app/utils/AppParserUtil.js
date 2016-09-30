@@ -11,6 +11,24 @@ class ASTNode {
   }
 }
 
+function createCondition(id, LOPs, status) {
+  return {
+    id: id,
+    settingID: 0,
+    LOPs: LOPs,
+    status: status
+  }
+}
+
+function createExpr(id, feature, operator, value) {
+  return {
+    conditionID: id,
+    feature: feature,
+    operator: operator,
+    value: value
+  }
+}
+
 export function toJSON(node, conditionID) {
   let [left, right] = [undefined, undefined]
   if (node.name === "Condition") {
@@ -161,8 +179,22 @@ export function conditionBlock(id) {
   }), "a pair of case or default line and return line")
 }
 
-export const switchSentence = p.expected(p.seq(function*() {
-  yield p.string("switch (true) {")
-  const {value: v} = p.many1(conditionBlock)
-  yield p.string("}")
-}))
+export function switchSentence(id) {
+  return p.expected(p.seq(function*() {
+    yield p.string("switch (true) {")
+    yield eol
+    yield p.spaces
+    const {value: results} = yield p.many1A(conditionBlock(id))
+    yield p.maybe(eol)
+    yield p.string("}")
+
+    return results.reduce( (acc, res, i) => {
+      const { exprs, LOPs, status } = res
+      const cond = createCondition(i, LOPs, status)
+      return {
+        conditions: [...acc.conditions, cond],
+        expressions: [...acc.expressions, ...exprs]
+      }
+    }, { conditions: [], expressions: [] })
+  }), "a switch sentence")
+}

@@ -337,3 +337,29 @@ return red
     })
   })
 })
+
+describe("switchSentence", () => {
+  const switchSentence = `switch (true) {
+  case BrakeOnOff == 1:
+    return red
+  default:
+    return green
+}`
+
+  const expr1 = {conditionID: 1, feature: "BrakeOnOff", operator: "==", value: 1}
+  const expr2 = {conditionID: 1, feature: "default", operator: "", value: 0}
+
+  const cond1 = {id: 1, settingID: 1, LOPs: [], status: "red"}
+  const cond2 = {id: 1, settingID: 1, LOPs: [], status: "green"}
+  it("matches one case line", () => {
+    const s1 = p.stream(switchSentence)
+    const r1 = p.parse(u.switchSentence(1), s1)
+    assert.isOk(p.isResult(r1), "parser output is not ParseResult")
+
+
+    assert.deepEqual(r1.value, {
+      conditions: [cond1, cond2],
+      expressions: [expr1, expr2]
+    })
+  })
+})

@@ -5,6 +5,7 @@ interface Setting {
   id:     number,               // unique
   target: string,
   title:  string,
+  text:   string,
 }
 
 interface Marker {
@@ -20,12 +21,9 @@ interface Position {
   lng: number
 }
 
-// observe text in react, and when send to server,
-// parse text -> (LOPs, status)
 interface Condition {
   id:        number,            // unique
   settingID: number,
-  text:      string,
   LOPs:      Array<string>,
   status:    string
 }
