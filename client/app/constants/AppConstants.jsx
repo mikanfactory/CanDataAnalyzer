@@ -3,18 +3,11 @@ import keyMirror from 'keymirror'
 const defaultSetting = {
   id: 0,
   target: "021021K1KAm",
-  title: "default"
-}
-
-const defaultCondition = {
-  id: 0,
-  settingID: 0,
+  title: "default",
   text: `switch (true) {
   case BrakeOnOff == 1:
     return red
-}`,
-  LOPs: [],
-  status: ""
+}`
 }
 
 const defaultDivideSize = 10
@@ -80,7 +73,7 @@ const STATUS = [
 ]
 
 
-export { defaultSetting, defaultCondition, defaultModal, defaultDivideSize }
+export { defaultSetting, defaultModal, defaultDivideSize }
 export { NUMBERS, LOGICS, TARGETS, FEATURES, OPERATORS, STATUS }
 
 const AppConstants = {

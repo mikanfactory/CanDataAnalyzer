@@ -15,7 +15,7 @@ module.exports = {
         test: /\.js(x?)$/,
         cacheDirectory: true,
         exclude: [/node_modules/],
-        loader: 'babel-loader?presets[]=es2015&presets[]=react'
+        loader: 'babel-loader?presets[]=es2015-node5&presets[]=react'
       }
     ]
   },

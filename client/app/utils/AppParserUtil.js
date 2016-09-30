@@ -14,7 +14,6 @@ class ASTNode {
 function createCondition(id, LOPs, status) {
   return {
     id: id,
-    settingID: 0,
     LOPs: LOPs,
     status: status
   }
@@ -29,11 +28,10 @@ function createExpr(id, feature, operator, value) {
   }
 }
 
-export function toJSON(node, conditionID) {
+export function toJSON(node) {
   let [left, right] = [undefined, undefined]
   if (node.name === "Condition") {
     return [{
-      conditionID: conditionID,
       feature: node.left,
       operator: node.data,
       value: node.right
@@ -42,7 +40,6 @@ export function toJSON(node, conditionID) {
 
   if (node.name === "Default") {
     return [{
-      conditionID: conditionID,
       feature: node.data,
       operator: "",
       value: 0
@@ -50,11 +47,11 @@ export function toJSON(node, conditionID) {
   }
 
   if (node.left) {
-    left = toJSON(node.left, conditionID)
+    left = toJSON(node.left)
   }
 
   if (node.right) {
-    right = toJSON(node.right, conditionID)
+    right = toJSON(node.right)
   }
 
   return compact(flatten([left, right]))
@@ -168,33 +165,32 @@ export const returnLine = p.expected(p.seq(function*() {
   return image
 }), "a return line")
 
-export function conditionBlock(id) {
-  return p.expected(p.seq(function*() {
-    const {value: ast} = yield p.either([defaultLine, caseLine])
-    const {value: image} = yield returnLine
+export const conditionBlock = p.expected(p.seq(function*() {
+  const {value: ast} = yield p.either([defaultLine, caseLine])
+  const {value: image} = yield returnLine
 
-    const exprs = toJSON(ast, id)
-    const LOPs = getLOPs(ast)
-    return { exprs: exprs, LOPs: LOPs, status: image }
-  }), "a pair of case or default line and return line")
-}
+  const exprs = toJSON(ast)
+  const LOPs = getLOPs(ast)
+  return { exprs: exprs, LOPs: LOPs, status: image }
+}), "a pair of case or default line and return line")
 
-export function switchSentence(id) {
-  return p.expected(p.seq(function*() {
-    yield p.string("switch (true) {")
-    yield eol
-    yield p.spaces
-    const {value: results} = yield p.many1A(conditionBlock(id))
-    yield p.maybe(eol)
-    yield p.string("}")
+export const switchSentence = p.expected(p.seq(function*() {
+  yield p.string("switch (true) {")
+  yield eol
+  yield p.spaces
+  const {value: results} = yield p.many1A(conditionBlock)
+  yield p.maybe(eol)
+  yield p.string("}")
 
-    return results.reduce( (acc, res, i) => {
-      const { exprs, LOPs, status } = res
-      const cond = createCondition(i, LOPs, status)
-      return {
-        conditions: [...acc.conditions, cond],
-        expressions: [...acc.expressions, ...exprs]
-      }
-    }, { conditions: [], expressions: [] })
-  }), "a switch sentence")
-}
+  return results.reduce( (acc, res, id) => {
+    const { exprs, LOPs, status } = res
+    const cond = createCondition(id, LOPs, status)
+    const newExprs = exprs.map( expr => {
+      return createExpr(id, expr.feature, expr.operator, expr.value)
+    })
+    return {
+      conditions: [...acc.conditions, cond],
+      expressions: [...acc.expressions, ...newExprs]
+    }
+  }, { conditions: [], expressions: [] })
+}), "a switch sentence")

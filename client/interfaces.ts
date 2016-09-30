@@ -23,7 +23,6 @@ interface Position {
 
 interface Condition {
   id:        number,            // unique
-  settingID: number,
   LOPs:      Array<string>,
   status:    string
 }

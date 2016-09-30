@@ -222,7 +222,7 @@ describe("toJSON", () => {
     const os = [">", "==", "=="]
     const vs = [50, 1, 0]
     const expect = zip(fs, os, vs).map( (m) => {
-      return { conditionID: 1, feature: m[0], operator: m[1], value: m[2] }
+      return { feature: m[0], operator: m[1], value: m[2] }
     })
     assert.deepEqual(u.toJSON(r1.value, 1), expect)
   })
@@ -243,7 +243,7 @@ describe("toJSON", () => {
     const os = ["==", "==", ">"]
     const vs = [1, 0, 50]
     const expect = zip(fs, os, vs).map( (m) => {
-      return { conditionID: 1, feature: m[0], operator: m[1], value: m[2] }
+      return { feature: m[0], operator: m[1], value: m[2] }
     })
     assert.deepEqual(u.toJSON(r1.value, 1), expect)
   })
@@ -307,11 +307,10 @@ return red
 `
   it("matches default line", () => {
     const s1 = p.stream(defaultLine)
-    const r1 = p.parse(u.conditionBlock(1), s1)
+    const r1 = p.parse(u.conditionBlock, s1)
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
     assert.deepEqual(r1.value, {
       exprs: [{
-        conditionID: 1,
         feature: "default",
         operator: "",
         value: 0
@@ -323,11 +322,10 @@ return red
 
   it("matches one case line", () => {
     const s1 = p.stream(oneCaseLine)
-    const r1 = p.parse(u.conditionBlock(1), s1)
+    const r1 = p.parse(u.conditionBlock, s1)
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
     assert.deepEqual(r1.value, {
       exprs: [{
-        conditionID: 1,
         feature: "BrakeOnOff",
         operator: "==",
         value: 1
@@ -346,16 +344,15 @@ describe("switchSentence", () => {
     return green
 }`
 
-  const expr1 = {conditionID: 1, feature: "BrakeOnOff", operator: "==", value: 1}
+  const cond1 = {id: 0, LOPs: [], status: "red"}
+  const cond2 = {id: 1, LOPs: [], status: "green"}
+  const expr1 = {conditionID: 0, feature: "BrakeOnOff", operator: "==", value: 1}
   const expr2 = {conditionID: 1, feature: "default", operator: "", value: 0}
 
-  const cond1 = {id: 1, settingID: 1, LOPs: [], status: "red"}
-  const cond2 = {id: 1, settingID: 1, LOPs: [], status: "green"}
   it("matches one case line", () => {
     const s1 = p.stream(switchSentence)
-    const r1 = p.parse(u.switchSentence(1), s1)
+    const r1 = p.parse(u.switchSentence, s1)
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
-
 
     assert.deepEqual(r1.value, {
       conditions: [cond1, cond2],
