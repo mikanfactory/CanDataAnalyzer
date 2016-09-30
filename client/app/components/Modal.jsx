@@ -3,11 +3,10 @@ import Rodal from 'rodal'
 import ModalActions from '../actions/ModalActions'
 import SettingActions from '../actions/SettingActions'
 import MarkerActions from '../actions/MarkerActions'
-import ConditionActions from '../actions/ConditionActions'
 import ModalStore from '../stores/ModalStore'
 import SettingStore from '../stores/SettingStore'
-import ConditionStore from '../stores/ConditionStore'
 import AppConstants from '../constants/AppConstants'
+import { switchSentence } from '../utils/AppParserUtil'
 import { TARGETS } from '../constants/AppConstants.jsx'
 import { ModalStyle as s } from './Styles'
 
@@ -16,18 +15,17 @@ import  { fetchMarkers } from '../utils/AppWebAPIUtils'
 import assign from 'object-assign'
 import last from 'lodash/last'
 import partial from 'lodash/partial'
+import * as p from 'eulalie'
 
 const ModalTypes = AppConstants.ModalTypes
 
 function getStateFromStores() {
   const modal = ModalStore.getVisibleModal()
   const setting = SettingStore.getSetting(modal.settingID)
-  const condition = ConditionStore.getCondition(modal.settingID)
 
   return {
     modal: modal,
     setting: setting,
-    condition: condition
   }
 }
 
@@ -37,9 +35,7 @@ export default class Modal extends React.Component {
     this.state = getStateFromStores()
 
     this.getHeaderNode = this.getHeaderNode.bind(this)
-    this.getTextArea = this.getTextArea.bind(this)
     this.handleModalCancel = this.handleModalCancel.bind(this)
-    this.handleConditionChange = this.handleConditionChange.bind(this)
     this.handleFetchMarkers = this.handleFetchMarkers.bind(this)
     this._onChange = this._onChange.bind(this)
   }
@@ -54,9 +50,22 @@ export default class Modal extends React.Component {
   }
 
   handleFetchMarkers() {
-    const id = this.state.setting.id
-    const cnds = this.state.conditions.filter( c => c.settingID === id )
+    const { id, text } = this.state.setting
+    const stream = p.stream(text)
+    const result = p.parse(switchSentence, stream)
+    if (p.isError(result)) {
+      console.log(result)
+      console.log(result.print())
+      return
+    }
+    const exprs = result.value.expressions
+    const cnds = result.value.conditions.map( cnd => {
+      const es = exprs.filter( e => e.conditionID === cnd.id )
+      return assign({}, cnd, { exprs: es })
+    })
+
     const data = assign({}, this.state.setting, { conditions: cnds })
+    console.log(data)
 
     if (this.state.modal.modalType === ModalTypes.NEW) {
       fetchMarkers(data, markers => {
@@ -76,7 +85,6 @@ export default class Modal extends React.Component {
 
   getHeaderNode() {
     if (!this.state.modal) return ""
-
 
     if (this.state.modal.modalType === ModalTypes.NEW) {
       return (
@@ -119,12 +127,12 @@ export default class Modal extends React.Component {
   }
 
   getTextArea() {
-    if (!this.state.condition) return
+    if (!this.state.setting) return
 
     return (
-      <textarea defaultValue={this.state.condition.text}
+      <textarea defaultValue={this.state.setting.text}
                 style={s.TextAreaStyle}
-                onChange={this.handleConditionChange}>
+                onChange={this.handleSettingChange.bind(this, "text")}>
       </textarea>
     )
   }
@@ -136,23 +144,14 @@ export default class Modal extends React.Component {
     SettingActions.updateSetting(setting)
   }
 
-  handleConditionChange(e) {
-    const condition = assign({},
-                             this.state.condition,
-                             {text: e.target.value})
-    ConditionActions.updateCondition(condition)
-  }
-
   componentDidMount() {
     ModalStore.addChangeListener(this._onChange);
     SettingStore.addChangeListener(this._onChange);
-    ConditionStore.addChangeListener(this._onChange);
   }
 
   componentWillUnmount() {
     ModalStore.addChangeListener(this._onChange);
     SettingStore.addChangeListener(this._onChange);
-    ConditionStore.addChangeListener(this._onChange);
   }
 
   render() {

@@ -166,9 +166,9 @@ const ModalStyle = {
     },
 
     TextAreaStyle: {
-      width: "80%",
+      width: "95%",
       height: "445px",
-      margin: "0 20px"
+      margin: "20px"
     },
 
     OKButtonStyle: {

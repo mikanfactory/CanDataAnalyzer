@@ -8,14 +8,14 @@ func (c *Condition) evalRecord(record []string, nameToIndex map[string]int64) bo
 
 	// Double or more conditions
 	acc := false
-	for i, detail := range c.Exprs {
+	for i, expr := range c.Exprs {
 		switch {
 		case i == 0:
-			acc = detail.evalRecord(record, nameToIndex)
-		case c.LOPs[i-1] == "and":
-			acc = acc && detail.evalRecord(record, nameToIndex)
-		case c.LOPs[i-1] == "or":
-			acc = acc || detail.evalRecord(record, nameToIndex)
+			acc = expr.evalRecord(record, nameToIndex)
+		case c.LOPs[i-1] == "&&":
+			acc = acc && expr.evalRecord(record, nameToIndex)
+		case c.LOPs[i-1] == "||":
+			acc = acc || expr.evalRecord(record, nameToIndex)
 		}
 	}
 

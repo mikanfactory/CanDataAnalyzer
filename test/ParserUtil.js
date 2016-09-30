@@ -344,6 +344,15 @@ describe("switchSentence", () => {
     return green
 }`
 
+  const complexSentence = `switch (true) {
+  case Speed > 50 && (BrakeOnOff == 1 || AccelOnOff == 1):
+    return red
+  case Speed < 10:
+    return stop
+  default:
+    return none
+}`
+
   const cond1 = {id: 0, LOPs: [], status: "red"}
   const cond2 = {id: 1, LOPs: [], status: "green"}
   const expr1 = {conditionID: 0, feature: "BrakeOnOff", operator: "==", value: 1}
@@ -353,10 +362,14 @@ describe("switchSentence", () => {
     const s1 = p.stream(switchSentence)
     const r1 = p.parse(u.switchSentence, s1)
     assert.isOk(p.isResult(r1), "parser output is not ParseResult")
-
     assert.deepEqual(r1.value, {
       conditions: [cond1, cond2],
       expressions: [expr1, expr2]
     })
+  })
+  it("matches complex sentence", () => {
+    const s1 = p.stream(complexSentence)
+    const r1 = p.parse(u.switchSentence, s1)
+    assert.isOk(p.isResult(r1), "parser output is not ParseResult")
   })
 })
