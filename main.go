@@ -20,6 +20,7 @@ func main() {
 		cmd.ListUpTargets()
 		os.Exit(0)
 	case *flags["insert"]:
+		cmd.InsertData()
 		os.Exit(0)
 	case *flags["schema"]:
 		cmd.CreateGoSchema()

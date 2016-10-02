@@ -14,15 +14,3 @@ type Column struct {
 type Targets struct {
 	Names []string `json:"names"`
 }
-
-type Line struct {
-	FrameNumber      string
-	MovieFrameNumber string
-	Statistics       []Statistics
-}
-
-type Statistics struct {
-	Name     string
-	Average  float64
-	Variance float64
-}

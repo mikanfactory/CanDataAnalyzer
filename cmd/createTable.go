@@ -3,16 +3,19 @@ package cmd
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
+const dbConfig = "db/sqlite3.db"
+
 func CreateTable() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	db, err := sql.Open("sqlite3", "db/sqlite3.db")
+	db, err := sql.Open("sqlite3", dbConfig)
 	checkErr(err)
 
 	query := createTableStr(cacheInfo)
@@ -45,7 +48,6 @@ func createTableStr(cacheInfo CacheInfo) string {
 
 func checkErr(err error) {
 	if err != nil {
-		fmt.Println(err)
-		panic(err)
+		log.Fatal(err)
 	}
 }
