@@ -11,12 +11,15 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 const (
 	headerLines = 2
 	segmentSize = 100
 )
+
+var mutex = &sync.Mutex{}
 
 func InsertData() {
 	file, err := ioutil.ReadFile("config/targets.json")
@@ -31,9 +34,16 @@ func InsertData() {
 
 	destroyAllData()
 
+	wg := new(sync.WaitGroup)
 	for _, target := range targets.Names {
-		segmentizeTime(target, cacheInfo)
+		wg.Add(1)
+		go func(target string) {
+			segmentizeTime(target, cacheInfo)
+			wg.Done()
+		}(target)
 	}
+
+	wg.Wait()
 }
 
 func destroyAllData() {
@@ -64,6 +74,9 @@ func segmentizeTime(target string, cacheInfo CacheInfo) {
 }
 
 func insertField(target string, validColumns []Column, field []float64) {
+	mutex.Lock()
+	defer mutex.Unlock()
+
 	db, err := sql.Open("sqlite3", dbConfig)
 	checkErr(err)
 
