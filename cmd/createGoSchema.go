@@ -12,7 +12,8 @@ func CreateGoSchema() {
 	schema := createGoSchemaStr(cacheInfo.Columns)
 	content := []byte(schema)
 
-	ioutil.WriteFile("db/table.go", content, 0744)
+	err := ioutil.WriteFile("db/table.go", content, 0744)
+	checkErr(err)
 }
 
 func createGoSchemaStr(columns []Column) string {

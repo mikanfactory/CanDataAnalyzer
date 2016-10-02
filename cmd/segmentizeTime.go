@@ -34,11 +34,11 @@ func InsertData() {
 	// 	segmentizeTime(filename, cacheInfo)
 	// }
 	name := targets.Names[0]
-	segmentizeTime(name+".csv", cacheInfo)
+	segmentizeTime(name, cacheInfo)
 }
 
 func segmentizeTime(filename string, cacheInfo CacheInfo) {
-	file, err := os.Open("data/" + filename)
+	file, err := os.Open("data/" + filename + ".csv")
 	checkErr(err)
 
 	r := csv.NewReader(bufio.NewReader(file))
@@ -50,23 +50,23 @@ func segmentizeTime(filename string, cacheInfo CacheInfo) {
 
 	for i := 0; i < len(allRecords)/segmentSize; i++ {
 		records := allRecords[i*segmentSize : (i+1)*segmentSize]
-		insertField(validColumns, calcAllAverage(validColumns, &records))
+		insertField(filename, validColumns, calcAllAverage(validColumns, &records))
 	}
 }
 
-func insertField(validColumns []Column, field []float64) {
+func insertField(target string, validColumns []Column, field []float64) {
 	db, err := sql.Open("sqlite3", dbConfig)
 	checkErr(err)
 
-	query := createQueryStr(validColumns, field)
+	query := createQueryStr(target, validColumns, field)
 
 	_, err = db.Exec(query)
 	checkErr(err)
 }
 
-func createQueryStr(validColumns []Column, field []float64) string {
-	names := ""
-	values := ""
+func createQueryStr(target string, validColumns []Column, field []float64) string {
+	names := "target,"
+	values := fmt.Sprintf(`"%s",`, target)
 	for i, column := range validColumns {
 		names += column.Name + ","
 

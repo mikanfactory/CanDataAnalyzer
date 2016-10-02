@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -15,12 +16,18 @@ func CreateTable() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
+	err := os.Remove(dbConfig)
+	checkErr(err)
+
 	db, err := sql.Open("sqlite3", dbConfig)
 	checkErr(err)
 
-	query := createTableStr(cacheInfo)
-	fmt.Println(query)
-	_, err = db.Exec(query)
+	q1 := createTableStr(cacheInfo)
+	_, err = db.Exec(q1)
+	checkErr(err)
+
+	q2 := "create index targetIndex on markers(target)"
+	_, err = db.Exec(q2)
 	checkErr(err)
 }
 
@@ -33,6 +40,7 @@ func createTableStr(cacheInfo CacheInfo) string {
 
 	query := `CREATE TABLE markers (
   id INTEGER NOT NULL PRIMARY KEY,
+  target TEXT NOT NULL,
 `
 	for _, column := range cacheInfo.Columns {
 		if column.Read {
