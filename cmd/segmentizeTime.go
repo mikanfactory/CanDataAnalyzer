@@ -29,16 +29,25 @@ func InsertData() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	// for _, name := range targets.Names {
-	// 	filename := name + ".csv"
-	// 	segmentizeTime(filename, cacheInfo)
-	// }
-	name := targets.Names[0]
-	segmentizeTime(name, cacheInfo)
+	destroyAllData()
+
+	for _, target := range targets.Names {
+		segmentizeTime(target, cacheInfo)
+	}
 }
 
-func segmentizeTime(filename string, cacheInfo CacheInfo) {
-	file, err := os.Open("data/" + filename + ".csv")
+func destroyAllData() {
+	db, err := sql.Open("sqlite3", dbConfig)
+	checkErr(err)
+
+	query := "DELETE FROM markers"
+
+	_, err = db.Exec(query)
+	checkErr(err)
+}
+
+func segmentizeTime(target string, cacheInfo CacheInfo) {
+	file, err := os.Open("data/" + target + ".csv")
 	checkErr(err)
 
 	r := csv.NewReader(bufio.NewReader(file))
@@ -50,7 +59,7 @@ func segmentizeTime(filename string, cacheInfo CacheInfo) {
 
 	for i := 0; i < len(allRecords)/segmentSize; i++ {
 		records := allRecords[i*segmentSize : (i+1)*segmentSize]
-		insertField(filename, validColumns, calcAllAverage(validColumns, &records))
+		insertField(target, validColumns, calcAllAverage(validColumns, &records))
 	}
 }
 
