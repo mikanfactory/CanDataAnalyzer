@@ -12,14 +12,14 @@ func CreateGoSchema() {
 	schema := createGoSchemaStr(cacheInfo.Columns)
 	content := []byte(schema)
 
-	err := ioutil.WriteFile("db/table.go", content, 0744)
+	err := ioutil.WriteFile("src/model/table.go", content, 0644)
 	checkErr(err)
 }
 
 func createGoSchemaStr(columns []Column) string {
-	str := `package db
+	str := `package model
 
-type Marker struct {
+type Can struct {
 `
 
 	for _, column := range columns {

@@ -101,7 +101,7 @@ func createQueryStr(target string, validColumns []Column, field []float64) strin
 	names = strings.TrimRight(names, ",")
 	values = strings.TrimRight(values, ",")
 
-	return fmt.Sprintf("INSERT INTO markers (%s) VALUES (%s);", names, values)
+	return fmt.Sprintf("INSERT INTO cans (%s) VALUES (%s);", names, values)
 }
 
 func readCacheConfig(c *CacheInfo) {

@@ -1,6 +1,6 @@
-package db
+package model
 
-type Marker struct {
+type Can struct {
 	FrameIndex           int64
 	FrameImageIndex      int64
 	AccelerationX        float64
