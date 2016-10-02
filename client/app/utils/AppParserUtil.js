@@ -1,3 +1,4 @@
+import { FEATURES } from '../constants/AppConstants'
 import * as p from 'eulalie'
 import compact from 'lodash/compact'
 import flatten from 'lodash/flatten'
@@ -9,6 +10,12 @@ class ASTNode {
     this.left = left
     this.right = right
   }
+}
+
+function isStrongerThan(lop, node) {
+  if (lop === node.data) return false
+
+  return lop === "&&"
 }
 
 function createCondition(id, LOPs, status) {
@@ -30,7 +37,7 @@ function createExpr(id, feature, operator, value) {
 
 export function toJSON(node) {
   let [left, right] = [undefined, undefined]
-  if (node.name === "Condition") {
+  if (isCondition(node)) {
     return [{
       feature: node.left,
       operator: node.data,
@@ -38,7 +45,7 @@ export function toJSON(node) {
     }]
   }
 
-  if (node.name === "Default") {
+  if (isDefault(node)) {
     return [{
       feature: node.data,
       operator: "",
@@ -57,24 +64,37 @@ export function toJSON(node) {
   return compact(flatten([left, right]))
 }
 
+function isCondition(node) {
+  return node.name === "Condition"
+}
+
+function isConditions(node) {
+  return node.name === "Conditions"
+}
+
+function isBracket(node) {
+  return node.name === "Bracket"
+}
+
+function isDefault(node) {
+  return node.name === "Default"
+}
+
 export function getLOPs(node) {
   let [data, left, right] = [undefined, undefined, undefined]
-  if (node.left && (node.left.name === "Conditions" || node.left.name === "Bracket")) {
+  if (node.left && (isConditions(node.left) || isBracket(node.left))) {
     left = node.left.data
   }
 
-  if (node.right && (node.right.name === "Conditions" || node.right.name === "Bracket")) {
+  if (node.right && (isConditions(node.right) || isBracket(node.right))) {
     right = node.right.data
   }
 
-  if (node.name !== "Default" && node.name !== "Condition") {
+  if (!isDefault(node) && !isCondition(node)) {
     data = node.data
   }
 
   return compact([left, right, data])
-}
-
-export function parseAll(text) {
 }
 
 export const isEOL = (c) => /^\n$/.test(c)
@@ -109,12 +129,12 @@ const _conditions = p.expected(p.seq(function*() {
   yield p.spaces1
   const {value: expr2} = yield expr
 
-  if (expr2.name === "Conditions") {
+  if (isConditions(expr2) && isStrongerThan(lop, expr2)) {
     let left = new ASTNode("Conditions", lop, expr1, expr2.left)
     return new ASTNode("Conditions", expr2.data, left, expr2.right)
   }
 
-  if (expr2.name === "Bracket") {
+  if (isBracket(expr2)) {
     return new ASTNode("Conditions", lop, expr2, expr1)
   }
 
@@ -124,15 +144,11 @@ const _conditions = p.expected(p.seq(function*() {
 const _bracket = p.expected(p.seq(function*() {
   yield p.char("(")
   yield p.spaces
-  const {value: expr1} = yield _condition1
-  yield p.spaces1
-  const {value: lop} = yield LOP
-  yield p.spaces1
-  const {value: expr2} = yield expr
+  const {value: cond} = yield expr
   yield p.spaces
   yield p.char(")")
 
-  return new ASTNode("Bracket", lop, expr1, expr2)
+  return new ASTNode("Bracket", cond)
 }), "a condition included in ()")
 
 export const expr = p.expected(p.either([_bracket, _conditions, _condition1]),

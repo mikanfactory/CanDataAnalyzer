@@ -12,7 +12,7 @@
     "deps": "npm install && go get",
     "build": "webpack -p --config webpack.config.js",
     "watch": "webpack -w --config webpack.config.js",
-    "test": "mocha --compilers js:babel-register",
+    "test": "mocha --compilers js:babel-register || exit 0",
     "watch-test": "mocha --compilers js:babel-register -w"
   },
   "devDependencies": {
