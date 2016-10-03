@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"encoding/json"
@@ -8,16 +8,12 @@ import (
 	"strings"
 )
 
-type Targets struct {
-	Names []string `json:"names"`
-}
-
-func main() {
+func ListUpTargets() {
 	g := regexp.MustCompile(`\.gitkeep$`)
 	d := regexp.MustCompile(`\.DS_Store`)
 	c := regexp.MustCompile(`.*cache.*`)
 
-	files, _ := ioutil.ReadDir("../data")
+	files, _ := ioutil.ReadDir("data")
 	targets := []string{}
 	for _, file := range files {
 		name := file.Name()
@@ -33,5 +29,5 @@ func main() {
 
 	t := &Targets{Names: targets}
 	json, _ := json.Marshal(t)
-	ioutil.WriteFile("../config/targets.json", json, 0744)
+	ioutil.WriteFile("config/targets.json", json, 0744)
 }
