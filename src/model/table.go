@@ -1,6 +1,7 @@
 package model
 
 type Can struct {
+	ID                   int64
 	FrameIndex           int64
 	FrameImageIndex      int64
 	AccelerationX        float64
