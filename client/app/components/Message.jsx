@@ -1,3 +1,4 @@
+import React from 'react'
 import MessageActions from '../actions/MessageActions'
 import MessageStore from '../stores/MessageStores'
 import { MessageStyle as s} from './Styles'

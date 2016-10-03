@@ -94,7 +94,11 @@ const AppConstants = {
     UPDATE_BOUNDS: null,
     DESTROY_ALL_LAYER: null,
     CREATE_HEATMAP_LAYER: null,
-    DESTROY_HEATMAP_LAYER: null
+    DESTROY_HEATMAP_LAYER: null,
+
+    // Message
+    CREATE_MESSAGE: null,
+    DESTROY_MESSAGE: null
   }),
 }
 

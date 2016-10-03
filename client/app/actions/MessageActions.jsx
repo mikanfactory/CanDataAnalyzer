@@ -13,7 +13,7 @@ const MessageActions = {
 
   deleteMessage: () => {
     AppDispatcher.dispatch({
-      actionType: ActionTypes.DELETE_MESSAGE
+      actionType: ActionTypes.DESTROY_MESSAGE
     })
   }
 }
