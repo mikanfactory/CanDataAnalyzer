@@ -122,7 +122,7 @@ export default class MarkerList extends React.Component {
   }
 
   _onChange() {
-    this.setState(getStateFromStores(this.props.id));
+    this.setState(getStateFromStores(this.props.id))
   }
 }
 

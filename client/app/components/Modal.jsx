@@ -13,7 +13,6 @@ import { ModalStyle as s } from './Styles'
 import 'whatwg-fetch'
 import  { fetchMarkers } from '../utils/AppWebAPIUtils'
 import assign from 'object-assign'
-import last from 'lodash/last'
 import partial from 'lodash/partial'
 import * as p from 'eulalie'
 
@@ -58,14 +57,8 @@ export default class Modal extends React.Component {
       console.log(result.print())
       return
     }
-    const exprs = result.value.expressions
-    const cnds = result.value.conditions.map( cnd => {
-      const es = exprs.filter( e => e.conditionID === cnd.id )
-      return assign({}, cnd, { exprs: es })
-    })
 
-    const data = assign({}, this.state.setting, { conditions: cnds })
-    console.log(data)
+    const data = assign({}, this.state.setting, { conditions: result.value })
 
     if (this.state.modal.modalType === ModalTypes.NEW) {
       fetchMarkers(data, markers => {

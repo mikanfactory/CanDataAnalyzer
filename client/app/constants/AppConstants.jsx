@@ -27,12 +27,6 @@ const defaultModal = {
   settingID: 0
 }
 
-const NUMBERS = [
-  "Single",
-  "Double",
-  "Triple"
-]
-
 const LOGICS = [
   "and",
   "or"
@@ -60,7 +54,7 @@ const STATUS = [
 
 
 export { defaultSetting, defaultModal, defaultDivideSize }
-export { NUMBERS, LOGICS, TARGETS, FEATURES, OPERATORS, STATUS }
+export { LOGICS, TARGETS, FEATURES, OPERATORS, STATUS }
 
 const AppConstants = {
   ModalTypes: {
@@ -100,7 +94,11 @@ const AppConstants = {
     UPDATE_BOUNDS: null,
     DESTROY_ALL_LAYER: null,
     CREATE_HEATMAP_LAYER: null,
-    DESTROY_HEATMAP_LAYER: null
+    DESTROY_HEATMAP_LAYER: null,
+
+    // Message
+    CREATE_MESSAGE: null,
+    DESTROY_MESSAGE: null
   }),
 }
 

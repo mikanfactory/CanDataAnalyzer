@@ -23,15 +23,8 @@ interface Position {
 
 interface Condition {
   id:        number,            // unique
-  LOPs:      Array<string>,
+  content:   string,
   status:    string
-}
-
-interface Expr {
-  conditionID: number,
-  feature:     string,
-  operator:    string,
-  value:       number
 }
 
 interface Modal {

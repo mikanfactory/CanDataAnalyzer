@@ -1,3 +1,5 @@
+import MessageActions from '../actions/MessageActions'
+
 function checkStatus(resp, code) {
   if (resp.status == code) {
     return resp
@@ -21,7 +23,7 @@ function fetchMarkers(data, callback) {
     .then(resp => checkStatus(resp, 200))
     .then(resp => resp.json())
     .then(markers => callback(markers))
-    .catch(err => console.log('post setting error:', err))
+    .catch(err => MessageActions.createMessage({text: `posting error: ${err}`}))
 }
 
 export { fetchMarkers }
