@@ -26,7 +26,7 @@ func CreateTable() {
 	_, err = db.Exec(q1)
 	checkErr(err)
 
-	q2 := "create index targetIndex on markers(target)"
+	q2 := "create index targetIndex on cans(target)"
 	_, err = db.Exec(q2)
 	checkErr(err)
 }
@@ -38,7 +38,7 @@ func createTableStr(cacheInfo CacheInfo) string {
 		"string":  "TEXT",
 	}
 
-	query := `CREATE TABLE markers (
+	query := `CREATE TABLE cans (
   id INTEGER NOT NULL PRIMARY KEY,
   target TEXT NOT NULL,
 `

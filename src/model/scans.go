@@ -7,6 +7,8 @@ import "database/sql"
 func ScanCan(r *sql.Row) (Can, error) {
 	var s Can
 	if err := r.Scan(
+		&s.ID,
+		&s.Target,
 		&s.FrameIndex,
 		&s.FrameImageIndex,
 		&s.AccelerationX,
@@ -32,6 +34,8 @@ func ScanCans(rs *sql.Rows) ([]Can, error) {
 	for rs.Next() {
 		var s Can
 		if err = rs.Scan(
+			&s.ID,
+			&s.Target,
 			&s.FrameIndex,
 			&s.FrameImageIndex,
 			&s.AccelerationX,

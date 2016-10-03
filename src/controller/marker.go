@@ -17,17 +17,25 @@ type Marker struct {
 func (m *Marker) Get(c echo.Context) error {
 	setting := model.Setting{}
 	if err := c.Bind(&setting); err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		errorMessage := model.Error{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		}
+		return c.JSON(http.StatusBadRequest, errorMessage)
 	}
 
 	markers := []model.Marker{}
 	for _, cond := range setting.Conditions {
 		ms, err := model.GetMarkersByCondition(m.DB, cond, setting)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, err.Error())
+			errorMessage := model.Error{
+				Code:    http.StatusBadRequest,
+				Message: err.Error(),
+			}
+			return c.JSON(http.StatusBadRequest, errorMessage)
 		}
 		markers = append(markers, ms...)
 	}
 
-	return c.JSON(http.StatusOK, markers)
+	return c.JSON(http.StatusOK, &markers)
 }

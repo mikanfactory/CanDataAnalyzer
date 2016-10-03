@@ -20,6 +20,8 @@ func createGoSchemaStr(columns []Column) string {
 	str := `package model
 
 type Can struct {
+  ID int64
+  Target string
 `
 
 	for _, column := range columns {

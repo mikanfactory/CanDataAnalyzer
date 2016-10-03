@@ -34,3 +34,9 @@ type Condition struct {
 	Content string `json:"content"`
 	Status  string `json:"status"`
 }
+
+// Error is used for json error message
+type Error struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}

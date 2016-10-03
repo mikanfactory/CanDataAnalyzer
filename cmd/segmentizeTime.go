@@ -52,7 +52,7 @@ func destroyAllData() {
 	db, err := sql.Open("sqlite3", dbConfig)
 	checkErr(err)
 
-	query := "DELETE FROM markers"
+	query := "DELETE FROM cans"
 
 	_, err = db.Exec(query)
 	checkErr(err)

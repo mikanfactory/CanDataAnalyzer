@@ -20,8 +20,15 @@ var statusToFilename = map[string]string{
 	"none":     "none",
 }
 
-func getCansByCondition(db *sql.DB, cond Condition) ([]Can, error) {
-	rows, err := db.Query(`select * from markers where ?`, cond.Content)
+func getCansByCondition(db *sql.DB, cond Condition, setting Setting) ([]Can, error) {
+	var query string
+	if cond.Content == "default" {
+		query = fmt.Sprintf("select * from cans where target == \"%s\"", setting.Target)
+	} else {
+		query = fmt.Sprintf("select * from cans where target == \"%s\" AND %s",
+			setting.Target, cond.Content)
+	}
+	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +62,7 @@ func (m *Can) getPosition() Position {
 func (m *Can) getDescription() string {
 	description := ""
 
-	v := reflect.ValueOf(*m).Elem()
+	v := reflect.ValueOf(m).Elem()
 	t := v.Type()
 	for i := 0; i < v.NumField(); i++ {
 		f := v.Field(i)
