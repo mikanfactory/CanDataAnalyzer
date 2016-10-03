@@ -30,7 +30,7 @@ type Setting struct {
 
 // Condition denotes how to deal the status.
 type Condition struct {
-	ID     int64  `json:"id"`
-	text   string `json:"text"`
-	Status string `json:"status"`
+	ID      int64  `json:"id"`
+	Content string `json:"content"`
+	Status  string `json:"status"`
 }

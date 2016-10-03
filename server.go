@@ -1,7 +1,11 @@
 package main
 
 import (
+	"database/sql"
 	"html/template"
+	"log"
+
+	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
@@ -10,11 +14,15 @@ import (
 	"github.com/mikanfactory/CanDataAnalyzer/src/controller"
 )
 
-const addr = ":1323"
+const (
+	addr   = ":1323"
+	dbconf = "db/sqlite3.db"
+)
 
 // Server is whole server implementation for this app.
 // This holds router settings based on echo.
 type Server struct {
+	db     *sql.DB
 	Engine *echo.Echo
 	Config *config.Config
 }
@@ -28,6 +36,12 @@ func New() *Server {
 // Init initialize server state. Read Config files, compiling templates,
 // and apply middleware.
 func (s *Server) Init() {
+	db, err := sql.Open("sqlite3", dbconf)
+	if err != nil {
+		log.Fatal(err)
+	}
+	s.db = db
+
 	s.Config = config.LoadConfig()
 
 	s.Engine.Use(middleware.Logger())
@@ -44,7 +58,7 @@ func (s *Server) Init() {
 
 // Route setting router for this app.
 func (s *Server) Route() {
-	marker := &controller.Marker{}
+	marker := &controller.Marker{DB: s.db}
 	googleMap := &controller.GoogleMap{Key: s.Config.GoogleMap.Key}
 
 	s.Engine.GET("/", googleMap.Get)
