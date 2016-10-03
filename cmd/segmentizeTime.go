@@ -12,6 +12,8 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 const (

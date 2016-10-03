@@ -5,6 +5,8 @@ import (
 	"html/template"
 	"log"
 
+	_ "github.com/mattn/go-sqlite3"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
