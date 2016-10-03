@@ -1,4 +1,4 @@
-const ContainerStyle = {
+export const ContainerStyle = {
   ContainerStyle: {
     position: 'relative',
     width: '100%',
@@ -6,7 +6,7 @@ const ContainerStyle = {
   }
 }
 
-const GoogleMapStyle = {
+export const GoogleMapStyle = {
   GoogleMapStyle: {
     position: 'relative',
     float: 'left',
@@ -21,7 +21,7 @@ const GoogleMapStyle = {
   }
 }
 
-const ToolBoxStyle = {
+export const ToolBoxStyle = {
   ToolBoxStyle: {
     position: 'relative',
     float: 'left',
@@ -31,7 +31,7 @@ const ToolBoxStyle = {
   }
 }
 
-const ConditionFormStyle = {
+export const ConditionFormStyle = {
   ConditionStyle: {
     paddingTop: "20px",
   },
@@ -54,7 +54,7 @@ const ConditionFormStyle = {
   }
 }
 
-const MarkerStyle = {
+export const MarkerStyle = {
   MarkerStyle: {
     color: "#1F1F1F",
     backgroundColor: "#FFF",
@@ -111,7 +111,7 @@ const MarkerStyle = {
   }
 }
 
-const MarkerListStyle = {
+export const MarkerListStyle = {
   ListHeaderStyle: {
     color: "#1B1B1B",
     backgroundColor: "#CCCCCC",
@@ -141,7 +141,14 @@ const MarkerListStyle = {
   }
 }
 
-const ModalStyle = {
+export const MessageStyle = {
+  MessageStyle: {
+    fontSize: "24px",
+    marginTop: "40px",
+  }
+}
+
+export const ModalStyle = {
     HeaderStyle: {
       fontSize: "32px",
       borderBottom: "1px solid #e9e9e9"
@@ -185,7 +192,7 @@ const ModalStyle = {
     }
 }
 
-const ToolBoxHeaderStyle = {
+export const ToolBoxHeaderStyle = {
   HeaderStyle: {
     color: "#FFF",
     backgroundColor: "#00BCD4",
@@ -204,15 +211,4 @@ const ToolBoxHeaderStyle = {
   GlyphiconStyle: {
     padding: "0 10px"
   }
-}
-
-export {
-  ToolBoxStyle,
-  ConditionFormStyle,
-  ContainerStyle,
-  GoogleMapStyle,
-  MarkerStyle,
-  MarkerListStyle,
-  ModalStyle,
-  ToolBoxHeaderStyle
 }

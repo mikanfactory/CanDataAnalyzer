@@ -11,7 +11,7 @@ const defaultSetting = {
   target: "021021K1KAm",
   title: "default",
   text: `switch (true) {
-  case SpeedPerHourLowpass > 50 && (BrakeOnOff == 1 || AccelOnOff == 1):
+  case SpeedPerHourLowpass > 50 && (BrakeOnOff == 1 || AcceleratorOnOff == 1):
     return red
   case SpeedPerHourLowpass < 10:
     return stop

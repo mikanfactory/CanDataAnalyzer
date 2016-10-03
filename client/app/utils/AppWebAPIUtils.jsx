@@ -1,13 +1,12 @@
 import MessageActions from '../actions/MessageActions'
 
-function checkStatus(resp, code) {
-  if (resp.status == code) {
-    return resp
-  } else {
-    const error = new Error(resp.statusText)
-    error.resp = resp
-    throw error
+function checkStatus(json) {
+  // if status == 200 then recieved json has no status field
+  if (!json.code) {
+    return json
   }
+  const error = new Error(json.message)
+  throw error
 }
 
 function fetchMarkers(data, callback) {
@@ -20,10 +19,10 @@ function fetchMarkers(data, callback) {
     },
     body: JSON.stringify(data)
   })
-    .then(resp => checkStatus(resp, 200))
-    .then(resp => resp.json())
-    .then(markers => callback(markers))
-    .catch(err => MessageActions.createMessage({text: `posting error: ${err}`}))
+  .then(resp => resp.json())
+  .then(json => checkStatus(json))
+  .then(markers => callback(markers))
+  .catch(err => MessageActions.createMessage({text: `posting error: ${err}`}))
 }
 
 export { fetchMarkers }

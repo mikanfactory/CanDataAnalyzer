@@ -3,6 +3,7 @@ import Rodal from 'rodal'
 import ModalActions from '../actions/ModalActions'
 import SettingActions from '../actions/SettingActions'
 import MarkerActions from '../actions/MarkerActions'
+import MessageActions from '../actions/MessageActions'
 import ModalStore from '../stores/ModalStore'
 import SettingStore from '../stores/SettingStore'
 import AppConstants from '../constants/AppConstants'
@@ -53,8 +54,7 @@ export default class Modal extends React.Component {
     const stream = p.stream(text)
     const result = p.parse(switchSentence, stream)
     if (p.isError(result)) {
-      console.log(result)
-      console.log(result.print())
+      MessageActions.createMessage({ text: result.print().replace("\n", "<br>") })
       return
     }
 

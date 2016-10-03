@@ -16,6 +16,8 @@ export default class Message extends React.Component {
     super(props)
 
     this.state = getStateFromStores()
+
+    this._onChange = this._onChange.bind(this)
   }
 
   handleMessageDelete() {
@@ -32,9 +34,11 @@ export default class Message extends React.Component {
 
   render() {
     return (
-      <Rodal visible={isEmpty(this.state.message)} width={400} height={720}
+      <Rodal visible={!isEmpty(this.state.message)} width={600} height={360}
              onClose={this.handleMessageDelete}>
-        <div className="Message" style={s.MessageStyle}>{this.state.message.text}</div>
+        <div className="Message" style={s.MessageStyle}>
+          <div dangerouslySetInnerHTML={{__html: this.state.message.text}} />
+        </div>
       </Rodal>
     )
   }
