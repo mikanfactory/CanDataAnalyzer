@@ -23,7 +23,7 @@ interface Position {
 
 interface Condition {
   id:        number,            // unique
-  text:      string,
+  content:   string,
   status:    string
 }
 
