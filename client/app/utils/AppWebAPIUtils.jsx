@@ -9,7 +9,7 @@ function checkStatus(json) {
   throw error
 }
 
-function fetchMarkers(data, callback) {
+export function fetchMarkers(data, callback) {
   fetch("/api/v1/markers", {
     credentials: "same-origin",
     method: "POST",
@@ -22,7 +22,21 @@ function fetchMarkers(data, callback) {
   .then(resp => resp.json())
   .then(json => checkStatus(json))
   .then(markers => callback(markers))
-  .catch(err => MessageActions.createMessage({text: `posting error: ${err}`}))
+  .catch(err => MessageActions.createMessage({ text: err }))
 }
 
-export { fetchMarkers }
+export function sendHeatmapSetting(data) {
+  fetch("/api/v1/setting", {
+    credentials: "same-origin",
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  })
+    .then(resp => resp.json())
+    .then(json => checkStatus(json))
+    .then(message => MessageActions.createMessage({ text: message }))
+    .catch(err => MessageActions.createMessage({ text: err }))
+}
