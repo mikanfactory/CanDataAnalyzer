@@ -1,7 +1,9 @@
 import React from 'react'
-import ModalAction from '../actions/ModalActions'
+import LayerStore from '../stores/LayerStore'
 import LayerAction from '../actions/LayerActions'
-import { getSmallerBounds } from '../utils/AppGoogleMapUtil'
+import MessageAction from '../actions/MessageActions'
+import { createGridPoints, getSmallerBounds } from '../utils/AppGoogleMapUtil'
+import { convertMarkersToHeatmapData } from '../utils/AppAlgorithmUtil'
 import { ToolBoxHeaderStyle as s } from './Styles'
 
 export default class ToolBoxHeader extends React.Component {
@@ -54,11 +56,24 @@ export default class ToolBoxHeader extends React.Component {
     LayerAction.destroyHeatmapLayer()
   }
 
+  handleSaveHeatmapSetting() {
+    const bounds = LayerStore.getBounds()
+    const gridPoints = createGridPoints(bounds, defaultDivideSize)
+    const markers = MarkerStore.getAllMarkers()
+    const heatmap = convertMarkersToHeatmapData(markers, gridPoints)
+
+    MessageAction.createMessage({ text: "Saved!!" })
+  }
+
   render() {
     return (
       <div>
         <div className="ToolBoxHeader" style={s.HeaderStyle}>
           <span style={s.StringStyle}>CanDataAnalyzer</span>
+          <span className="glyphicon glyphicon-download-alt"
+                style={s.GlyphiconStyle}
+                onClick={this.handleSaveHeatmapSetting}>
+          </span>
           <span className="glyphicon glyphicon-plus"
                 style={s.GlyphiconStyle}
                 onClick={this.handleModalOpen}>

@@ -52,7 +52,6 @@ type Grid struct {
 // Heatmap is config of heatmap data
 type Heatmap struct {
 	Grid     Grid      `json:"grid"`
-	Location Position  `json:"location"`
 	Statuses []string  `json:"statuses"`
 	Weights  [][]int64 `json:"weight"`
 	Settings []Setting `json:"settings"`

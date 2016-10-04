@@ -45,7 +45,6 @@ interface Grid {
 
 interface Heatmap {
   grid:     Grid,
-  location: Position,
   statuses: Array<string>,
   weights:  Array<Array<number>>,
   settings: Array<Setting>
