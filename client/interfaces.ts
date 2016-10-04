@@ -1,5 +1,5 @@
 // If we introduce TypeScript, use for class.
-// Just use as reference.
+// Now, just use as reference.
 
 interface Setting {
   id:     number,               // unique
@@ -30,6 +30,25 @@ interface Condition {
 interface Modal {
   modalType: string,
   settingID: number
+}
+
+interface Message {
+  text: string
+}
+
+interface Grid {
+  width:     number,
+  height:    number,
+  meshSize:  number,
+  NorthEast: Position,
+}
+
+interface Heatmap {
+  grid:     Grid,
+  location: Position,
+  statuses: Array<string>,
+  weights:  Array<Array<number>>,
+  settings: Array<Setting>
 }
 
 type Operator = "=" | ">" | ">=" | "<" | "<="

@@ -66,7 +66,7 @@ func (m *Can) getDescription() string {
 	t := v.Type()
 	for i := 0; i < v.NumField(); i++ {
 		f := v.Field(i)
-		cmp := fmt.Sprintf("<div class='feature'> %s: %f</div>", t.Field(i).Name, f.Interface())
+		cmp := fmt.Sprintf("<div class='feature'> %s: %v</div>", t.Field(i).Name, f.Interface())
 		description += cmp + "\n"
 	}
 

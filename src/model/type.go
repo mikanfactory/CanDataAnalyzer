@@ -40,3 +40,20 @@ type Error struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
+
+// Grid stand for grid used for creating heatmap
+type Grid struct {
+	Width     float64  `json:"width"`
+	Height    float64  `json:"height"`
+	MeshSize  int64    `json:"meshSize"`
+	NorthEast Position `json:"northEast"`
+}
+
+// Heatmap is config of heatmap data
+type Heatmap struct {
+	Grid     Grid      `json:"grid"`
+	Location Position  `json:"location"`
+	Statuses []string  `json:"statuses"`
+	Weights  [][]int64 `json:"weight"`
+	Settings []Setting `json:"settings"`
+}
