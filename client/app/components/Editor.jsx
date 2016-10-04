@@ -2,22 +2,20 @@ import React from 'react'
 import ace from 'brace'
 import { EditorStyle as s } from './Styles'
 import { FEATURES } from '../constants/AppConstants'
+import SettingActions from '../actions/SettingActions'
 
+import assign from 'object-assign'
 import 'brace/theme/textmate'
 import 'brace/mode/javascript'
 import 'brace/keybinding/emacs'
 import 'brace/ext/language_tools'
-
-import SettingActions from '../actions/SettingActions'
 
 export default class Editor extends React.Component {
   constructor(props) {
     super(props)
 
     this.editor = {}
-    this.dictonary = FEATURES.map( f => ({
-      value: f, score: 1000, match: "custom"
-    }))
+    this._onChange = this._onChange.bind(this)
   }
 
   componentDidMount() {
@@ -33,9 +31,9 @@ export default class Editor extends React.Component {
     this.editor.setKeyboardHandler('ace/keyboard/emacs')
     this.editor.setOptions({
       enableBasicAutocompletion: true,
-      enableSnippets: true,
       enableLiveAutocompletion: true
     })
+    this.editor.on('change', this._onChange);
   }
 
   render() {
@@ -44,8 +42,17 @@ export default class Editor extends React.Component {
       </div>
     )
   }
+
+  _onChange() {
+    const value = this.editor.getValue();
+    const setting = assign({}, this.props, { text: value })
+    SettingActions.updateSetting(setting)
+  }
 }
 
 Editor.propTypes = {
+  id: React.PropTypes.number,
+  target: React.PropTypes.string,
+  title: React.PropTypes.string,
   text: React.PropTypes.string
 }

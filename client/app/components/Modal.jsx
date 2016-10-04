@@ -124,7 +124,7 @@ export default class Modal extends React.Component {
     if (!this.state.setting) return
 
     return (
-      <Editor text={this.state.setting.text} />
+      <Editor {...this.state.setting} />
     )
   }
 
