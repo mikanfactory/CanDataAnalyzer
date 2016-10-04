@@ -1,5 +1,6 @@
 import React from 'react'
 import Rodal from 'rodal'
+import Editor from './Editor'
 import ModalActions from '../actions/ModalActions'
 import SettingActions from '../actions/SettingActions'
 import MarkerActions from '../actions/MarkerActions'
@@ -123,10 +124,7 @@ export default class Modal extends React.Component {
     if (!this.state.setting) return
 
     return (
-      <textarea defaultValue={this.state.setting.text}
-                style={s.TextAreaStyle}
-                onChange={this.handleSettingChange.bind(this, "text")}>
-      </textarea>
+      <Editor {...this.state.setting} />
     )
   }
 

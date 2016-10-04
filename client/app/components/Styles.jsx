@@ -6,6 +6,14 @@ export const ContainerStyle = {
   }
 }
 
+export const EditorStyle = {
+  EditorStyle: {
+    height: "400px",
+    width: "80%",
+    marginTop: "20px"
+  }
+}
+
 export const GoogleMapStyle = {
   GoogleMapStyle: {
     position: 'relative',
