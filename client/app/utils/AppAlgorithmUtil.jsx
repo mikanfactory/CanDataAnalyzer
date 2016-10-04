@@ -1,7 +1,7 @@
 import groupBy from 'lodash/groupBy'
 import reduce from 'lodash/reduce'
 import zip from 'lodash/zip'
-import flatten from 'lodash/flatten'
+import forEach from 'lodash/forEach'
 
 //
 // process image
@@ -63,6 +63,33 @@ export function findGridIndex(marker, gridPoints) {
   }
 }
 
+/**
+ * The {@link convertMarkersToHeatmapData} function returns a
+ * useful data(statuses, weights) to creating Heatmap.
+ * @arg {Array<Marker>} markers - The markers constructs heatmap.
+ * @arg {Array<GridPoint>} gridPoint - The grid points contains position.
+ */
+export function convertMarkersToHeatmapData(markers, gridPoints) {
+  let imageGroup = groupBy(markers, 'image')
+  const divideSize = gridPoints.length
+
+  const gwls = reduce(imageGroup, (acc, val, key) => {
+    const xs = convertMarkersToGridIndices(val, gridPoints)
+    const ys = convertIndicesToCounts(xs)
+    acc[key] = _fillUnassignedIndex(ys, divideSize)
+      return acc
+  }, {})
+
+  const weights = reduce(gwls, (acc, val) => {
+    return [...acc, val]
+  }, [])
+
+  return {
+    statuses: Object.keys(gwls),
+    weights: zip(...weights)
+  }
+}
+
 function _convertIndexToGrid(index, divideSize) {
   const i = Math.floor(index / divideSize)
   const j = index % divideSize
@@ -75,32 +102,12 @@ function _getCenter(gridPoint) {
   return new window.google.maps.LatLng({ lat: lat, lng: lng })
 }
 
+function _fillUnassignedIndex(counts, divideSize) {
+  let lst = Array(divideSize*2).fill(0)
 
+  forEach(counts, (val, key) => {
+    lst[parseInt(key, 10)] = val
+  })
 
-/**
- * The {@link convertMarkersToHeatmapData} function returns a
- * useful data(statuses, weights) to creating Heatmap.
- * @arg {Array<Marker>} markers - The markers constructs heatmap.
- * @arg {Array<GridPoint>} gridPoint - The grid points contains position.
- *
- */
-export function convertMarkersToHeatmapData(markers, gridPoints) {
-  let imageGroup = groupBy(markers, 'image')
-  const gwls = reduce(imageGroup, (acc, val, key) => {
-    const xs = convertMarkersToGridIndices(markers, gridPoints)
-    const ys = convertIndicesToCounts(xs)
-    acc[key] = reduce(ys, (acc, val) => {
-      return [...acc, val]
-    }, [])
-    return acc
-  }, {})
-
-  const weights = reduce(gwls, (acc, val) => {
-    return [...acc, val]
-  }, [])
-
-  return {
-    statuses: Object.keys(gwls),
-    weights: zip(...weights)
-  }
+  return lst
 }

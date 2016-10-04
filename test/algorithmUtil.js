@@ -90,6 +90,7 @@ describe('convertMarkersToHeatmapData', () => {
     assert.deepEqual(actual.statuses, ['red', 'green'])
     assert.deepEqual(actual.weights.length, 100)
     assert.deepEqual(actual.weights[0].length, 2)
-    assert.deepEqual(actual.weights[0], [1, 1])
+    assert.deepEqual(actual.weights[0], [0, 1])
+    assert.deepEqual(actual.weights[9], [1, 0])
   })
 })
