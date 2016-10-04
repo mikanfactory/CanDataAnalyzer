@@ -81,14 +81,15 @@ describe('convertIndicesToCounts', () => {
   })
 })
 
-// if AppAlgorithmUtil#_getCenter returns LatLng literal,
-// this function run and pass the test
-// describe('convertMarkersToGroupedWeightedLocations', () => {
-//   it('divided to some group', () => {
-//     const actual = u.convertMarkersToGroupedWeightedLocations(
-//       _getDummyMarker(), _getDummyGridPoints())
-//     assert.deepEqual(Object.keys(actual), ['red', 'green'])
-//     assert.deepEqual(actual['red'].length, 100)
-//     assert.deepEqual(actual['green'].length, 100)
-//   })
-// })
+describe('convertMarkersToHeatmapData', () => {
+  it('divided to some group', () => {
+    const actual = u.convertMarkersToHeatmapData(
+      _getDummyMarker(), _getDummyGridPoints())
+
+    assert.deepEqual(actual.statuses.length, 2)
+    assert.deepEqual(actual.statuses, ['red', 'green'])
+    assert.deepEqual(actual.weights.length, 100)
+    assert.deepEqual(actual.weights[0].length, 2)
+    assert.deepEqual(actual.weights[0], [1, 1])
+  })
+})
