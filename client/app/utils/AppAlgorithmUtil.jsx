@@ -72,3 +72,13 @@ function _getCenter(gridPoint) {
   const lng = (gridPoint.east + gridPoint.west)/2
   return new window.google.maps.LatLng({ lat: lat, lng: lng })
 }
+
+export function convertMarkersToGroupedWeightedLocations(markers, gridPoints) {
+  let imageGroup = groupBy(markers, 'image')
+  return reduce(imageGroup, (acc, val, key) => {
+    const xs = convertMarkersToGridIndices(markers, gridPoints)
+    const ys = convertIndicesToCounts(xs)
+    acc[key] = convertCountsToWeightedLocations(ys, gridPoints)
+    return acc
+  }, {})
+}

@@ -15,7 +15,7 @@ function _getDummyMarker() {
     ({
       id: i,
       settingID: i/GRID_SIZE,
-      image: "none",
+      image: i%10==0 ? "red" : "green",
       position: _getPosition(i),
       description: "TEST"
     })
@@ -80,3 +80,15 @@ describe('convertIndicesToCounts', () => {
     assert.deepEqual(expected, actual)
   })
 })
+
+// if AppAlgorithmUtil#_getCenter returns LatLng literal,
+// this function run and pass the test
+// describe('convertMarkersToGroupedWeightedLocations', () => {
+//   it('divided to some group', () => {
+//     const actual = u.convertMarkersToGroupedWeightedLocations(
+//       _getDummyMarker(), _getDummyGridPoints())
+//     assert.deepEqual(Object.keys(actual), ['red', 'green'])
+//     assert.deepEqual(actual['red'].length, 100)
+//     assert.deepEqual(actual['green'].length, 100)
+//   })
+// })
