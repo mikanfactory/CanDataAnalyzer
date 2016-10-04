@@ -8,7 +8,7 @@ import MessageActions from '../actions/MessageActions'
 import ModalStore from '../stores/ModalStore'
 import SettingStore from '../stores/SettingStore'
 import AppConstants from '../constants/AppConstants'
-import { switchSentence } from '../utils/AppParserUtil'
+import { parseAll } from '../utils/AppParserUtil'
 import { TARGETS } from '../constants/AppConstants.jsx'
 import { ModalStyle as s } from './Styles'
 
@@ -53,7 +53,7 @@ export default class Modal extends React.Component {
   handleFetchMarkers() {
     const { id, text } = this.state.setting
     const stream = p.stream(text)
-    const result = p.parse(switchSentence, stream)
+    const result = p.parse(parseAll, stream)
     if (p.isError(result)) {
       MessageActions.createMessage({ text: result.print().replace("\n", "<br>") })
       return

@@ -34,6 +34,7 @@ export default class Editor extends React.Component {
       enableLiveAutocompletion: true
     })
     this.editor.on('change', this._onChange);
+    this.editor.$blockScrolling = Infinity
   }
 
   render() {

@@ -133,3 +133,35 @@ describe("switchSentence", () => {
     ])
   })
 })
+
+describe("parseAll", () => {
+  const c1 = "Speed > 50 && (BrakeOnOff == 1 || AccelOnOff == 1)"
+  const c2 = "Speed < 10"
+  const c3 = "default"
+  const status1 = "red"
+  const status2 = "stop"
+  const status3 = "none"
+  const switchSentence = `
+// foo
+// bar
+// bazz
+
+switch (true) {
+  case ${c1}:
+    return ${status1}
+  case ${c2}:
+    return ${status2}
+  ${c3}:
+    return ${status3}
+}`
+  it("matches complex sentence", () => {
+    const s1 = p.stream(switchSentence)
+    const r1 = p.parse(u.parseAll, s1)
+    assert.isOk(p.isResult(r1), "parser output is not ParseResult")
+    assert.deepEqual(r1.value, [
+      { id: 1, content: replaceOperator(c1), status: status1 },
+      { id: 2, content: replaceOperator(c2), status: status2 },
+      { id: 3, content: replaceOperator(c3), status: status3 }
+    ])
+  })
+})
