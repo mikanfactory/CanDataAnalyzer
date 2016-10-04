@@ -5,7 +5,7 @@ function checkStatus(json) {
   if (!json.code) {
     return json
   }
-  const error = new Error(json.message)
+  const error = new Error(json.content)
   throw error
 }
 
@@ -26,7 +26,7 @@ export function fetchMarkers(data, callback) {
 }
 
 export function sendHeatmapSetting(data) {
-  fetch("/api/v1/setting", {
+  fetch("/api/v1/heatmap", {
     credentials: "same-origin",
     method: "POST",
     headers: {

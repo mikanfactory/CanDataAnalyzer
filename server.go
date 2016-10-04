@@ -60,9 +60,11 @@ func (s *Server) Init() {
 func (s *Server) Route() {
 	marker := &controller.Marker{DB: s.db}
 	googleMap := &controller.GoogleMap{Key: s.Config.GoogleMap.Key}
+	heatmap := &controller.Heatmap{}
 
 	s.Engine.GET("/", googleMap.Get)
 	s.Engine.POST("/api/v1/markers", marker.Get)
+	s.Engine.POST("/api/v1/heatmap", heatmap.Save)
 }
 
 func main() {

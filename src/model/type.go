@@ -35,10 +35,10 @@ type Condition struct {
 	Status  string `json:"status"`
 }
 
-// Error is used for json error message
-type Error struct {
+// Message is used for sever responce
+type Message struct {
 	Code    int    `json:"code"`
-	Message string `json:"message"`
+	Content string `json:"content"`
 }
 
 // Grid stand for grid used for creating heatmap
