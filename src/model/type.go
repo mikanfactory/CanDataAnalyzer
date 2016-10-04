@@ -43,10 +43,9 @@ type Error struct {
 
 // Grid stand for grid used for creating heatmap
 type Grid struct {
-	Width     float64  `json:"width"`
-	Height    float64  `json:"height"`
-	MeshSize  int64    `json:"meshSize"`
-	NorthEast Position `json:"northEast"`
+	DivideSize int64    `json:"divideSize"`
+	NorthEast  Position `json:"northEast"`
+	SouthWest  Position `json:"southWest"`
 }
 
 // Heatmap is config of heatmap data

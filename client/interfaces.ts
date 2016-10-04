@@ -37,10 +37,9 @@ interface Message {
 }
 
 interface Grid {
-  width:     number,
-  height:    number,
-  meshSize:  number,
-  NorthEast: Position,
+  divideSize: number,
+  NorthEast:  Position,
+  SouthWest:  Position
 }
 
 interface Heatmap {
