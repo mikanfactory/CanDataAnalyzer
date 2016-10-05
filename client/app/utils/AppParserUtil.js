@@ -1,5 +1,7 @@
 import * as p from 'eulalie'
 import assign from 'object-assign'
+import compact from 'lodash/compact'
+import flatten from 'lodash/flatten'
 
 export const isEOL = (c) => /^\n$/.test(c)
 export const eol = p.expected(p.sat(isEOL), "a EOL")
@@ -40,6 +42,14 @@ export const conditionBlock = p.expected(p.seq(function*() {
   return { content: stmt, status: status }
 }), "a pair of case or default line and return line")
 
+export const commentLine = p.expected(p.seq(function*() {
+  yield p.string("//")
+  yield p.many(p.notChar("\n"))
+  yield eol
+
+  return undefined
+}))
+
 export const switchSentence = p.expected(p.seq(function*() {
   yield p.string("switch (true) {")
   yield eol
@@ -52,3 +62,15 @@ export const switchSentence = p.expected(p.seq(function*() {
     return assign({}, c, { id: i+1 })
   })
 }), "a switch sentence")
+
+export const whiteline = p.seq(function*() {
+  yield eol
+  return ""
+})
+
+export const parseAll = p.seq(function*() {
+  const {value: result} = yield p.manyA(
+    p.either([commentLine, whiteline, switchSentence]))
+
+  return flatten(compact(result))
+})

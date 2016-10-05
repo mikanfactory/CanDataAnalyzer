@@ -15,7 +15,7 @@ function _getDummyMarker() {
     ({
       id: i,
       settingID: i/GRID_SIZE,
-      image: "none",
+      image: i%10==0 ? "red" : "green",
       position: _getPosition(i),
       description: "TEST"
     })
@@ -78,5 +78,19 @@ describe('convertIndicesToCounts', () => {
     const indices = u.convertMarkersToGridIndices(_getDummyMarker(), _getDummyGridPoints())
     const actual = u.convertIndicesToCounts(indices)
     assert.deepEqual(expected, actual)
+  })
+})
+
+describe('convertMarkersToHeatmapData', () => {
+  it('divided to some group', () => {
+    const actual = u.convertMarkersToHeatmapData(
+      _getDummyMarker(), _getDummyGridPoints())
+
+    assert.deepEqual(actual.statuses.length, 2)
+    assert.deepEqual(actual.statuses, ['red', 'green'])
+    assert.deepEqual(actual.weights.length, 100)
+    assert.deepEqual(actual.weights[0].length, 2)
+    assert.deepEqual(actual.weights[0], [0, 1])
+    assert.deepEqual(actual.weights[9], [1, 0])
   })
 })

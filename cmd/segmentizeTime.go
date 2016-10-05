@@ -34,7 +34,9 @@ func InsertData() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	destroyAllData()
+	if _, err := os.Stat(dbConfig); os.IsExist(err) {
+		destroyAllData()
+	}
 
 	wg := new(sync.WaitGroup)
 	for _, target := range targets.Names {
@@ -52,14 +54,12 @@ func destroyAllData() {
 	db, err := sql.Open("sqlite3", dbConfig)
 	checkErr(err)
 
-	query := "DELETE FROM cans"
-
-	_, err = db.Exec(query)
+	_, err = db.Exec("DELETE FROM cans")
 	checkErr(err)
 }
 
 func segmentizeTime(target string, cacheInfo CacheInfo) {
-	file, err := os.Open("data/" + target + ".csv")
+	file, err := os.Open("data/input/" + target + ".csv")
 	checkErr(err)
 
 	r := csv.NewReader(bufio.NewReader(file))

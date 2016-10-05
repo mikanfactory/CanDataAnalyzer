@@ -1,8 +1,19 @@
 import React from 'react'
-import ModalAction from '../actions/ModalActions'
+import LayerStore from '../stores/LayerStore'
+import MarkerStore from '../stores/MarkerStore'
+import SettingStore from '../stores/SettingStore'
 import LayerAction from '../actions/LayerActions'
-import { getSmallerBounds } from '../utils/AppGoogleMapUtil'
+import ModalAction from '../actions/ModalActions'
+import MessageActions from '../actions/MessageActions'
+import { sendHeatmapSetting } from '../utils/AppWebAPIUtils.jsx'
+import { createGridSetting, createGridPoints, getSmallerBounds } from '../utils/AppGoogleMapUtil'
+import { convertMarkersToHeatmapData } from '../utils/AppAlgorithmUtil'
 import { ToolBoxHeaderStyle as s } from './Styles'
+import { defaultDivideSize } from '../constants/AppConstants'
+
+import { parseAll } from '../utils/AppParserUtil'
+import assign from 'object-assign'
+import * as p from 'eulalie'
 
 export default class ToolBoxHeader extends React.Component {
   constructor(props) {
@@ -54,11 +65,37 @@ export default class ToolBoxHeader extends React.Component {
     LayerAction.destroyHeatmapLayer()
   }
 
+  handleSaveHeatmapSetting() {
+    const bounds = LayerStore.getBounds()
+    const gridPoints = createGridPoints(bounds, defaultDivideSize)
+    const markers = MarkerStore.getAllMarkers()
+    const hm = convertMarkersToHeatmapData(markers, gridPoints)
+
+    const gridSetting = createGridSetting(bounds, defaultDivideSize)
+
+    const settings = SettingStore.getAllSettings().map( st => {
+      const stream = p.stream(st.text)
+      const result = p.parse(parseAll, stream)
+      if (p.isError(result)) {
+        MessageActions.createMessage({ text: result.print().replace("\n", "<br>") })
+        return
+      }
+      return assign({}, st, { conditions: result.value })
+    })
+
+    const heatmap = assign({}, hm, { grid: gridSetting, settings: settings })
+    sendHeatmapSetting(heatmap)
+  }
+
   render() {
     return (
       <div>
         <div className="ToolBoxHeader" style={s.HeaderStyle}>
           <span style={s.StringStyle}>CanDataAnalyzer</span>
+          <span className="glyphicon glyphicon-download-alt"
+                style={s.GlyphiconStyle}
+                onClick={this.handleSaveHeatmapSetting}>
+          </span>
           <span className="glyphicon glyphicon-plus"
                 style={s.GlyphiconStyle}
                 onClick={this.handleModalOpen}>

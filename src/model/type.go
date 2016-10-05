@@ -35,8 +35,23 @@ type Condition struct {
 	Status  string `json:"status"`
 }
 
-// Error is used for json error message
-type Error struct {
+// Message is used for sever responce
+type Message struct {
 	Code    int    `json:"code"`
-	Message string `json:"message"`
+	Content string `json:"content"`
+}
+
+// Grid stand for grid used for creating heatmap
+type Grid struct {
+	DivideSize int64    `json:"divideSize"`
+	NorthEast  Position `json:"northEast"`
+	SouthWest  Position `json:"southWest"`
+}
+
+// Heatmap is config of heatmap data
+type Heatmap struct {
+	Grid     Grid      `json:"grid"`
+	Statuses []string  `json:"statuses"`
+	Weights  [][]int64 `json:"weights"`
+	Settings []Setting `json:"settings"`
 }

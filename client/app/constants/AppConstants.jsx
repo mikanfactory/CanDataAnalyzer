@@ -1,16 +1,23 @@
 import keyMirror from 'keymirror'
 import targets from '../../../config/targets.json'
 import features from '../../../config/cacheConfig.json'
+import chunk from 'lodash/chunk'
 
 const validFeatures = features.columns
                               .filter( c => c.read )
                               .map( c => c.name )
+
+const settingTextHeader = chunk(validFeatures, 3)
+  .map( c => "// " + c.join(" "))
+  .join("\n")
 
 const defaultSetting = {
   id: 0,
   target: "021021K1KAm",
   title: "default",
   text: [
+    settingTextHeader,
+    "",
     "switch (true) {",
     "  case SpeedPerHourLowpass > 50 && (BrakeOnOff == 1 || AcceleratorOnOff == 1):",
     "    return red",

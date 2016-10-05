@@ -7,15 +7,15 @@ import (
 )
 
 var statusToFilename = map[string]string{
-	"green":    "./static/icon/green_car.png",
-	"yellow":   "./static/icon/yellow_car.png",
-	"red":      "./static/icon/red_car.png",
+	"green":    "./static/icon/green.png",
+	"yellow":   "./static/icon/yellow.png",
+	"red":      "./static/icon/red.png",
 	"up":       "./static/icon/up.png",
 	"down":     "./static/icon/down.png",
 	"right":    "./static/icon/right.png",
 	"left":     "./static/icon/left.png",
 	"straight": "./static/icon/straight.png",
-	"stop":     "./static/icon/stop_car.png",
+	"stop":     "./static/icon/stop.png",
 	"empty":    "./static/icon/empty.png",
 	"none":     "none",
 }
@@ -66,7 +66,7 @@ func (m *Can) getDescription() string {
 	t := v.Type()
 	for i := 0; i < v.NumField(); i++ {
 		f := v.Field(i)
-		cmp := fmt.Sprintf("<div class='feature'> %s: %f</div>", t.Field(i).Name, f.Interface())
+		cmp := fmt.Sprintf("<div class='feature'> %s: %v</div>", t.Field(i).Name, f.Interface())
 		description += cmp + "\n"
 	}
 
