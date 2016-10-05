@@ -9,12 +9,20 @@ import (
 )
 
 func (m *Heatmap) SaveSetting() error {
-	if err := os.Mkdir("data/output/a1", 0755); err != nil {
-		return err
+	if _, err := os.Stat("data/output/a1"); os.IsExist(err) {
+		if err := os.Mkdir("data/output/a1", 0755); err != nil {
+			return err
+		}
 	}
 
+	file, err := os.Create("data/output/a1/setting.json")
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
 	json, _ := json.Marshal(m)
-	if err := ioutil.WriteFile("/data/output/a1/setting.json", json, 0744); err != nil {
+	if err := ioutil.WriteFile("data/output/a1/setting.json", json, 0744); err != nil {
 		return err
 	}
 
@@ -22,7 +30,7 @@ func (m *Heatmap) SaveSetting() error {
 }
 
 func (m *Heatmap) SaveData() error {
-	file, err := os.Create("/data/output/a1/result.csv")
+	file, err := os.Create("data/output/a1/result.csv")
 	if err != nil {
 		return err
 	}

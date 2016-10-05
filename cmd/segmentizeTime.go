@@ -34,7 +34,7 @@ func InsertData() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	if _, err := os.Stat(dbConfig); !os.IsNotExist(err) {
+	if _, err := os.Stat(dbConfig); os.IsExist(err) {
 		destroyAllData()
 	}
 

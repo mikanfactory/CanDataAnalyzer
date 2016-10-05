@@ -52,6 +52,6 @@ type Grid struct {
 type Heatmap struct {
 	Grid     Grid      `json:"grid"`
 	Statuses []string  `json:"statuses"`
-	Weights  [][]int64 `json:"weight"`
+	Weights  [][]int64 `json:"weights"`
 	Settings []Setting `json:"settings"`
 }
