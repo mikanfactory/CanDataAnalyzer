@@ -1,10 +1,14 @@
 import React from 'react'
 import GMapActions from '../actions/GMapActions'
+import MarkerActions from '../actions/MarkerActions'
+import SettingActions from '../actions/SettingActions'
 import { GoogleMapStyle as s } from './Styles'
 
 export default class GoogleMap extends React.Component {
   constructor(props) {
     super(props)
+
+    this.initialized = false
   }
 
   componentDidMount() {
@@ -15,6 +19,17 @@ export default class GoogleMap extends React.Component {
       zoom: 15,
       center: defaultCoordinate,
       disableDoubleClickZoom: true
+    })
+
+    map.addListener('idle', () => {
+      if (!this.initialized) {
+        const markers = JSON.parse(localStorage.getItem('markers'))
+        const settings = JSON.parse(localStorage.getItem('settings'))
+        SettingActions.createSettings(settings)
+        MarkerActions.createMarkers(markers)
+
+        this.initialized = true
+      }
     })
 
     GMapActions.updateGoogleMap(map)

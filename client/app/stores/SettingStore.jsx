@@ -17,8 +17,8 @@ let _store = {
 }
 
 function _createSettings(settings) {
+  const lastSetting = last(settings)
   _store.settings = settings
-  lastSetting = last(settings)
   _store.currentID = lastSetting.id + 1
 }
 
