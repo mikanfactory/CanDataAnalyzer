@@ -33,6 +33,10 @@ function _updateSetting(setting) {
   _store.settings = sortBy(stgs, 'id')
 }
 
+function _destroySetting(id) {
+  _store.settings = _store.settings.filter( s => s.id !== id)
+}
+
 function _getAndCountUpId() {
   const sid = _store.currentID
   _store.currentID += 1
@@ -91,6 +95,11 @@ SettingStore.dispatchToken = AppDispatcher.register((action) => {
 
     case ActionTypes.UDPATE_SETTING:
       _updateSetting(action.setting)
+      SettingStore.emitChange()
+      break
+
+    case ActionTypes.DESTROY_SETTING:
+      _destroySetting(action.settingID)
       SettingStore.emitChange()
       break
 

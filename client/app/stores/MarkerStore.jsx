@@ -1,5 +1,6 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import AppConstants from '../constants/AppConstants'
+import SettingStore from './SettingStore'
 import { EventEmitter } from 'events'
 import isEqual from 'lodash/isEqual'
 import uniqWith from 'lodash/uniqWith'
@@ -22,6 +23,10 @@ function _updateMarkers(sid, markers) {
   _store.markers = _store.markers
                          .filter( m => m.settingID !== sid)
   _store.markers = [..._store.markers, ...markers]
+}
+
+function _destroyMarkers(sid) {
+  _store.markers = _store.markers.filter( m => m.settingID !== sid)
 }
 
 function _drawMarkers(sid) {
@@ -92,6 +97,12 @@ MarkerStore.dispatchToken = AppDispatcher.register((action) => {
 
     case ActionTypes.UPDATE_MARKERS:
       _updateMarkers(action.settingID, action.markers)
+      MarkerStore.emitChange()
+      break
+
+    case ActionTypes.DESTROY_SETTINGS:
+      AppDispatcher.waitFor([SettingStore.dispatchToken])
+      _destroyMarkers(action.settingID)
       MarkerStore.emitChange()
       break
 

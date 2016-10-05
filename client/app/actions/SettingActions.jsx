@@ -16,6 +16,13 @@ const SettingActions = {
       actionType: ActionTypes.UPDATE_SETTING,
       setting: setting
     })
+  },
+
+  destroySetting: settingID => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.DESTROY_SETTING,
+      settingID: settingID
+    })
   }
 }
 
