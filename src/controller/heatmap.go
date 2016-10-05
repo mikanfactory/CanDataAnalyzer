@@ -13,25 +13,17 @@ type Heatmap struct{}
 func (m *Heatmap) Save(c echo.Context) error {
 	heatmap := model.Heatmap{}
 	if err := c.Bind(&heatmap); err != nil {
-		errorMessage := model.Message{
-			Code:    http.StatusBadRequest,
-			Content: err.Error(),
-		}
+		errorMessage := createErrorMessage(err)
 		return c.JSON(http.StatusBadRequest, errorMessage)
 	}
 
 	if err := heatmap.SaveSetting(); err != nil {
-		errorMessage := model.Message{
-			Code:    http.StatusBadRequest,
-			Content: err.Error(),
-		}
+		errorMessage := createErrorMessage(err)
 		return c.JSON(http.StatusBadRequest, errorMessage)
 	}
+
 	if err := heatmap.SaveData(); err != nil {
-		errorMessage := model.Message{
-			Code:    http.StatusBadRequest,
-			Content: err.Error(),
-		}
+		errorMessage := createErrorMessage(err)
 		return c.JSON(http.StatusBadRequest, errorMessage)
 	}
 
