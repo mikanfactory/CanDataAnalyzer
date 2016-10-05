@@ -7,23 +7,27 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 func (m *Heatmap) SaveSetting() error {
-	if _, err := os.Stat("data/output/a1"); os.IsExist(err) {
-		if err := os.Mkdir("data/output/a1", 0755); err != nil {
+	dirname := "data/output/" + m.createDirname()
+	filename := dirname + "/setting.json"
+
+	if _, err := os.Stat(dirname); os.IsNotExist(err) {
+		if err := os.Mkdir(dirname, 0755); err != nil {
 			return err
 		}
 	}
 
-	file, err := os.Create("data/output/a1/setting.json")
+	file, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
 	json, _ := json.Marshal(m)
-	if err := ioutil.WriteFile("data/output/a1/setting.json", json, 0744); err != nil {
+	if err := ioutil.WriteFile(filename, json, 0744); err != nil {
 		return err
 	}
 
@@ -31,7 +35,10 @@ func (m *Heatmap) SaveSetting() error {
 }
 
 func (m *Heatmap) SaveData() error {
-	file, err := os.Create("data/output/a1/result.csv")
+	dirname := "data/output/" + m.createDirname()
+	filename := dirname + "/result.csv"
+
+	file, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
@@ -79,4 +86,10 @@ func (m *Heatmap) createContent() [][]string {
 	}
 
 	return content
+}
+
+func (m *Heatmap) createDirname() string {
+	t := time.Now()
+	const layout = "2006-01-02_15:04:05"
+	return t.Format(layout)
 }
