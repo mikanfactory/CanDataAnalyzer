@@ -87,15 +87,21 @@ export default class ToolBoxHeader extends React.Component {
     sendHeatmapSetting(heatmap)
   }
 
+  handleSaveLocalStrage() {
+    localStorage.clear()
+    const markers = MarkerStore.getAllMarkers()
+    const settings = SettingStore.getAllSettings()
+    localStorage.setItem('markers', JSON.stringify(markers))
+    localStorage.setItem('settings', JSON.stringify(settings))
+
+    MessageActions.createMessage({ text: "Save configs to LocalStorage!!!!!" })
+  }
+
   render() {
     return (
       <div>
         <div className="ToolBoxHeader" style={s.HeaderStyle}>
-          <span style={s.StringStyle}>CanDataAnalyzer</span>
-          <span className="glyphicon glyphicon-download-alt"
-                style={s.GlyphiconStyle}
-                onClick={this.handleSaveHeatmapSetting}>
-          </span>
+          <span style={s.StringStyle}>CANDY</span>
           <span className="glyphicon glyphicon-plus"
                 style={s.GlyphiconStyle}
                 onClick={this.handleModalOpen}>
@@ -108,9 +114,17 @@ export default class ToolBoxHeader extends React.Component {
                 style={s.GlyphiconStyle}
                 onClick={this.handleHeatmapToggle}>
           </span>
+          <span className="glyphicon glyphicon-download-alt"
+                style={s.GlyphiconStyle}
+                onClick={this.handleSaveHeatmapSetting}>
+          </span>
           <span className="glyphicon glyphicon-film"
                 style={s.GlyphiconStyle}
                 onClick={this.handleModalOpen}>
+          </span>
+          <span className="glyphicon glyphicon-thumbs-up"
+                style={s.GlyphiconStyle}
+                onClick={this.handleSaveLocalStrage}>
           </span>
         </div>
       </div>
