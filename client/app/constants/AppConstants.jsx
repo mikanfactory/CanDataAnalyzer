@@ -82,9 +82,6 @@ const AppConstants = {
     // GMap
     UPDATE_GOOGLE_MAP: null,
 
-    // Condition
-    UPDATE_CONDITION: null,
-
     // Marker
     CREATE_MARKERS: null,
     UPDATE_MARKERS: null,

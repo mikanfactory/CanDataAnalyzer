@@ -39,29 +39,6 @@ export const ToolBoxStyle = {
   }
 }
 
-export const ConditionFormStyle = {
-  ConditionStyle: {
-    paddingTop: "20px",
-  },
-
-  CaseTextStyle: {
-    fontSize: "24px",
-    marginLeft: "30px"
-  },
-
-  RawTextStyle: {
-    fontSize: "24px",
-  },
-
-  TextStyle: {
-    width: "50px",
-    fontSize: "20px",
-  },
-
-  SelectStyle: {
-  }
-}
-
 export const MarkerStyle = {
   MarkerStyle: {
     color: "#1F1F1F",
