@@ -6,6 +6,7 @@ import SettingActions from '../actions/SettingActions'
 import ModalActions from '../actions/ModalActions'
 import assign from 'object-assign'
 import { MarkerListStyle as s } from './Styles'
+import { saveToLocalStorage } from '../utils/AppLocalStrageUtil'
 
 function getStateFromStores(sid) {
   return {
@@ -93,7 +94,11 @@ export default class MarkerList extends React.Component {
   }
 
   handleSettingRemove() {
-    SettingActions.destroySetting(this.props.id)
+    this.handleMarkerErase()
+
+    const { id } = this.props
+    setTimeout(() => { SettingActions.destroySetting(id) }, 100)
+    setTimeout(() => { saveToLocalStorage(false) }, 1000)
   }
 
   componentDidMount() {

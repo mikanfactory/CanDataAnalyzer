@@ -1,8 +1,7 @@
 import React from 'react'
 import GMapActions from '../actions/GMapActions'
-import MarkerActions from '../actions/MarkerActions'
-import SettingActions from '../actions/SettingActions'
 import { GoogleMapStyle as s } from './Styles'
+import { loadLocalStorage } from '../utils/AppLocalStrageUtil'
 
 export default class GoogleMap extends React.Component {
   constructor(props) {
@@ -23,11 +22,7 @@ export default class GoogleMap extends React.Component {
 
     map.addListener('idle', () => {
       if (!this.initialized) {
-        const markers = JSON.parse(localStorage.getItem('markers'))
-        const settings = JSON.parse(localStorage.getItem('settings'))
-        SettingActions.createSettings(settings)
-        MarkerActions.createMarkers(markers)
-
+        loadLocalStorage()
         this.initialized = true
       }
     })

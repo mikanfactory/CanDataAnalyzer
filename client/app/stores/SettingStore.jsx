@@ -5,6 +5,7 @@ import assign from 'object-assign'
 import uniqBy from 'lodash/uniqBy'
 import sortBy from 'lodash/sortBy'
 import last from 'lodash/last'
+import isEmpty from 'lodash/isEmpty'
 
 import { defaultSetting } from '../constants/AppConstants'
 
@@ -17,12 +18,18 @@ let _store = {
 }
 
 function _createSettings(settings) {
+  // if initize setting and setting === undefined || []
+  if (isEmpty(settings)) {
+    _store.settings = []
+    return
+  }
+
   const lastSetting = last(settings)
   _store.settings = settings
   _store.currentID = lastSetting.id + 1
 }
 
-function _newSetting() {
+function _createSetting() {
   const sid = _getAndCountUpId()
   const setting = assign({}, defaultSetting, { id: sid })
   _store.settings = [..._store.settings, setting]
@@ -104,7 +111,7 @@ SettingStore.dispatchToken = AppDispatcher.register((action) => {
       break
 
     case ActionTypes.CREATE_MODAL:
-      _newSetting()
+      _createSetting()
       SettingStore.emitChange()
       break
 

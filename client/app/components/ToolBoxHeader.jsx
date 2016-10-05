@@ -10,6 +10,7 @@ import { createGridSetting, createGridPoints, getSmallerBounds } from '../utils/
 import { convertMarkersToHeatmapData } from '../utils/AppAlgorithmUtil'
 import { ToolBoxHeaderStyle as s } from './Styles'
 import { defaultDivideSize } from '../constants/AppConstants'
+import { saveToLocalStorage } from '../utils/AppLocalStrageUtil'
 
 import { parseAll } from '../utils/AppParserUtil'
 import assign from 'object-assign'
@@ -88,13 +89,7 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleSaveLocalStrage() {
-    localStorage.clear()
-    const markers = MarkerStore.getAllMarkers()
-    const settings = SettingStore.getAllSettings()
-    localStorage.setItem('markers', JSON.stringify(markers))
-    localStorage.setItem('settings', JSON.stringify(settings))
-
-    MessageActions.createMessage({ text: "Save configs to LocalStorage!!!!!" })
+    saveToLocalStorage()
   }
 
   render() {

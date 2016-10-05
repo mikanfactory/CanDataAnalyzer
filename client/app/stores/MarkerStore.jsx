@@ -15,6 +15,12 @@ let _store = {
 }
 
 function _createMarkers(markers) {
+  // if initize marker and marker === undefined
+  if (!markers) {
+    _store.markers = []
+    return
+  }
+
   const ms = markers.filter( m => m.image !== "none" )
   _store.markers = [..._store.markers, ...ms]
 }
@@ -100,7 +106,7 @@ MarkerStore.dispatchToken = AppDispatcher.register((action) => {
       MarkerStore.emitChange()
       break
 
-    case ActionTypes.DESTROY_SETTINGS:
+    case ActionTypes.DESTROY_SETTING:
       AppDispatcher.waitFor([SettingStore.dispatchToken])
       _destroyMarkers(action.settingID)
       MarkerStore.emitChange()
