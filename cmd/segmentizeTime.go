@@ -59,7 +59,7 @@ func destroyAllData() {
 }
 
 func segmentizeTime(target string, cacheInfo CacheInfo) {
-	file, err := os.Open("data/" + target + ".csv")
+	file, err := os.Open("data/input/" + target + ".csv")
 	checkErr(err)
 
 	r := csv.NewReader(bufio.NewReader(file))
