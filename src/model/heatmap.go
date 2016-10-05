@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"regexp"
 	"strconv"
 )
 
@@ -38,17 +39,30 @@ func (m *Heatmap) SaveData() error {
 
 	w := csv.NewWriter(file)
 
-	for _, weight := range m.Weights {
-		str := []string{}
+	// write header
+	header := append([]string{"id"})
+	s := regexp.MustCompile(`\.\/static\/icon\/`)
+	p := regexp.MustCompile(`\.png`)
+	for _, status := range m.Statuses {
+		str := s.ReplaceAllString(status, "")
+		str = p.ReplaceAllString(str, "")
+		header = append(header, str)
+	}
+	if err := w.Write(header); err != nil {
+		return err
+	}
+
+	// write content
+	for i, weight := range m.Weights {
+		str := []string{strconv.Itoa(i + 1)}
 		for _, val := range weight {
 			str = append(str, strconv.Itoa(int(val)))
 		}
 		if err := w.Write(str); err != nil {
 			return err
 		}
+		w.Flush()
 	}
-
-	defer w.Flush()
 
 	return nil
 }
