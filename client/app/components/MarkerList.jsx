@@ -2,6 +2,7 @@ import React from 'react'
 import Marker from './Marker'
 import MarkerStore from '../stores/MarkerStore'
 import MarkerActions from '../actions/MarkerActions'
+import SettingActions from '../actions/SettingActions'
 import ModalActions from '../actions/ModalActions'
 import assign from 'object-assign'
 import { MarkerListStyle as s } from './Styles'
@@ -33,6 +34,7 @@ export default class MarkerList extends React.Component {
     this.handleMarkerDraw = this.handleMarkerDraw.bind(this)
     this.handleMarkerErase = this.handleMarkerErase.bind(this)
     this.handleModalOpen = this.handleModalOpen.bind(this)
+    this.handleSettingRemove = this.handleSettingRemove.bind(this)
     this._onChange = this._onChange.bind(this)
   }
 
@@ -90,6 +92,10 @@ export default class MarkerList extends React.Component {
     ModalActions.openModal(this.props.id)
   }
 
+  handleSettingRemove() {
+    SettingActions.destroySetting(this.props.id)
+  }
+
   componentDidMount() {
     MarkerStore.addChangeListener(this._onChange);
   }
@@ -114,7 +120,8 @@ export default class MarkerList extends React.Component {
           {openOrCloseIcon}
           {drawOrEraseIcon}
           <span className="glyphicon glyphicon-trash"
-                style={s.GlyphiconStyle}></span>
+                style={s.GlyphiconStyle}
+                onClick={this.handleSettingRemove}></span>
         </div>
         <div className="cnt" style={s.ContainerStyle}>{markerNodes}</div>
       </div>
