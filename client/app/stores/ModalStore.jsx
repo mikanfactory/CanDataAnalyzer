@@ -2,7 +2,6 @@ import AppDispatcher from '../dispatcher/AppDispatcher'
 import AppConstants from '../constants/AppConstants'
 import { defaultModal } from '../constants/AppConstants'
 import SettingStore from '../stores/SettingStore'
-import ConditionStore from '../stores/ConditionStore'
 import { EventEmitter } from 'events'
 
 const ActionTypes = AppConstants.ActionTypes
@@ -53,7 +52,7 @@ ModalStore.dispatchToken = AppDispatcher.register((action) => {
 
   switch (action.actionType) {
     case ActionTypes.CREATE_MODAL:
-      AppDispatcher.waitFor([SettingStore.dispatchToken, ConditionStore.dispatchToken])
+      AppDispatcher.waitFor([SettingStore.dispatchToken])
       _createModal(SettingStore.getLatestID())
       ModalStore.emitChange()
       break
@@ -69,7 +68,7 @@ ModalStore.dispatchToken = AppDispatcher.register((action) => {
       break
 
     case ActionTypes.CANCEL_MODAL:
-      AppDispatcher.waitFor([SettingStore.dispatchToken, ConditionStore.dispatchToken])
+      AppDispatcher.waitFor([SettingStore.dispatchToken])
       _closeModal()
       ModalStore.emitChange()
       break

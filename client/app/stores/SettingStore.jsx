@@ -16,6 +16,12 @@ let _store = {
   settings: []
 }
 
+function _createSettings(settings) {
+  const lastSetting = last(settings)
+  _store.settings = settings
+  _store.currentID = lastSetting.id + 1
+}
+
 function _newSetting() {
   const sid = _getAndCountUpId()
   const setting = assign({}, defaultSetting, { id: sid })
@@ -25,6 +31,10 @@ function _newSetting() {
 function _updateSetting(setting) {
   const stgs = uniqBy([setting, ..._store.settings], 'id')
   _store.settings = sortBy(stgs, 'id')
+}
+
+function _destroySetting(id) {
+  _store.settings = _store.settings.filter( s => s.id !== id)
 }
 
 function _getAndCountUpId() {
@@ -77,8 +87,19 @@ const SettingStore = new SettingStoreClass()
 SettingStore.dispatchToken = AppDispatcher.register((action) => {
 
   switch (action.actionType) {
+    // for initializing
+    case ActionTypes.CREATE_SETTINGS:
+      _createSettings(action.settings)
+      SettingStore.emitChange()
+      break
+
     case ActionTypes.UDPATE_SETTING:
       _updateSetting(action.setting)
+      SettingStore.emitChange()
+      break
+
+    case ActionTypes.DESTROY_SETTING:
+      _destroySetting(action.settingID)
       SettingStore.emitChange()
       break
 
