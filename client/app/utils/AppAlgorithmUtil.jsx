@@ -77,7 +77,7 @@ export function convertMarkersToHeatmapData(markers, gridPoints) {
     const xs = convertMarkersToGridIndices(val, gridPoints)
     const ys = convertIndicesToCounts(xs)
     acc[key] = _fillUnassignedIndex(ys, divideSize)
-      return acc
+    return acc
   }, {})
 
   const weights = reduce(gwls, (acc, val) => {
@@ -103,7 +103,7 @@ function _getCenter(gridPoint) {
 }
 
 function _fillUnassignedIndex(counts, divideSize) {
-  let lst = Array(divideSize*2).fill(0)
+  let lst = Array(divideSize*divideSize).fill(0)
 
   forEach(counts, (val, key) => {
     lst[parseInt(key, 10)] = val
