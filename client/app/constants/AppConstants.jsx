@@ -79,6 +79,10 @@ const AppConstants = {
     CANCEL_MODAL: null,
     CLOSE_MODAL: null,
 
+    // Setting
+    CREATE_SETTINGS: null,
+    UPDATE_SETTING: null,
+
     // GMap
     UPDATE_GOOGLE_MAP: null,
 

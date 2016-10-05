@@ -16,6 +16,12 @@ let _store = {
   settings: []
 }
 
+function _createSettings(settings) {
+  _store.settings = settings
+  lastSetting = last(settings)
+  _store.currentID = lastSetting.id + 1
+}
+
 function _newSetting() {
   const sid = _getAndCountUpId()
   const setting = assign({}, defaultSetting, { id: sid })
@@ -77,6 +83,12 @@ const SettingStore = new SettingStoreClass()
 SettingStore.dispatchToken = AppDispatcher.register((action) => {
 
   switch (action.actionType) {
+    // for initializing
+    case ActionTypes.CREATE_SETTINGS:
+      _createSettings(action.settings)
+      SettingStore.emitChange()
+      break
+
     case ActionTypes.UDPATE_SETTING:
       _updateSetting(action.setting)
       SettingStore.emitChange()
