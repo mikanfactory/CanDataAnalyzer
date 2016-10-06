@@ -41,27 +41,41 @@ func InsertData() {
 	db, err := sql.Open("sqlite3", dbConfig)
 	checkErr(err)
 
-	wg := new(sync.WaitGroup)
+	size := len(targets.Names)
+	q := make(chan string, 1000)
+	fin := make(chan string, size)
+	validColumns := getValidColumns(cacheInfo)
+
 	for _, target := range targets.Names {
-		wg.Add(1)
-		go func(target string) {
-			segmentizeTime(db, target, cacheInfo)
-			wg.Done()
-		}(target)
+		go segmentizeData(q, fin, target, validColumns)
 	}
 
-	wg.Wait()
+	finished := 0
+	for {
+		select {
+		case query := <-q:
+			insert(db, query)
+
+		case <-fin:
+			if finished < size-1 {
+				finished++
+				continue
+			}
+
+			return
+		}
+	}
 }
 
-func destroyAllData() {
-	db, err := sql.Open("sqlite3", dbConfig)
-	checkErr(err)
+func insert(db *sql.DB, query string) {
+	mutex.Lock()
+	defer mutex.Unlock()
 
-	_, err = db.Exec("DELETE FROM cans")
+	_, err := db.Exec(query)
 	checkErr(err)
 }
 
-func segmentizeTime(db *sql.DB, target string, cacheInfo CacheInfo) {
+func segmentizeData(q, fin chan string, target string, validColumns []Column) {
 	file, err := os.Open("data/input/" + target + ".csv")
 	checkErr(err)
 
@@ -69,23 +83,56 @@ func segmentizeTime(db *sql.DB, target string, cacheInfo CacheInfo) {
 	allRecords, err := r.ReadAll()
 	checkErr(err)
 
-	validColumns := getValidColumns(cacheInfo)
 	allRecords = allRecords[headerLines:]
 
 	for i := 0; i < len(allRecords)/segmentSize; i++ {
 		records := allRecords[i*segmentSize : (i+1)*segmentSize]
-		insertField(db, target, validColumns, calcAllAverage(validColumns, &records))
+		averages := summurizeColumns(validColumns, &records)
+		q <- createQueryStr(target, validColumns, averages)
 	}
+
+	fin <- ""
 }
 
-func insertField(db *sql.DB, target string, validColumns []Column, field []float64) {
-	mutex.Lock()
-	defer mutex.Unlock()
+func summurizeColumns(columns []Column, records *[][]string) []float64 {
+	result := []float64{}
+	for _, column := range columns {
+		result = append(result, summurizeColumn(column, records))
+	}
 
-	query := createQueryStr(target, validColumns, field)
+	return result
+}
 
-	_, err := db.Exec(query)
-	checkErr(err)
+func summurizeColumn(column Column, records *[][]string) float64 {
+	if column.Name == "BrakeOnOff" || column.Name == "AcceleratorOnOff" {
+		return calcMax(column, records)
+	}
+
+	return calcAverage(column, records)
+}
+
+func calcMax(column Column, records *[][]string) float64 {
+	max := -100.0
+	for _, record := range *records {
+		value, _ := strconv.ParseFloat(record[column.Index], 64)
+		if max < value {
+			max = value
+		}
+	}
+
+	return max
+}
+
+func calcAverage(column Column, records *[][]string) float64 {
+	var average float64
+	values := []float64{}
+	for _, record := range *records {
+		value, _ := strconv.ParseFloat(record[column.Index], 64)
+		values = append(values, value)
+		average += value
+	}
+
+	return average / float64(len(*records))
 }
 
 func createQueryStr(target string, validColumns []Column, field []float64) string {
@@ -106,41 +153,16 @@ func createQueryStr(target string, validColumns []Column, field []float64) strin
 	return fmt.Sprintf("INSERT INTO cans (%s) VALUES (%s);", names, values)
 }
 
-func readCacheConfig(c *CacheInfo) {
-	file, err := ioutil.ReadFile("config/cacheConfig.json")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = json.Unmarshal(file, c)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func calcAllAverage(columns []Column, records *[][]string) []float64 {
-	result := []float64{}
-	for _, column := range columns {
-		result = append(result, calcColumAverage(column, records))
-	}
-
-	return result
-}
-
-func calcColumAverage(column Column, records *[][]string) float64 {
-	var average float64
-	values := []float64{}
-	for _, record := range *records {
-		value, _ := strconv.ParseFloat(record[column.Index], 64)
-		values = append(values, value)
-		average += value
-	}
-
-	return average / float64(len(*records))
-}
-
 func isIndexColumn(column Column) bool {
 	return column.Name == "FrameIndex" || column.Name == "FrameImageIndex"
+}
+
+func destroyAllData() {
+	db, err := sql.Open("sqlite3", dbConfig)
+	checkErr(err)
+
+	_, err = db.Exec("DELETE FROM cans")
+	checkErr(err)
 }
 
 func getValidColumns(cacheInfo CacheInfo) []Column {
@@ -152,4 +174,16 @@ func getValidColumns(cacheInfo CacheInfo) []Column {
 	}
 
 	return valids
+}
+
+func readCacheConfig(c *CacheInfo) {
+	file, err := ioutil.ReadFile("config/cacheConfig.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = json.Unmarshal(file, c)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
