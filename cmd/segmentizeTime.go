@@ -50,7 +50,7 @@ func InsertData() {
 		go segmentizeData(q, fin, target, validColumns)
 	}
 
-	finished := 1
+	finished := 0
 	for {
 		select {
 		case query := <-q:
@@ -59,9 +59,10 @@ func InsertData() {
 		case <-fin:
 			if finished < size-1 {
 				finished++
+				continue
 			}
 
-			break
+			return
 		}
 	}
 }

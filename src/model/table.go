@@ -8,8 +8,6 @@ type Can struct {
   AccelerationX float64
   GPSLatitude float64
   GPSLongtitude float64
-  MapLatitude float64
-  MapLongtitude float64
   SpeedPerHourLowpass float64
   BrakeOnOff float64
   AcceleratorOnOff float64

@@ -15,7 +15,7 @@
     "test": "mocha --compilers js:babel-register || exit 0",
     "watch-test": "mocha --compilers js:babel-register -w",
     "listUp": "go run main.go --listUp",
-    "insert": "go run main.go --insert",
+    "insert": "time go run main.go --insert",
     "writeSchema": "go run main.go --schema && npm run scan",
     "migrate": "go run main.go --migrate",
     "scan": "cd src/model && scaneo table.go",
