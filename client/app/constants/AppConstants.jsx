@@ -19,17 +19,13 @@ const defaultSetting = {
     settingTextHeader,
     "",
     "switch (true) {",
-    "  case SpeedPerHourLowpass > 50 && (BrakeOnOff == 1 || AcceleratorOnOff == 1):",
+    "  case SpeedPerHourLowpass > 60:",
     "    return red",
-    "  case SpeedPerHourLowpass < 10:",
-    "    return stop",
-    "  default:",
-    "    return none",
     "}"
   ].join("\n")
 }
 
-const defaultDivideSize = 10
+const defaultDivideSize = 40
 
 const defaultModal = {
   modalType: "",
