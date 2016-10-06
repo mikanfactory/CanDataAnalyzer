@@ -38,11 +38,14 @@ func InsertData() {
 		destroyAllData()
 	}
 
+	db, err := sql.Open("sqlite3", dbConfig)
+	checkErr(err)
+
 	wg := new(sync.WaitGroup)
 	for _, target := range targets.Names {
 		wg.Add(1)
 		go func(target string) {
-			segmentizeTime(target, cacheInfo)
+			segmentizeTime(db, target, cacheInfo)
 			wg.Done()
 		}(target)
 	}
@@ -58,7 +61,7 @@ func destroyAllData() {
 	checkErr(err)
 }
 
-func segmentizeTime(target string, cacheInfo CacheInfo) {
+func segmentizeTime(db *sql.DB, target string, cacheInfo CacheInfo) {
 	file, err := os.Open("data/input/" + target + ".csv")
 	checkErr(err)
 
@@ -71,20 +74,17 @@ func segmentizeTime(target string, cacheInfo CacheInfo) {
 
 	for i := 0; i < len(allRecords)/segmentSize; i++ {
 		records := allRecords[i*segmentSize : (i+1)*segmentSize]
-		insertField(target, validColumns, calcAllAverage(validColumns, &records))
+		insertField(db, target, validColumns, calcAllAverage(validColumns, &records))
 	}
 }
 
-func insertField(target string, validColumns []Column, field []float64) {
+func insertField(db *sql.DB, target string, validColumns []Column, field []float64) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	db, err := sql.Open("sqlite3", dbConfig)
-	checkErr(err)
-
 	query := createQueryStr(target, validColumns, field)
 
-	_, err = db.Exec(query)
+	_, err := db.Exec(query)
 	checkErr(err)
 }
 
