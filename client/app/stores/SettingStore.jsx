@@ -100,7 +100,7 @@ SettingStore.dispatchToken = AppDispatcher.register((action) => {
       SettingStore.emitChange()
       break
 
-    case ActionTypes.UDPATE_SETTING:
+    case ActionTypes.UPDATE_SETTING:
       _updateSetting(action.setting)
       SettingStore.emitChange()
       break
