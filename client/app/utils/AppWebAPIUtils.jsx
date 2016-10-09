@@ -49,3 +49,18 @@ export function sendHeatmapSetting(data) {
     .then(message => MessageActions.createMessage({ text: message }))
     .catch(err => MessageActions.createMessage({ text: err }))
 }
+
+export function fetchClusters(callback) {
+  fetch("/api/v1/clusters", {
+    credentials: "same-origin",
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+    .then(resp => resp.json())
+    .then(json => checkStatus1(json))
+    .then(data => callback(data.grid, data.clusters))
+    .catch(err => MessageActions.createMessage( { text: err }))
+}
