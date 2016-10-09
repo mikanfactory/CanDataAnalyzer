@@ -19,7 +19,7 @@ function checkStatus2(json) {
 }
 
 export function fetchMarkers(data, callback) {
-  fetch("/api/v1/markers", {
+  fetch("/api/v1/marker", {
     credentials: "same-origin",
     method: "POST",
     headers: {
