@@ -45,7 +45,7 @@ export function createColoredRectangles(gMap, gridPoints, clusters) {
   const divideSize = gridPoints.length
   return gridPoints.map( (row, i) =>
     row.map( (bounds, j) => {
-      const cluster = clusters[i*divideSize+j+1]
+      const cluster = clusters[i*divideSize+j]
       return new window.google.maps.Rectangle({
         strokeColor: '#000',
         strokeOpacity: 0.8,

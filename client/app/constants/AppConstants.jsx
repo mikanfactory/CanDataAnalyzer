@@ -21,6 +21,12 @@ const defaultSetting = {
     "switch (true) {",
     "  case SpeedPerHourLowpass > 60:",
     "    return red",
+    "  case SpeedPerHourLowpass > 30 && SpeedPerHourLowpass < 60:",
+    "    return yellow",
+    "  case SpeedPerHourLowpass > 10 && SpeedPerHourLowpass < 30:",
+    "    return green",
+    "  case SpeedPerHourLowpass < 10:",
+    "    return stop",
     "}"
   ].join("\n")
 }
