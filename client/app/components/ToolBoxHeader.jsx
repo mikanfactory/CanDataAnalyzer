@@ -94,7 +94,7 @@ export default class ToolBoxHeader extends React.Component {
 
   handleClusterShow() {
     fetchClusters((grid, clusters) => {
-      const bounds = window.google.maps.LatLngBounds(grid.southWest, grid.northEast)
+      const bounds = new window.google.maps.LatLngBounds(grid.southWest, grid.northEast)
       LayerActions.createClusters(bounds, clusters)
     })
   }

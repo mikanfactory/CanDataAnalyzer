@@ -171,7 +171,7 @@ export default class Layer extends React.Component {
     }
 
     if (!isEqual(this.state.assignedClusters, prevState.assignedClusters)) {
-      isEmpty(this.state.assignedClusters) ?
+      isEmpty(this.state.visibleClusters) ?
       this.drawClusters() :
       this.eraseClusters()
     }

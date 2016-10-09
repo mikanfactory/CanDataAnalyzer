@@ -83,6 +83,10 @@ class LayerStoreClass extends EventEmitter {
   getHeatmapVisibility() {
     return _store.isHeatmapVisible
   }
+
+  getAssignedClusters() {
+    return _store.assignedClusters
+  }
 }
 
 const LayerStore = new LayerStoreClass

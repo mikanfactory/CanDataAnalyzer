@@ -1,6 +1,7 @@
 import { defaultDivideSize } from '../constants/AppConstants'
 
 let clusterColors = [
+  "#FFFFFF",
   "#ff0000",
   "#ffa500",
   "#ffff00",
@@ -50,7 +51,7 @@ export function createColoredRectangles(gMap, gridPoints, clusters) {
         strokeOpacity: 0.8,
         strokeWeight: 2,
         fillColor: clusterColors[cluster],
-        fillOpacity: 0,
+        fillOpacity: 0.5,
         map: gMap,
         bounds: bounds
       })

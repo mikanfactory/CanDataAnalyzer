@@ -51,9 +51,9 @@ export function sendHeatmapSetting(data) {
 }
 
 export function fetchClusters(callback) {
-  fetch("/api/v1/clusters", {
+  fetch("/api/v1/cluster", {
     credentials: "same-origin",
-    method: "POST",
+    method: "GET",
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -61,6 +61,6 @@ export function fetchClusters(callback) {
   })
     .then(resp => resp.json())
     .then(json => checkStatus1(json))
-    .then(data => callback(data.grid, data.clusters))
+    .then(data => callback(data.grid, data.content))
     .catch(err => MessageActions.createMessage( { text: err }))
 }
