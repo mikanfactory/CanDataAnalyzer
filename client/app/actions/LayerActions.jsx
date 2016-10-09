@@ -67,6 +67,20 @@ const LayerActions = {
     AppDispatcher.dispatch({
       actionType: ActionTypes.DESTROY_HEATMAP_LAYER
     })
+  },
+
+  createClusters: (bounds, clusters) => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CREATE_CLUSTER_LAYER,
+      bounds: bounds,
+      clusters: clusters
+    })
+  },
+
+  destroyClusters: () => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.DESTROY_CLUSTER_LAYER
+    })
   }
 }
 
