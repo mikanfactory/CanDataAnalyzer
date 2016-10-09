@@ -2,7 +2,10 @@ import React from 'react'
 import LayerStore from '../stores/LayerStore'
 import MarkerStore from '../stores/MarkerStore'
 import LayerAction from '../actions/LayerActions'
-import { createRectangle, createRectangles, createGridPoints } from '../utils/AppGoogleMapUtil'
+import {
+  createRectangle, createRectangles,
+  createGridPoints, createColoredRectangles
+} from '../utils/AppGoogleMapUtil'
 import { convertMarkersToWeightedLocations } from '../utils/AppAlgorithmUtil'
 import { defaultDivideSize } from '../constants/AppConstants'
 
@@ -15,7 +18,8 @@ function getStateFromStores() {
     bounds: LayerStore.getBounds(),
     isGridLayerVisible: LayerStore.getGridLayerVisibility(),
     isRectangleVisible: LayerStore.getRectangleVisibility(),
-    isHeatmapVisible: LayerStore.getHeatmapVisibility()
+    isHeatmapVisible: LayerStore.getHeatmapVisibility(),
+    assignedClusters: LayerStore.getAssignedClusters()
   }
 }
 
@@ -43,6 +47,7 @@ export default class Layer extends React.Component {
       visibleGridPoints: [],
       visibleRectangle: {},
       visibleHeatmap: {},
+      visibleClusters: []
     }
     this.state = assign({}, getStateFromStores(), s)
 
@@ -121,6 +126,20 @@ export default class Layer extends React.Component {
     this.setState({ visibleHeatmap: {} })
   }
 
+  drawClusters() {
+    const { bounds, assignedClusters } = this.state
+    const { gMap } = this.props
+    const gridPoints = createGridPoints(bounds, defaultDivideSize)
+    const clusters = createColoredRectangles(gMap, gridPoints, assignedClusters)
+
+    this.setState({ visibleClusters: clusters })
+  }
+
+  eraseClusters() {
+    this.state.visibleClusters.forEach( row => row.map( g => g.setMap(null) ) )
+    this.setState({ visibleClusters: [] })
+  }
+
   componentDidMount() {
     LayerStore.addChangeListener(this._onChange)
   }
@@ -149,6 +168,12 @@ export default class Layer extends React.Component {
       isEmpty(this.state.visibleHeatmap) ?
       this.drawHeatmap() :
       this.eraseHeatmap()
+    }
+
+    if (!isEqual(this.state.assignedClusters, prevState.assignedClusters)) {
+      isEmpty(this.state.assignedClusters) ?
+      this.drawClusters() :
+      this.eraseClusters()
     }
   }
 
