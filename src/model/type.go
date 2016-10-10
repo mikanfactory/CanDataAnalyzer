@@ -55,3 +55,9 @@ type Heatmap struct {
 	Weights  [][]int64 `json:"weights"`
 	Settings []Setting `json:"settings"`
 }
+
+// Cluster have grid config and each grid assigned clusters
+type Cluster struct {
+	Grid    Grid    `json:"grid"`
+	Content []int64 `json:"content"`
+}

@@ -10,6 +10,7 @@ let _store = {
   isGridLayerVisible: false,
   isRectangleVisibile: false,
   isHeatmapVisible: false,
+  assignedClusters: [],
   divideSize: defaultDivideSize,
 }
 
@@ -39,6 +40,15 @@ function _create_heatmap_layer() {
 
 function _destroy_heatmap_layer() {
   _store.isHeatmapVisible = false
+}
+
+function _create_cluster_layer(bounds, clusters) {
+  _store.bounds = bounds
+  _store.assignedClusters = clusters
+}
+
+function _destroy_cluster_layer() {
+  _store.assignedClusters = []
 }
 
 class LayerStoreClass extends EventEmitter {
@@ -72,6 +82,10 @@ class LayerStoreClass extends EventEmitter {
 
   getHeatmapVisibility() {
     return _store.isHeatmapVisible
+  }
+
+  getAssignedClusters() {
+    return _store.assignedClusters
   }
 }
 
@@ -133,6 +147,16 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
 
     case ActionTypes.DESTROY_HEATMAP_LAYER:
       _destroy_heatmap_layer()
+      LayerStore.emitChange()
+      break
+
+    case ActionTypes.CREATE_CLUSTER_LAYER:
+      _create_cluster_layer(actions.bounds, actions.clusters)
+      LayerStore.emitChange()
+      break
+
+    case ActionTypes.DESTROY_CLUSTER_LAYER:
+      _destroy_cluster_layer()
       LayerStore.emitChange()
       break
 

@@ -1,5 +1,16 @@
 import { defaultDivideSize } from '../constants/AppConstants'
 
+let clusterColors = [
+  "#FFFFFF",
+  "#ff0000",
+  "#ffa500",
+  "#ffff00",
+  "#008000",
+  "#00ffff",
+  "#0000ff",
+  "#800080"
+]
+
 export function createRectangle(gMap, bounds) {
   return new window.google.maps.Rectangle({
     strokeColor: '#FF0000',
@@ -27,6 +38,24 @@ export function createRectangles(gMap, gridPoints) {
         bounds: bounds
       })
     )
+  )
+}
+
+export function createColoredRectangles(gMap, gridPoints, clusters) {
+  const divideSize = gridPoints.length
+  return gridPoints.map( (row, i) =>
+    row.map( (bounds, j) => {
+      const cluster = clusters[i*divideSize+j]
+      return new window.google.maps.Rectangle({
+        strokeColor: '#000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: clusterColors[cluster],
+        fillOpacity: 0.5,
+        map: gMap,
+        bounds: bounds
+      })
+    })
   )
 }
 

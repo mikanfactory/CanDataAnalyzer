@@ -19,7 +19,7 @@ function checkStatus2(json) {
 }
 
 export function fetchMarkers(data, callback) {
-  fetch("/api/v1/markers", {
+  fetch("/api/v1/marker", {
     credentials: "same-origin",
     method: "POST",
     headers: {
@@ -48,4 +48,19 @@ export function sendHeatmapSetting(data) {
     .then(json => checkStatus2(json))
     .then(message => MessageActions.createMessage({ text: message }))
     .catch(err => MessageActions.createMessage({ text: err }))
+}
+
+export function fetchClusters(callback) {
+  fetch("/api/v1/cluster", {
+    credentials: "same-origin",
+    method: "GET",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+    .then(resp => resp.json())
+    .then(json => checkStatus1(json))
+    .then(data => callback(data.grid, data.content))
+    .catch(err => MessageActions.createMessage( { text: err }))
 }

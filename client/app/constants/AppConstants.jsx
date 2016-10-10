@@ -21,6 +21,12 @@ const defaultSetting = {
     "switch (true) {",
     "  case SpeedPerHourLowpass > 60:",
     "    return red",
+    "  case SpeedPerHourLowpass > 30 && SpeedPerHourLowpass < 60:",
+    "    return yellow",
+    "  case SpeedPerHourLowpass > 10 && SpeedPerHourLowpass < 30:",
+    "    return green",
+    "  case SpeedPerHourLowpass < 10:",
+    "    return stop",
     "}"
   ].join("\n")
 }
@@ -102,6 +108,8 @@ const AppConstants = {
     DESTROY_ALL_LAYER: null,
     CREATE_HEATMAP_LAYER: null,
     DESTROY_HEATMAP_LAYER: null,
+    CREATE_CLUSTER_LAYER: null,
+    DESTROY_CLUSTER_LAYER: null,
 
     // Message
     CREATE_MESSAGE: null,

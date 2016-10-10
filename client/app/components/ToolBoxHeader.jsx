@@ -2,10 +2,10 @@ import React from 'react'
 import LayerStore from '../stores/LayerStore'
 import MarkerStore from '../stores/MarkerStore'
 import SettingStore from '../stores/SettingStore'
-import LayerAction from '../actions/LayerActions'
-import ModalAction from '../actions/ModalActions'
+import LayerActions from '../actions/LayerActions'
+import ModalActions from '../actions/ModalActions'
 import MessageActions from '../actions/MessageActions'
-import { sendHeatmapSetting } from '../utils/AppWebAPIUtils.jsx'
+import { sendHeatmapSetting, fetchClusters } from '../utils/AppWebAPIUtils.jsx'
 import { createGridSetting, createGridPoints, getSmallerBounds } from '../utils/AppGoogleMapUtil'
 import { convertMarkersToHeatmapData } from '../utils/AppAlgorithmUtil'
 import { ToolBoxHeaderStyle as s } from './Styles'
@@ -30,7 +30,7 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleModalOpen() {
-    ModalAction.createModal()
+    ModalActions.createModal()
   }
 
   handleLayerToggle() {
@@ -43,11 +43,11 @@ export default class ToolBoxHeader extends React.Component {
 
   handleLayerDisplay() {
     const bounds = getSmallerBounds(this.props.gMap)
-    LayerAction.createRectangle(bounds)
+    LayerActions.createRectangle(bounds)
   }
 
   handleLayerErase() {
-    LayerAction.destroyAllLayer()
+    LayerActions.destroyAllLayer()
   }
 
   handleHeatmapToggle() {
@@ -59,11 +59,11 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleHeatmapDisplay() {
-    LayerAction.createHeatmapLayer()
+    LayerActions.createHeatmapLayer()
   }
 
   handleHeatmapErase() {
-    LayerAction.destroyHeatmapLayer()
+    LayerActions.destroyHeatmapLayer()
   }
 
   handleSaveHeatmapSetting() {
@@ -92,6 +92,13 @@ export default class ToolBoxHeader extends React.Component {
     saveToLocalStorage()
   }
 
+  handleClusterShow() {
+    fetchClusters((grid, clusters) => {
+      const bounds = new window.google.maps.LatLngBounds(grid.southWest, grid.northEast)
+      LayerActions.createClusters(bounds, clusters)
+    })
+  }
+
   render() {
     return (
       <div>
@@ -116,6 +123,10 @@ export default class ToolBoxHeader extends React.Component {
           <span className="glyphicon glyphicon-film"
                 style={s.GlyphiconStyle}
                 onClick={this.handleModalOpen}>
+          </span>
+          <span className="glyphicon glyphicon-dashboard"
+                style={s.GlyphiconStyle}
+                onClick={this.handleClusterShow}>
           </span>
           <span className="glyphicon glyphicon-thumbs-up"
                 style={s.GlyphiconStyle}
