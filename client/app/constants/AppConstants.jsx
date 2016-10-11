@@ -11,12 +11,25 @@ const settingTextHeader = chunk(validFeatures, 3)
   .map( c => "// " + c.join(" "))
   .join("\n")
 
+const validStatuses = chunk([
+  "green", "yellow", "red",
+  "up", "down", "right", "left",
+  "straight", "stop",
+  "empty", "none"
+], 4)
+  .map( c => "// " + c.join(" "))
+  .join("\n")
+
 const defaultSetting = {
   id: 0,
   target: "021021K1KAm",
   title: "default",
   text: [
+    "// features",
     settingTextHeader,
+    "",
+    "// statuses",
+    validStatuses,
     "",
     "switch (true) {",
     "  case SpeedPerHourLowpass > 60:",
@@ -38,13 +51,9 @@ const defaultModal = {
   settingID: 0
 }
 
-const LOGICS = [
-  "and",
-  "or"
-]
-
 const TARGETS = [
   "Target",
+  "All",
   ...targets.names
  ]
 
@@ -52,20 +61,9 @@ const FEATURES = [
   ...validFeatures
 ]
 
-const OPERATORS = [
-  "<", "<=", "==", ">=", ">"
-]
-
-const STATUS = [
-  "green", "yellow", "red",
-  "up", "down", "right", "left",
-  "straight", "stop",
-  "empty", "none"
-]
-
 
 export { defaultSetting, defaultModal, defaultDivideSize }
-export { LOGICS, TARGETS, FEATURES, OPERATORS, STATUS }
+export { TARGETS, FEATURES }
 
 const AppConstants = {
   ModalTypes: {
