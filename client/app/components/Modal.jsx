@@ -71,6 +71,7 @@ export default class Modal extends React.Component {
     if (this.state.modal.modalType === ModalTypes.EDIT) {
       const updateMarkers = partial(MarkerActions.updateMarkers, id)
       fetchMarkers(data, markers => {
+        MarkerActions.eraseMarkers(id)
         updateMarkers(markers)
         ModalActions.closeModal()
       })
