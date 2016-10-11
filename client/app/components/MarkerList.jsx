@@ -97,8 +97,7 @@ export default class MarkerList extends React.Component {
     this.handleMarkerErase()
 
     const { id } = this.props
-    setTimeout(() => { SettingActions.destroySetting(id) }, 100)
-    setTimeout(() => { saveToLocalStorage(false) }, 1000)
+    setTimeout(() => { SettingActions.destroySetting(id) }, 2000)
   }
 
   componentDidMount() {

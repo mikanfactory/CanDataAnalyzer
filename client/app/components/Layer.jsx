@@ -24,19 +24,11 @@ function getStateFromStores() {
 }
 
 function zoomToRadius(zoom) {
-  let zoomToRadiusMap = {
-    13: 80,
-    14: 100,
-    15: 120,
-    16: 150,
-    17: 300,
-    18: 400,
-    19: 800,
-    20: 1200
-  }
-
-  const radius = zoomToRadiusMap[zoom]
-  return radius ? radius : 100
+  // TODO: ajust it
+  /* let zoomToRadiusMap = {}
+   * const radius = zoomToRadiusMap[zoom]
+   * return radius ? radius : 200*/
+  return 200
 }
 
 export default class Layer extends React.Component {
