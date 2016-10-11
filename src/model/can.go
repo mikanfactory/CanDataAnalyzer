@@ -20,21 +20,6 @@ var statusToFilename = map[string]string{
 	"none":     "none",
 }
 
-func getCansByCondition(db *sql.DB, cond Condition, setting Setting) ([]Can, error) {
-	var query string
-	if cond.Content == "default" {
-		query = fmt.Sprintf("select * from cans where target == \"%s\"", setting.Target)
-	} else {
-		query = fmt.Sprintf("select * from cans where target == \"%s\" AND %s",
-			setting.Target, cond.Content)
-	}
-	rows, err := db.Query(query)
-	if err != nil {
-		return nil, err
-	}
-	return ScanCans(rows)
-}
-
 func (m *Can) ToMarker(cond Condition, setting Setting) Marker {
 	return Marker{
 		ID:          m.ID,
@@ -43,6 +28,45 @@ func (m *Can) ToMarker(cond Condition, setting Setting) Marker {
 		Position:    m.getPosition(),
 		Description: m.getDescription(),
 	}
+}
+
+func getCans(db *sql.DB, cond Condition, setting Setting) ([]Can, error) {
+	switch {
+	case setting.Target == "All":
+		return getCansForAllTarget(db, cond)
+	case cond.Content == "default":
+		return getCansByDefaultCondition(db, setting)
+	default:
+		return getCansByCondition(db, cond, setting)
+	}
+}
+
+func getCansForAllTarget(db *sql.DB, cond Condition) ([]Can, error) {
+	query := fmt.Sprintf("select * from cans where %s", cond.Content)
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	return ScanCans(rows)
+}
+
+func getCansByDefaultCondition(db *sql.DB, setting Setting) ([]Can, error) {
+	query := fmt.Sprintf("select * from cans where target == \"%s\"", setting.Target)
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	return ScanCans(rows)
+}
+
+func getCansByCondition(db *sql.DB, cond Condition, setting Setting) ([]Can, error) {
+	query := fmt.Sprintf("select * from cans where target == \"%s\" AND %s",
+		setting.Target, cond.Content)
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	return ScanCans(rows)
 }
 
 func (m *Can) getPosition() Position {
