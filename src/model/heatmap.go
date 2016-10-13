@@ -26,7 +26,6 @@ func (m *Heatmap) SaveSetting() error {
 	}
 	defer file.Close()
 
-	m.Weights = [][]int64{}
 	json, _ := json.Marshal(m)
 	if err := ioutil.WriteFile(filename, json, 0744); err != nil {
 		return err

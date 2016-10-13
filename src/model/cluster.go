@@ -40,7 +40,7 @@ func readHeatmapConfig(targetDir string) (*Heatmap, error) {
 }
 
 func readClusterResults(targetDir string) ([]int64, error) {
-	file, err := os.Open(targetDir + "clusters.csv")
+	file, err := os.Open(targetDir + "clusters1.csv")
 	if err != nil {
 		return []int64{}, err
 	}

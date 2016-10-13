@@ -11,7 +11,7 @@ import (
 type Cluster struct{}
 
 func (m *Cluster) Get(c echo.Context) error {
-	cluster, err := model.ReadClusterConfig("data/output/2016-10-06_17:58:18/")
+	cluster, err := model.ReadClusterConfig("data/output/result/")
 	if err != nil {
 		errorMessage := createErrorMessage(err)
 		return c.JSON(http.StatusBadRequest, errorMessage)
