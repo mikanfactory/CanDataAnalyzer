@@ -12,6 +12,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.json$/, loader: 'json' },
+      { test: /\.csv$/, loader: 'dsv-loader' },
       {
         test: /\.js(x?)$/,
         cacheDirectory: true,

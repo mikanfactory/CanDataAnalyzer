@@ -8,13 +8,16 @@ import {
 } from '../utils/AppGoogleMapUtil'
 import {
   convertMarkersToWeightedLocations,
-  createRiskHeatmap
+  createRiskHeatmap,
+  sortRoutes
 } from '../utils/AppAlgorithmUtil'
 import { defaultDivideSize } from '../constants/AppConstants'
 
 import assign from 'object-assign'
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
+
+import routes from '../../../data/working/route.csv'
 
 function getStateFromStores() {
   return {
@@ -157,6 +160,15 @@ export default class Layer extends React.Component {
       })
     }))
 
+    /* const rs = sortRoutes(routes, gridPoints)
+     * rs.forEach( (obj) => {
+     *   new window.google.maps.Marker({
+     *     position: obj.position,
+     *     label: "" + obj.routeIndex,
+     *     map: this.props.gMap
+     *   })
+     * })*/
+
     this.setState({ visibleGridPoints: rectangles })
     this.setState({ visibleRisks: heatmap })
   }
@@ -164,10 +176,6 @@ export default class Layer extends React.Component {
   eraseRiskLayer() {
     this.state.visibleRisks.setMap(null)
     this.setState({ visibleRisks: {} })
-  }
-
-  drawIndexMarker() {
-    const {}
   }
 
   componentDidMount() {

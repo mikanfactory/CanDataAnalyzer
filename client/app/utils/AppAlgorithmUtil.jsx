@@ -106,6 +106,18 @@ export function convertMarkersToHeatmapData(markers, gridPoints) {
   }
 }
 
+export function sortRoutes(routes, gridPoints) {
+  const rs = sortBy(routes, 'frame')
+    .map( (obj, index) => {
+      if (obj.frame === "0") return null
+
+      const position = _getPosition(obj.index, gridPoints)
+      return { position: position, routeIndex: index }
+    })
+
+  return compact(rs)
+}
+
 function _convertIndexToGrid(index, divideSize) {
   const i = Math.floor(index / divideSize)
   const j = index % divideSize
@@ -126,4 +138,10 @@ function _fillUnassignedIndex(counts, divideSize) {
   })
 
   return lst
+}
+
+function _getPosition(index, gridPoints) {
+  const divideSize = gridPoints.length
+  const [i, j] = convertIndexToGrid(index, divideSize)
+  return getCenter(gridPoints[i][j])
 }

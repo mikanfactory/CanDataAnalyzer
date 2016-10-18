@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "brace": "^0.8.0",
+    "dsv-loader": "^1.1.0",
     "eulalie": "^2.5.4",
     "flux": "^2.1.1",
     "keymirror": "^0.1.1",
