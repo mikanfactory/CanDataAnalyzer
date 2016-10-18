@@ -2,6 +2,7 @@ import groupBy from 'lodash/groupBy'
 import reduce from 'lodash/reduce'
 import zip from 'lodash/zip'
 import forEach from 'lodash/forEach'
+import compact from 'lodash/compact'
 
 //
 // process image
@@ -49,12 +50,16 @@ function convertCountsToWeightedLocations(counts, gridPoints) {
 export function createRiskHeatmap(gMap, gridPoints, risks) {
   const divideSize = gridPoints.length
 
-  return reduce(risks, function(acc, val, index) {
+  const wl = reduce(risks, function(acc, val, index) {
+    if (val === 0) return [...acc, undefined]
+
     const [i, j] = _convertIndexToGrid(index, divideSize)
     const center = _getCenter(gridPoints[i][j])
     const wl = { location: center, weight: val }
     return [...acc, wl]
   }, [])
+
+  return compact(wl)
 }
 
 export function findGridIndex(marker, gridPoints) {

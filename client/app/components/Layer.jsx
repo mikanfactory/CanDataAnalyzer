@@ -44,7 +44,7 @@ export default class Layer extends React.Component {
       visibleRectangle: {},
       visibleHeatmap: {},
       visibleClusters: [],
-      visibleRisks: []
+      visibleRisks: {},
     }
     this.state = assign({}, getStateFromStores(), s)
 
@@ -142,17 +142,32 @@ export default class Layer extends React.Component {
     const { gMap } = this.props
     const gridPoints = createGridPoints(bounds, defaultDivideSize)
     const wls = createRiskHeatmap(gMap, gridPoints, assignedRisks)
+    const radius = 30
     const heatmap = new window.google.maps.visualization.HeatmapLayer({
       data: wls,
-      map: this.props.gMap
+      map: this.props.gMap,
+      radius: radius
     })
 
+    const rectangles = createRectangles(this.props.gMap, gridPoints)
+
+    rectangles.forEach( row => row.map( g => {
+      g.addListener('dblclick', () => {
+        LayerAction.changeGridToRect(bounds)
+      })
+    }))
+
+    this.setState({ visibleGridPoints: rectangles })
     this.setState({ visibleRisks: heatmap })
   }
 
   eraseRiskLayer() {
-    this.state.visibleRisks.forEach( row => row.map( g => g.setMap(null) ) )
-    this.setState({ visibleRisks: [] })
+    this.state.visibleRisks.setMap(null)
+    this.setState({ visibleRisks: {} })
+  }
+
+  drawIndexMarker() {
+    const {}
   }
 
   componentDidMount() {
