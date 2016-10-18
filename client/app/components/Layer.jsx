@@ -6,7 +6,10 @@ import {
   createRectangle, createRectangles,
   createGridPoints, createColoredRectangles
 } from '../utils/AppGoogleMapUtil'
-import { convertMarkersToWeightedLocations } from '../utils/AppAlgorithmUtil'
+import {
+  convertMarkersToWeightedLocations,
+  createRiskHeatmap
+} from '../utils/AppAlgorithmUtil'
 import { defaultDivideSize } from '../constants/AppConstants'
 
 import assign from 'object-assign'
@@ -19,7 +22,8 @@ function getStateFromStores() {
     isGridLayerVisible: LayerStore.getGridLayerVisibility(),
     isRectangleVisible: LayerStore.getRectangleVisibility(),
     isHeatmapVisible: LayerStore.getHeatmapVisibility(),
-    assignedClusters: LayerStore.getAssignedClusters()
+    assignedClusters: LayerStore.getAssignedClusters(),
+    assignedRisks: LayerStore.getAssignedRisks()
   }
 }
 
@@ -39,7 +43,8 @@ export default class Layer extends React.Component {
       visibleGridPoints: [],
       visibleRectangle: {},
       visibleHeatmap: {},
-      visibleClusters: []
+      visibleClusters: [],
+      visibleRisks: []
     }
     this.state = assign({}, getStateFromStores(), s)
 
@@ -107,7 +112,7 @@ export default class Layer extends React.Component {
 
     this.props.gMap.addListener('bounds_changed', () => {
       const radius = zoomToRadius(this.props.gMap.getZoom())
-      this.state.visibleHeatmap.setOptions({ radius: radius })
+      this.state.visializeHeatmap.setOptions({ radius: radius })
     })
 
     this.setState({ visibleHeatmap: heatmap })
@@ -130,6 +135,24 @@ export default class Layer extends React.Component {
   eraseClusters() {
     this.state.visibleClusters.forEach( row => row.map( g => g.setMap(null) ) )
     this.setState({ visibleClusters: [] })
+  }
+
+  drawRiskLayer() {
+    const { bounds, assignedRisks } = this.state
+    const { gMap } = this.props
+    const gridPoints = createGridPoints(bounds, defaultDivideSize)
+    const wls = createRiskHeatmap(gMap, gridPoints, assignedRisks)
+    const heatmap = new window.google.maps.visualization.HeatmapLayer({
+      data: wls,
+      map: this.props.gMap
+    })
+
+    this.setState({ visibleRisks: heatmap })
+  }
+
+  eraseRiskLayer() {
+    this.state.visibleRisks.forEach( row => row.map( g => g.setMap(null) ) )
+    this.setState({ visibleRisks: [] })
   }
 
   componentDidMount() {
@@ -166,6 +189,12 @@ export default class Layer extends React.Component {
       isEmpty(this.state.visibleClusters) ?
       this.drawClusters() :
       this.eraseClusters()
+    }
+
+    if (!isEqual(this.state.assignedRisks, prevState.assignedRisks)) {
+      isEmpty(this.state.visibleRisks) ?
+      this.drawRiskLayer() :
+      this.eraseRiskLayer()
     }
   }
 

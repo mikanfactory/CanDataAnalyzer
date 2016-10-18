@@ -81,6 +81,14 @@ const LayerActions = {
     AppDispatcher.dispatch({
       actionType: ActionTypes.DESTROY_CLUSTER_LAYER
     })
+  },
+
+  createRiskLayer: (bounds, risks) => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CREATE_RISK_LAYER,
+      bounds: bounds,
+      risks: risks
+    })
   }
 }
 

@@ -46,6 +46,17 @@ function convertCountsToWeightedLocations(counts, gridPoints) {
   }, [])
 }
 
+export function createRiskHeatmap(gMap, gridPoints, risks) {
+  const divideSize = gridPoints.length
+
+  return reduce(risks, function(acc, val, index) {
+    const [i, j] = _convertIndexToGrid(index, divideSize)
+    const center = _getCenter(gridPoints[i][j])
+    const wl = { location: center, weight: val }
+    return [...acc, wl]
+  }, [])
+}
+
 export function findGridIndex(marker, gridPoints) {
   const divideSize = gridPoints.length
 
