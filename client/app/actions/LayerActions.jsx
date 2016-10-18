@@ -17,10 +17,9 @@ const LayerActions = {
     })
   },
 
-  createRectangle: (bounds) => {
+  createRectangle: () => {
     AppDispatcher.dispatch({
-      actionType: ActionTypes.CREATE_RECTANGLE_LAYER,
-      bounds: bounds
+      actionType: ActionTypes.CREATE_RECTANGLE_LAYER
     })
   },
 

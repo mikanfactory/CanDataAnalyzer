@@ -44,8 +44,7 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleLayerDisplay() {
-    const bounds = getSmallerBounds(this.props.gMap)
-    LayerActions.createRectangle(bounds)
+    LayerActions.createRectangle()
   }
 
   handleLayerErase() {

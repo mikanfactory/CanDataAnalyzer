@@ -132,8 +132,7 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
       break
 
     case ActionTypes.CREATE_RECTANGLE_LAYER:
-      _create_rectangle(actions.bounds)
-      _setBounds(actions.bounds)
+      _create_rectangle()
       LayerStore.emitChange()
       break
 

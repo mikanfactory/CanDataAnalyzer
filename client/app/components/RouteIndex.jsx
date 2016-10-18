@@ -3,7 +3,7 @@ import LayerStore from '../stores/LayerStore'
 import { defaultDivideSize } from '../constants/AppConstants'
 
 import { createGridPoints } from '../utils/AppGoogleMapUtil'
-import { sortRoutes } from '../utils/AppAlgorithmUtil'
+import { getGridPositions } from '../utils/AppAlgorithmUtil'
 
 import assign from 'object-assign'
 import isEqual from 'lodash/isEqual'
@@ -46,8 +46,8 @@ class RIOverlay extends window.google.maps.OverlayView {
     var pos = overlayProjection.fromLatLngToDivPixel(this._position);
 
     var div = this._div
-    div.style.left = pos.x + 'px'
-    div.style.top = pos.y + 'px'
+    div.style.left = (pos.x - 15) + 'px'
+    div.style.top = (pos.y - 15) + 'px'
   }
 
   onRemove() {
@@ -70,11 +70,13 @@ export default class RouteIndex extends React.Component {
     const { bounds } = this.state
     const { gMap } = this.props
     const gridPoints = createGridPoints(bounds, defaultDivideSize)
-    const rs = sortRoutes(routes, gridPoints)
+    const rs = getGridPositions(gridPoints)
 
-    const overlays = rs.map( (obj, index) =>
-      new RIOverlay(index, obj.position, gMap)
-    )
+    const overlays = rs.map( (position, index) => {
+      if (Number(routes[index].frame) > 0) {
+        new RIOverlay(index, position, gMap)
+      }
+    })
 
     this.setState({ overlays: overlays })
   }
