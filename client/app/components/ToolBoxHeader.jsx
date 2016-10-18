@@ -120,6 +120,10 @@ export default class ToolBoxHeader extends React.Component {
     })
   }
 
+  handleRouteIndexToggle() {
+    LayerActions.createRouteIndex()
+  }
+
   render() {
     return (
       <div>
@@ -152,6 +156,10 @@ export default class ToolBoxHeader extends React.Component {
           <span className="glyphicon glyphicon-sort"
                 style={s.GlyphiconStyle}
                 onClick={this.handleRiskToggle}>
+          </span>
+          <span className="glyphicon glyphicon-info-sign"
+                style={s.GlyphiconStyle}
+                onClick={this.handleRouteIndexToggle}>
           </span>
         </div>
       </div>

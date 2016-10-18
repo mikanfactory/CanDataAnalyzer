@@ -19,10 +19,10 @@ function getStateFromStores() {
 }
 
 class RIOverlay extends window.google.maps.OverlayView {
-  constructor(index, bounds, gMap) {
+  constructor(index, position, gMap) {
     super()
     this._index = index
-    this._bounds = bounds
+    this._position = position
     this._gMap = gMap
 
     this._div = null;
@@ -43,14 +43,11 @@ class RIOverlay extends window.google.maps.OverlayView {
 
   draw() {
     var overlayProjection = this.getProjection();
-    var sw = overlayProjection.fromLatLngToDivPixel(this._bounds.getSouthWest())
-    var ne = overlayProjection.fromLatLngToDivPixel(this._bounds.getNorthEast())
+    var pos = overlayProjection.fromLatLngToDivPixel(this._position);
 
     var div = this._div
-    div.style.left = sw.x + 'px'
-    div.style.top = ne.y + 'px'
-    div.style.width = (ne.x - sw.x) + 'px'
-    div.style.height = (sw.y - ne.y) + 'px'
+    div.style.left = pos.x + 'px'
+    div.style.top = pos.y + 'px'
   }
 
   onRemove() {
@@ -75,8 +72,8 @@ export default class RouteIndex extends React.Component {
     const gridPoints = createGridPoints(bounds, defaultDivideSize)
     const rs = sortRoutes(routes, gridPoints)
 
-    const overlays = rs.map( (obj) =>
-      new RIOverlay(obj.routeIndex, obj.position, gMap)
+    const overlays = rs.map( (obj, index) =>
+      new RIOverlay(index, obj.position, gMap)
     )
 
     this.setState({ overlays: overlays })

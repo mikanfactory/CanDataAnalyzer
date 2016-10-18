@@ -1,4 +1,5 @@
 import React from 'react'
+import RouteIndex from './RouteIndex'
 import LayerStore from '../stores/LayerStore'
 import MarkerStore from '../stores/MarkerStore'
 import LayerAction from '../actions/LayerActions'
@@ -213,6 +214,7 @@ export default class Layer extends React.Component {
     return (
       <div className="Layer" style={{height: 0, width: 0}}>
         <div id="dummyMap"></div>
+        <RouteIndex gMap={this.props.gMap}/>
       </div>
     )
   }

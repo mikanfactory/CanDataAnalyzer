@@ -89,6 +89,12 @@ const LayerActions = {
       bounds: bounds,
       risks: risks
     })
+  },
+
+  createRouteIndex: () => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CREATE_ROUTE_INDEX
+    })
   }
 }
 

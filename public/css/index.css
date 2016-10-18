@@ -5,6 +5,7 @@ html, body {
     padding: 0;
 }
 .overlay {
+    position: absolute;
     background: yellow;
     text-align: center;
     border-radius: 50%;

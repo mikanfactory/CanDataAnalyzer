@@ -3,6 +3,7 @@ import reduce from 'lodash/reduce'
 import zip from 'lodash/zip'
 import forEach from 'lodash/forEach'
 import compact from 'lodash/compact'
+import sortBy from 'lodash/sortBy'
 
 //
 // process image
@@ -107,7 +108,7 @@ export function convertMarkersToHeatmapData(markers, gridPoints) {
 }
 
 export function sortRoutes(routes, gridPoints) {
-  const rs = sortBy(routes, 'frame')
+  const rs = sortBy(routes, [function(r) { return Number(r.frame) }])
     .map( (obj, index) => {
       if (obj.frame === "0") return null
 
@@ -142,6 +143,6 @@ function _fillUnassignedIndex(counts, divideSize) {
 
 function _getPosition(index, gridPoints) {
   const divideSize = gridPoints.length
-  const [i, j] = convertIndexToGrid(index, divideSize)
-  return getCenter(gridPoints[i][j])
+  const [i, j] = _convertIndexToGrid(index, divideSize)
+  return _getCenter(gridPoints[i][j])
 }
