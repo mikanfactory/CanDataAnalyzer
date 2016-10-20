@@ -6,7 +6,7 @@ html, body {
 }
 .overlay {
     position: absolute;
-    background: yellow;
+    /* background: yellow; */
     text-align: center;
     border-radius: 50%;
     width: 30px;

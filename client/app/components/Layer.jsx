@@ -7,10 +7,7 @@ import {
   createRectangle, createRectangles,
   createGridPoints, createColoredRectangles
 } from '../utils/AppGoogleMapUtil'
-import {
-  convertMarkersToWeightedLocations,
-  createRiskHeatmap
-} from '../utils/AppAlgorithmUtil'
+import { convertMarkersToWeightedLocations } from '../utils/AppAlgorithmUtil'
 import { defaultDivideSize } from '../constants/AppConstants'
 
 import assign from 'object-assign'
@@ -142,24 +139,23 @@ export default class Layer extends React.Component {
     const { bounds, assignedRisks } = this.state
     const { gMap } = this.props
     const gridPoints = createGridPoints(bounds, defaultDivideSize)
-    const wls = createRiskHeatmap(gMap, gridPoints, assignedRisks)
-    const radius = 30
-    const heatmap = new window.google.maps.visualization.HeatmapLayer({
-      data: wls,
-      map: this.props.gMap,
-      radius: radius
+    const rs = assignedRisks.map( (val) => {
+      switch (true) {
+        case val == 0:
+          return 0
+        case val < 0.5:
+          return 4
+        case val < 1.0:
+          return 3
+        case val < 1.5:
+          return 2
+        default:
+          return 1
+      }
     })
 
-    const rectangles = createRectangles(this.props.gMap, gridPoints)
-
-    rectangles.forEach( row => row.map( g => {
-      g.addListener('dblclick', () => {
-        LayerAction.changeGridToRect(bounds)
-      })
-    }))
-
-    this.setState({ visibleGridPoints: rectangles })
-    this.setState({ visibleRisks: heatmap })
+    const risks = createColoredRectangles(gMap, gridPoints, rs)
+    this.setState({ visibleRisks: risks })
   }
 
   eraseRiskLayer() {

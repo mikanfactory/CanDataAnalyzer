@@ -9,7 +9,7 @@ import assign from 'object-assign'
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
 
-import routes from '../../../data/working/route.csv'
+import risks  from '../../../data/output/result/clusters8.csv'
 
 function getStateFromStores() {
   return {
@@ -73,7 +73,7 @@ export default class RouteIndex extends React.Component {
     const rs = getGridPositions(gridPoints)
 
     const overlays = rs.map( (position, index) => {
-      if (Number(routes[index].frame) > 0) {
+      if (Number(risks[index].risk) > 0) {
         new RIOverlay(index, position, gMap)
       }
     })
