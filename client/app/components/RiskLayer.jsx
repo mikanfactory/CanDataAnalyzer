@@ -21,20 +21,12 @@ export default class RiskLayer extends React.Component {
     super(props)
 
     const s = {
-      visibleGridPoints: [],
-      visibleRectangle: {},
-      visibleHeatmap: {},
-      visibleClusters: [],
       visibleRisks: {},
     }
     this.state = assign({}, getStateFromStores(), s)
 
-    this.drawGridLayer = this.drawGridLayer.bind(this)
-    this.eraseGridLayer = this.eraseGridLayer.bind(this)
-    this.drawRectangle = this.drawRectangle.bind(this)
-    this.eraseRectangle = this.eraseRectangle.bind(this)
-    this.drawHeatmap = this.drawHeatmap.bind(this)
-    this.eraseHeatmap = this.eraseHeatmap.bind(this)
+    this.drawRiskLayer = this.drawRiskLayer.bind(this)
+    this.eraseRiskLayer = this.eraseRiskLayer.bind(this)
     this._onChange = this._onChange.bind(this)
   }
 

@@ -1,7 +1,6 @@
 import React from 'react'
 import GMapActions from '../actions/GMapActions'
 import { GoogleMapStyle as s } from './Styles'
-import { loadLocalStorage } from '../utils/AppLocalStrageUtil'
 
 export default class GoogleMap extends React.Component {
   constructor(props) {
@@ -18,13 +17,6 @@ export default class GoogleMap extends React.Component {
       zoom: 15,
       center: defaultCoordinate,
       disableDoubleClickZoom: true
-    })
-
-    map.addListener('idle', () => {
-      if (!this.initialized) {
-        loadLocalStorage()
-        this.initialized = true
-      }
     })
 
     GMapActions.updateGoogleMap(map)

@@ -9,7 +9,7 @@ import assign from 'object-assign'
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
 
-import risks  from '../../../data/output/d2/Result/risks.csv'
+/* import risks  from '../../../data/output/d2/Result/risks.csv'*/
 
 function getStateFromStores() {
   return {

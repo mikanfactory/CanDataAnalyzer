@@ -1,7 +1,7 @@
 import React from 'react'
 import LayerStore from '../stores/LayerStore'
 import LayerAction from '../actions/LayerActions'
-import {createRectangle, createRectangles, createGridPoints } from '../utils/AppGoogleMapUtil'
+import { createRectangle, createRectangles, createGridPoints } from '../utils/AppGoogleMapUtil'
 import { defaultDivideSize } from '../constants/AppConstants'
 
 import assign from 'object-assign'
@@ -18,6 +18,8 @@ function getStateFromStores() {
 
 export default class GridLayer extends React.Component {
   constructor(props) {
+    super(props)
+
     const s = {
       visibleGridPoints: [],
       visibleRectangle: {},

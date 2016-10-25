@@ -6,7 +6,6 @@ import SettingActions from '../actions/SettingActions'
 import ModalActions from '../actions/ModalActions'
 import assign from 'object-assign'
 import { MarkerListStyle as s } from './Styles'
-import { saveToLocalStorage } from '../utils/AppLocalStrageUtil'
 
 function getStateFromStores(sid) {
   return {

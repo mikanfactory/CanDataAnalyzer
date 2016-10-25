@@ -10,7 +10,6 @@ import { createGridSetting, createGridPoints } from '../utils/AppGoogleMapUtil'
 import { convertMarkersToHeatmapData } from '../utils/AppAlgorithmUtil'
 import { ToolBoxHeaderStyle as s } from './Styles'
 import { defaultDivideSize } from '../constants/AppConstants'
-import { saveToLocalStorage } from '../utils/AppLocalStrageUtil'
 
 import { parseAll } from '../utils/AppParserUtil'
 import assign from 'object-assign'
@@ -89,10 +88,6 @@ export default class ToolBoxHeader extends React.Component {
     sendHeatmapSetting(heatmap)
   }
 
-  handleSaveLocalStrage() {
-    saveToLocalStorage()
-  }
-
   handleClusterToggle() {
     this.state.isClusterVisible ?
     this.handleClusterErase() :
@@ -147,10 +142,6 @@ export default class ToolBoxHeader extends React.Component {
           <span className="glyphicon glyphicon-dashboard"
                 style={s.GlyphiconStyle}
                 onClick={this.handleClusterToggle}>
-          </span>
-          <span className="glyphicon glyphicon-thumbs-up"
-                style={s.GlyphiconStyle}
-                onClick={this.handleSaveLocalStrage}>
           </span>
           <span className="glyphicon glyphicon-sort"
                 style={s.GlyphiconStyle}
