@@ -59,7 +59,7 @@ func (m *API) SaveHeatmapSetting(c echo.Context) error {
 	return c.JSON(http.StatusOK, message)
 }
 
-func (m *API) GetCluster(c echo.Context) error {
+func (m *API) GetTask(c echo.Context) error {
 	cluster, err := model.ReadClusterConfig("tasks", targetDir)
 	if err != nil {
 		errorMessage := createErrorMessage(err)

@@ -67,7 +67,7 @@ func (s *Server) Route() {
 	s.Engine.GET("/", root.Get)
 	s.Engine.POST("/api/v1/marker", api.GetMarkersBySetting)
 	s.Engine.POST("/api/v1/heatmap", api.SaveHeatmapSetting)
-	s.Engine.GET("/api/v1/cluster", api.GetCluster)
+	s.Engine.GET("/api/v1/task", api.GetTask)
 	s.Engine.GET("/api/v1/risk", api.GetRisk)
 }
 

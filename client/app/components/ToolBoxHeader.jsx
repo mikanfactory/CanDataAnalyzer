@@ -27,7 +27,7 @@ export default class ToolBoxHeader extends React.Component {
 
     this.handleLayerToggle = this.handleLayerToggle.bind(this)
     this.handleHeatmapToggle = this.handleHeatmapToggle.bind(this)
-    this.handleClusterToggle = this.handleClusterToggle.bind(this)
+    this.handleOverlayToggle = this.handleOverlayToggle.bind(this)
   }
 
   handleModalOpen() {
@@ -88,7 +88,7 @@ export default class ToolBoxHeader extends React.Component {
     sendHeatmapSetting(heatmap)
   }
 
-  handleClusterToggle() {
+  handleTaskToggle() {
     this.state.isClusterVisible ?
     this.handleClusterErase() :
     this.handleClusterDisplay()
@@ -96,14 +96,14 @@ export default class ToolBoxHeader extends React.Component {
     this.setState({ isClusterVisible: !this.state.isClusterVisible })
   }
 
-  handleClusterDisplay() {
+  handleTaskDisplay() {
     fetchClusters((grid, clusters) => {
       const bounds = new window.google.maps.LatLngBounds(grid.southWest, grid.northEast)
       LayerActions.createClusters(bounds, clusters)
     })
   }
 
-  handleClusterErase() {
+  handleTaskErase() {
     LayerActions.destroyClusters()
   }
 
@@ -165,7 +165,7 @@ export default class ToolBoxHeader extends React.Component {
           </span>
           <span className="glyphicon glyphicon-dashboard"
                 style={s.GlyphiconStyle}
-                onClick={this.handleClusterToggle}>
+                onClick={this.handleTaskToggle}>
           </span>
           <span className="glyphicon glyphicon-sort"
                 style={s.GlyphiconStyle}
@@ -173,7 +173,7 @@ export default class ToolBoxHeader extends React.Component {
           </span>
           <span className="glyphicon glyphicon-info-sign"
                 style={s.GlyphiconStyle}
-                onClick={this.handleRouteIndexToggle}>
+                onClick={this.handleOverlayToggle}>
           </span>
         </div>
       </div>

@@ -50,8 +50,8 @@ export function sendHeatmapSetting(data) {
     .catch(err => MessageActions.createMessage({ text: err }))
 }
 
-export function fetchClusters(callback) {
-  fetch("/api/v1/cluster", {
+export function fetchTasks(callback) {
+  fetch("/api/v1/task", {
     credentials: "same-origin",
     method: "GET",
     headers: {
