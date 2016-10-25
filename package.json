@@ -14,12 +14,14 @@
     "watch": "webpack -w --config webpack.config.js",
     "test": "mocha --compilers js:babel-register || exit 0",
     "watch-test": "mocha --compilers js:babel-register -w",
+    "server": "go run main.go",
     "listUp": "go run main.go --listUp",
     "insert": "time go run main.go --insert",
     "writeSchema": "go run main.go --schema && npm run scan",
     "migrate": "go run main.go --migrate",
     "scan": "cd src/model && scaneo table.go",
-    "setupDB": "npm run listUp && npm run writeSchema && npm run migrate && npm run insert"
+    "setupDB": "npm run listUp && npm run writeSchema && npm run migrate && npm run insert && npm run cleaning",
+    "cleaning": "go run main.go --cleaning"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",
