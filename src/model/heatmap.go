@@ -93,3 +93,18 @@ func (m *Heatmap) createDirname() string {
 	const layout = "2006-01-02_15:04:05"
 	return t.Format(layout)
 }
+
+func readHeatmapConfig(targetDir string) (*Heatmap, error) {
+	file, err := ioutil.ReadFile(targetDir + "setting.json")
+	if err != nil {
+		return &Heatmap{}, err
+	}
+
+	heatmap := &Heatmap{}
+	err = json.Unmarshal(file, heatmap)
+	if err != nil {
+		return &Heatmap{}, err
+	}
+
+	return heatmap, nil
+}

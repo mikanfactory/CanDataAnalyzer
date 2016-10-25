@@ -61,17 +61,14 @@ func (s *Server) Init() {
 
 // Route setting router for this app.
 func (s *Server) Route() {
-	marker := &controller.Marker{DB: s.db}
-	googleMap := &controller.GoogleMap{Key: s.Config.GoogleMap.Key}
-	heatmap := &controller.Heatmap{}
-	cluster := &controller.Cluster{}
-	risk := &controller.Risk{}
+	api := &controller.API{DB: s.db}
+	root := &controller.Root{}
 
-	s.Engine.GET("/", googleMap.Get)
-	s.Engine.POST("/api/v1/marker", marker.Get)
-	s.Engine.POST("/api/v1/heatmap", heatmap.Save)
-	s.Engine.GET("/api/v1/cluster", cluster.Get)
-	s.Engine.GET("/api/v1/risk", risk.Get)
+	s.Engine.GET("/", root.Get)
+	s.Engine.POST("/api/v1/marker", api.GetMarkersBySetting)
+	s.Engine.POST("/api/v1/heatmap", api.SaveHeatmapSetting)
+	s.Engine.GET("/api/v1/cluster", api.GetCluster)
+	s.Engine.GET("/api/v1/risk", api.GetRisk)
 }
 
 func main() {

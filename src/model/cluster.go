@@ -3,9 +3,7 @@ package model
 import (
 	"bufio"
 	"encoding/csv"
-	"encoding/json"
 	"io"
-	"io/ioutil"
 	"os"
 	"strconv"
 )
@@ -22,21 +20,6 @@ func ReadClusterConfig(targetDir string) (Cluster, error) {
 	}
 
 	return Cluster{Grid: heatmap.Grid, Content: results}, nil
-}
-
-func readHeatmapConfig(targetDir string) (*Heatmap, error) {
-	file, err := ioutil.ReadFile(targetDir + "setting.json")
-	if err != nil {
-		return &Heatmap{}, err
-	}
-
-	heatmap := &Heatmap{}
-	err = json.Unmarshal(file, heatmap)
-	if err != nil {
-		return &Heatmap{}, err
-	}
-
-	return heatmap, nil
 }
 
 func readClusterResults(targetDir string) ([]int64, error) {
