@@ -67,6 +67,11 @@ export default class RouteIndex extends React.Component {
   }
 
   drawOverlays() {
+    if (!isEmpty(risks)) {
+      MessageActions.createMessage({ text: "risks.csv file doesn't exit!!" })
+      return
+    }
+
     const { bounds } = this.state
     const { gMap } = this.props
     const gridPoints = createGridPoints(bounds, defaultDivideSize)
