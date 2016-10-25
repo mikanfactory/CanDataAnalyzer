@@ -93,6 +93,6 @@ export default class HeatmapLayer extends React.Component {
   }
 }
 
-Layer.propTypes = {
+HeatmapLayer.propTypes = {
   gMap: React.PropTypes.object
 }

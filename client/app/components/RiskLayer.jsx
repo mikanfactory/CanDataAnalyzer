@@ -97,6 +97,6 @@ export default class RiskLayer extends React.Component {
   }
 }
 
-Layer.propTypes = {
+RiskLayer.propTypes = {
   gMap: React.PropTypes.object
 }

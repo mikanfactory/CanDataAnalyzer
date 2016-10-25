@@ -74,6 +74,6 @@ export default class ClusterLayer extends React.Component {
   }
 }
 
-Layer.propTypes = {
+ClusterLayer.propTypes = {
   gMap: React.PropTypes.object
 }

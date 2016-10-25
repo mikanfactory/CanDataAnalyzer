@@ -109,6 +109,6 @@ export default class GridLayer extends React.Component {
   }
 }
 
-Layer.propTypes = {
+GridLayer.propTypes = {
   gMap: React.PropTypes.object
 }
