@@ -3,7 +3,7 @@ import GridLayer from './GridLayer'
 import HeatmapLayer from './HeatmapLayer'
 import ClusterLayer from './ClusterLayer'
 import RiskLayer from './RiskLayer'
-import RouteIndex from './RouteIndex'
+import OverlayLayer from './OverlayLayer'
 
 export default class Layer extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export default class Layer extends React.Component {
         <HeatmapLayer gMap={this.props.gMap} />
         <ClusterLayer gMap={this.props.gMap} />
         <RiskLayer gMap={this.props.gMap} />
-        <RouteIndex gMap={this.props.gMap} />
+        <OverlayLayer gMap={this.props.gMap} />
       </div>
     )
   }

@@ -56,7 +56,7 @@ class RIOverlay extends window.google.maps.OverlayView {
   }
 }
 
-export default class RouteIndex extends React.Component {
+export default class OverlayLayer extends React.Component {
   constructor(props) {
     super(props)
 
@@ -111,7 +111,7 @@ export default class RouteIndex extends React.Component {
 
   render() {
     return (
-      <div className="RouteIndex" style={{height: 0, width: 0}}>
+      <div className="Layer" style={{height: 0, width: 0}}>
         <div id="dummyOverlay"></div>
       </div>
     )
@@ -122,6 +122,6 @@ export default class RouteIndex extends React.Component {
   }
 }
 
-RouteIndex.propTypes = {
+OverlayLayer.propTypes = {
   gMap: React.PropTypes.object
 }
