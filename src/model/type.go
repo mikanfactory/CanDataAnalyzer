@@ -61,9 +61,3 @@ type Cluster struct {
 	Grid    Grid    `json:"grid"`
 	Content []int64 `json:"content"`
 }
-
-// Risk have grid config and grids that assigned risk
-type Risk struct {
-	Grid    Grid      `json:"grid"`
-	Content []float64 `json:"content"`
-}

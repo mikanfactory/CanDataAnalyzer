@@ -60,7 +60,7 @@ func (m *API) SaveHeatmapSetting(c echo.Context) error {
 }
 
 func (m *API) GetCluster(c echo.Context) error {
-	cluster, err := model.ReadClusterConfig(targetDir)
+	cluster, err := model.ReadClusterConfig("tasks", targetDir)
 	if err != nil {
 		errorMessage := createErrorMessage(err)
 		return c.JSON(http.StatusBadRequest, errorMessage)
@@ -70,7 +70,7 @@ func (m *API) GetCluster(c echo.Context) error {
 }
 
 func (m *API) GetRisk(c echo.Context) error {
-	cluster, err := model.ReadRiskConfig(targetDir)
+	cluster, err := model.ReadClusterConfig("risks", targetDir)
 	if err != nil {
 		errorMessage := createErrorMessage(err)
 		return c.JSON(http.StatusBadRequest, errorMessage)

@@ -8,13 +8,18 @@ import (
 	"strconv"
 )
 
-func ReadClusterConfig(targetDir string) (Cluster, error) {
+var clusterFuncs = map[string]func(string) ([]int64, error){
+	"tasks": readTaskResults,
+	"risks": readRiskResults,
+}
+
+func ReadClusterConfig(target, targetDir string) (Cluster, error) {
 	heatmap, err := readHeatmapConfig(targetDir)
 	if err != nil {
 		return Cluster{}, err
 	}
 
-	results, err := readClusterResults(targetDir)
+	results, err := clusterFuncs[target](targetDir)
 	if err != nil {
 		return Cluster{}, err
 	}
@@ -22,7 +27,7 @@ func ReadClusterConfig(targetDir string) (Cluster, error) {
 	return Cluster{Grid: heatmap.Grid, Content: results}, nil
 }
 
-func readClusterResults(targetDir string) ([]int64, error) {
+func readTaskResults(targetDir string) ([]int64, error) {
 	file, err := os.Open(targetDir + "clusters.csv")
 	if err != nil {
 		return []int64{}, err
@@ -47,4 +52,46 @@ func readClusterResults(targetDir string) ([]int64, error) {
 	}
 
 	return results, err
+}
+
+func readRiskResults(targetDir string) ([]int64, error) {
+	file, err := os.Open(targetDir + "risks.csv")
+	if err != nil {
+		return []int64{}, err
+	}
+
+	results := []int64{}
+	r := csv.NewReader(bufio.NewReader(file))
+	for {
+		record, err := r.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return []int64{}, err
+		}
+
+		res, err := strconv.ParseFloat(record[0], 0)
+		if err != nil {
+			return []int64{}, err
+		}
+		results = append(results, discretization(res))
+	}
+
+	return results, err
+}
+
+func discretization(x float64) int64 {
+	switch true {
+	case x < 0.0001:
+		return 0
+	case x < 0.5:
+		return 4
+	case x < 1.0:
+		return 3
+	case x < 1.4:
+		return 2
+	default:
+		return 1
+	}
 }
