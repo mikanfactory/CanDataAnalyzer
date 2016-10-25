@@ -23,7 +23,7 @@ func ReadRiskConfig(targetDir string) (Risk, error) {
 }
 
 func readRiskResults(targetDir string) ([]float64, error) {
-	file, err := os.Open(targetDir + "clusters8.csv")
+	file, err := os.Open(targetDir + "risks.csv")
 	if err != nil {
 		return []float64{}, err
 	}

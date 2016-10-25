@@ -11,7 +11,7 @@ import (
 type Risk struct{}
 
 func (m *Risk) Get(c echo.Context) error {
-	cluster, err := model.ReadRiskConfig("data/output/result/")
+	cluster, err := model.ReadRiskConfig("data/output/d2/result/")
 	if err != nil {
 		errorMessage := createErrorMessage(err)
 		return c.JSON(http.StatusBadRequest, errorMessage)

@@ -147,12 +147,13 @@ export default class Layer extends React.Component {
           return 4
         case val < 1.0:
           return 3
-        case val < 1.5:
+        case val < 1.4:
           return 2
         default:
           return 1
       }
     })
+    /* const rs = assignedRisks.map( (val) => val )*/
 
     const risks = createColoredRectangles(gMap, gridPoints, rs)
     this.setState({ visibleRisks: risks })

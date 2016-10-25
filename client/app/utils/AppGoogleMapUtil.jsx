@@ -11,6 +11,23 @@ let clusterColors = [
   "#800080"
 ]
 
+let cluster13Colors = [
+  "#FFFFFF",
+  "#f39700",
+  "#e60012",
+  "#9caeb7",
+  "#00a7db",
+  "#009944",
+  "#d7c447",
+  "#967cb6",
+  "#00ada9",
+  "#bb641d",
+  "#e85298",
+  "#0079c2",
+  "#6cbb5a",
+  "#b6007a"
+]
+
 export function createRectangle(gMap, bounds) {
   return new window.google.maps.Rectangle({
     strokeColor: '#FF0000',
