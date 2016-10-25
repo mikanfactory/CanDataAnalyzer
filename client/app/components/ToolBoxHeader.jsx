@@ -108,14 +108,38 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleRiskToggle() {
+    this.state.isClusterVisibile ?
+    this.handleClusterErase() :
+    this.handleClusterDisplay()
+
+    this.setState({ isClusterVisible: !this.state.isClusterVisible })
+  }
+
+  handleRiskDisplay() {
     fetchRisks((grid, risks) => {
       const bounds = new window.google.maps.LatLngBounds(grid.southWest, grid.northEast)
-      LayerActions.createRiskLayer(bounds, risks)
+      LayerActions.createClusters(bounds, risks)
     })
   }
 
-  handleRouteIndexToggle() {
+  handleRiskErase() {
+    LayerActions.destroyClusters()
+  }
+
+  handleOverlayToggle() {
+    this.state.isOverlayVisible ?
+    this.handleOverlayErase() :
+    this.handleOverlayDisplay()
+
+    this.setState({ isOverlayVisible: !this.state.isOverlayVisible })
+  }
+
+  handleOverlayDisplay() {
     LayerActions.createRouteIndex()
+  }
+
+  handleOverlayErase() {
+    LayerActions.eraseRouteIndex()
   }
 
   render() {
