@@ -136,6 +136,7 @@ export const MessageStyle = {
 export const ModalStyle = {
     HeaderStyle: {
       fontSize: "32px",
+      paddingBottom: "5px",
       borderBottom: "1px solid #e9e9e9"
     },
 
@@ -153,7 +154,7 @@ export const ModalStyle = {
     },
 
     TitleStyle: {
-      width: "130px",
+      width: "250px",
       fontSize: "24px"
     },
 
