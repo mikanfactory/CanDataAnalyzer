@@ -16,7 +16,6 @@ let _store = {
   isHeatmapVisible: false,
   isRouteIndexVisible: false,
   assignedClusters: [],
-  assignedRisks: [],
   divideSize: defaultDivideSize,
 }
 
@@ -65,11 +64,6 @@ function _destroy_cluster_layer() {
   _store.assignedClusters = []
 }
 
-function _create_risk_layer(bounds, risks) {
-  _store.bounds = bounds
-  _store.assignedRisks = risks
-}
-
 class LayerStoreClass extends EventEmitter {
   constructor() {
     super()
@@ -109,10 +103,6 @@ class LayerStoreClass extends EventEmitter {
 
   getAssignedClusters() {
     return _store.assignedClusters
-  }
-
-  getAssignedRisks() {
-    return _store.assignedRisks
   }
 }
 
@@ -183,11 +173,6 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
 
     case ActionTypes.DESTROY_CLUSTER_LAYER:
       _destroy_cluster_layer()
-      LayerStore.emitChange()
-      break
-
-    case ActionTypes.CREATE_RISK_LAYER:
-      _create_risk_layer(actions.bounds, actions.risks)
       LayerStore.emitChange()
       break
 
