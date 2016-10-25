@@ -21,7 +21,7 @@ export default class RiskLayer extends React.Component {
     super(props)
 
     const s = {
-      visibleRisks: {},
+      visibleRisks: [],
     }
     this.state = assign({}, getStateFromStores(), s)
 
@@ -34,29 +34,14 @@ export default class RiskLayer extends React.Component {
     const { bounds, assignedRisks } = this.state
     const { gMap } = this.props
     const gridPoints = createGridPoints(bounds, defaultDivideSize)
-    const rs = assignedRisks.map( (val) => {
-      switch (true) {
-        case val == 0:
-          return 0
-        case val < 0.5:
-          return 4
-        case val < 1.0:
-          return 3
-        case val < 1.4:
-          return 2
-        default:
-          return 1
-      }
-    })
-    /* const rs = assignedRisks.map( (val) => val )*/
+    const risks = createColoredRectangles(gMap, gridPoints, assignedRisks)
 
-    const risks = createColoredRectangles(gMap, gridPoints, rs)
     this.setState({ visibleRisks: risks })
   }
 
   eraseRiskLayer() {
     this.state.visibleRisks.setMap(null)
-    this.setState({ visibleRisks: {} })
+    this.setState({ visibleRisks: [] })
   }
 
   componentDidMount() {
