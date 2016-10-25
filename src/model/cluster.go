@@ -85,11 +85,13 @@ func discretization(x float64) int64 {
 	switch true {
 	case x < 0.0001:
 		return 0
-	case x < 0.5:
+	case x < 2:
+		return 5
+	case x < 4:
 		return 4
-	case x < 1.0:
+	case x < 6:
 		return 3
-	case x < 1.4:
+	case x < 8:
 		return 2
 	default:
 		return 1

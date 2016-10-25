@@ -13,7 +13,7 @@ type API struct {
 	DB *sql.DB
 }
 
-const targetDir = "data/output/d2/result/"
+const targetDir = "data/output/d3/result/"
 
 func (m *API) GetMarkersBySetting(c echo.Context) error {
 	setting := model.Setting{}
