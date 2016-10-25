@@ -82,17 +82,10 @@ const LayerActions = {
     })
   },
 
-  createRiskLayer: (bounds, risks) => {
+  createOverlayLayer: routeIndex => {
     AppDispatcher.dispatch({
-      actionType: ActionTypes.CREATE_RISK_LAYER,
-      bounds: bounds,
-      risks: risks
-    })
-  },
-
-  createOverlayLayer: () => {
-    AppDispatcher.dispatch({
-      actionType: ActionTypes.CREATE_OVERLAY_LAYER
+      actionType: ActionTypes.CREATE_OVERLAY_LAYER,
+      routeIndex: routeIndex
     })
   },
 

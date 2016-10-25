@@ -5,7 +5,7 @@ import SettingStore from '../stores/SettingStore'
 import LayerActions from '../actions/LayerActions'
 import ModalActions from '../actions/ModalActions'
 import MessageActions from '../actions/MessageActions'
-import { sendHeatmapSetting, fetchClusters, fetchRisks } from '../utils/AppWebAPIUtils.jsx'
+import { sendHeatmapSetting, fetchTasks, fetchRisks } from '../utils/AppWebAPIUtils.jsx'
 import { createGridSetting, createGridPoints } from '../utils/AppGoogleMapUtil'
 import { convertMarkersToHeatmapData } from '../utils/AppAlgorithmUtil'
 import { ToolBoxHeaderStyle as s } from './Styles'
@@ -22,11 +22,13 @@ export default class ToolBoxHeader extends React.Component {
     this.state = {
       isLayerVisible: false,
       isHeatmapVisible: false,
-      isClusterVisibile: false,
+      isClusterVisible: false,
     }
 
     this.handleLayerToggle = this.handleLayerToggle.bind(this)
     this.handleHeatmapToggle = this.handleHeatmapToggle.bind(this)
+    this.handleTaskToggle = this.handleTaskToggle.bind(this)
+    this.handleRiskToggle = this.handleRiskToggle.bind(this)
     this.handleOverlayToggle = this.handleOverlayToggle.bind(this)
   }
 
@@ -90,14 +92,14 @@ export default class ToolBoxHeader extends React.Component {
 
   handleTaskToggle() {
     this.state.isClusterVisible ?
-    this.handleClusterErase() :
-    this.handleClusterDisplay()
+    this.handleTaskErase() :
+    this.handleTaskDisplay()
 
     this.setState({ isClusterVisible: !this.state.isClusterVisible })
   }
 
   handleTaskDisplay() {
-    fetchClusters((grid, clusters) => {
+    fetchTasks((grid, clusters) => {
       const bounds = new window.google.maps.LatLngBounds(grid.southWest, grid.northEast)
       LayerActions.createClusters(bounds, clusters)
     })
@@ -108,9 +110,9 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleRiskToggle() {
-    this.state.isClusterVisibile ?
-    this.handleClusterErase() :
-    this.handleClusterDisplay()
+    this.state.isClusterVisible ?
+    this.handleRiskErase() :
+    this.handleRiskDisplay()
 
     this.setState({ isClusterVisible: !this.state.isClusterVisible })
   }
@@ -135,11 +137,13 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleOverlayDisplay() {
-    LayerActions.createOverlayLayer()
+    fetchRisks((grid, risks) => {
+      LayerActions.createOverlayLayer(risks)
+    })
   }
 
   handleOverlayErase() {
-    LayerActions.eraseOverlayLayer()
+    LayerActions.destroyOverlayLayer()
   }
 
   render() {

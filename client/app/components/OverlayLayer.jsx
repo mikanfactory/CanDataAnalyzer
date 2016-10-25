@@ -9,12 +9,10 @@ import assign from 'object-assign'
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
 
-/* import risks  from '../../../data/output/d2/Result/risks.csv'*/
-
 function getStateFromStores() {
   return {
     bounds: LayerStore.getBounds(),
-    isRouteIndexVisible: LayerStore.getRouteIndexVisibility()
+    routeIndex: LayerStore.getRouteIndex(),
   }
 }
 
@@ -63,23 +61,20 @@ export default class OverlayLayer extends React.Component {
     const s = { overlays: [] }
     this.state = assign({}, getStateFromStores(), s)
 
+    this.drawOverlays = this.drawOverlays.bind(this)
+    this.eraseOverlays = this.eraseOverlays.bind(this)
     this._onChange = this._onChange.bind(this)
   }
 
   drawOverlays() {
-    if (!isEmpty(risks)) {
-      MessageActions.createMessage({ text: "risks.csv file doesn't exit!!" })
-      return
-    }
-
-    const { bounds } = this.state
+    const { bounds, routeIndex } = this.state
     const { gMap } = this.props
     const gridPoints = createGridPoints(bounds, defaultDivideSize)
     const rs = getGridPositions(gridPoints)
 
     const overlays = rs.map( (position, index) => {
-      if (Number(risks[index].risk) > 0) {
-        new RIOverlay(index, position, gMap)
+      if (Number(routeIndex[index]) > 0) {
+        return new RIOverlay(index, position, gMap)
       }
     })
 
@@ -88,9 +83,13 @@ export default class OverlayLayer extends React.Component {
 
   eraseOverlays() {
     const { overlays } = this.state
-    overlays.forEach( (overlay) => {
-      overlay.setMap(null)
+    overlays.forEach( overlay => {
+      if (!isEmpty(overlay)) {
+        overlay.setMap(null)
+      }
     })
+
+    this.setState({ overlays: [] })
   }
 
   componentDidMount() {
@@ -102,7 +101,7 @@ export default class OverlayLayer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(!isEqual(this.state.isRouteIndexVisible, prevState.isRouteIndexVisible)) {
+    if(!isEqual(this.state.routeIndex, prevState.routeIndex)) {
       isEmpty(this.state.overlays) ?
       this.drawOverlays() :
       this.eraseOverlays()

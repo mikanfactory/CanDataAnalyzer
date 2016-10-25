@@ -14,8 +14,8 @@ let _store = {
   isGridLayerVisible: false,
   isRectangleVisibile: false,
   isHeatmapVisible: false,
-  isRouteIndexVisible: false,
   assignedClusters: [],
+  routeIndex: [],
   divideSize: defaultDivideSize,
 }
 
@@ -47,12 +47,12 @@ function _destroy_heatmap_layer() {
   _store.isHeatmapVisible = false
 }
 
-function _create_route_index() {
-  _store.isRouteIndexVisible = true
+function _create_route_index(routeIndex) {
+  _store.routeIndex = routeIndex
 }
 
 function _destroy_route_index() {
-  _store.isRouteIndexVisible = false
+  _store.routeIndex = []
 }
 
 function _create_cluster_layer(bounds, clusters) {
@@ -97,12 +97,12 @@ class LayerStoreClass extends EventEmitter {
     return _store.isHeatmapVisible
   }
 
-  getRouteIndexVisibility() {
-    return _store.isRouteIndexVisible
-  }
-
   getAssignedClusters() {
     return _store.assignedClusters
+  }
+
+  getRouteIndex() {
+    return _store.routeIndex
   }
 }
 
@@ -177,7 +177,7 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
       break
 
     case ActionTypes.CREATE_OVERLAY_LAYER:
-      _create_route_index()
+      _create_route_index(actions.routeIndex)
       LayerStore.emitChange()
       break
 
