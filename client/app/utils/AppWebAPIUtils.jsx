@@ -64,3 +64,18 @@ export function fetchClusters(callback) {
     .then(data => callback(data.grid, data.content))
     .catch(err => MessageActions.createMessage( { text: err }))
 }
+
+export function fetchRisks(callback) {
+  fetch("/api/v1/risk", {
+    credentials: "same-origin",
+    method: "GET",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+    .then(resp => resp.json())
+    .then(json => checkStatus1(json))
+    .then(data => callback(data.grid, data.content))
+    .catch(err => MessageActions.createMessage( { text: err }))
+}

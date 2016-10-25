@@ -5,8 +5,8 @@ import SettingStore from '../stores/SettingStore'
 import LayerActions from '../actions/LayerActions'
 import ModalActions from '../actions/ModalActions'
 import MessageActions from '../actions/MessageActions'
-import { sendHeatmapSetting, fetchClusters } from '../utils/AppWebAPIUtils.jsx'
-import { createGridSetting, createGridPoints, getSmallerBounds } from '../utils/AppGoogleMapUtil'
+import { sendHeatmapSetting, fetchClusters, fetchRisks } from '../utils/AppWebAPIUtils.jsx'
+import { createGridSetting, createGridPoints } from '../utils/AppGoogleMapUtil'
 import { convertMarkersToHeatmapData } from '../utils/AppAlgorithmUtil'
 import { ToolBoxHeaderStyle as s } from './Styles'
 import { defaultDivideSize } from '../constants/AppConstants'
@@ -44,8 +44,7 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleLayerDisplay() {
-    const bounds = getSmallerBounds(this.props.gMap)
-    LayerActions.createRectangle(bounds)
+    LayerActions.createRectangle()
   }
 
   handleLayerErase() {
@@ -113,6 +112,17 @@ export default class ToolBoxHeader extends React.Component {
     LayerActions.destroyClusters()
   }
 
+  handleRiskToggle() {
+    fetchRisks((grid, risks) => {
+      const bounds = new window.google.maps.LatLngBounds(grid.southWest, grid.northEast)
+      LayerActions.createRiskLayer(bounds, risks)
+    })
+  }
+
+  handleRouteIndexToggle() {
+    LayerActions.createRouteIndex()
+  }
+
   render() {
     return (
       <div>
@@ -134,10 +144,6 @@ export default class ToolBoxHeader extends React.Component {
                 style={s.GlyphiconStyle}
                 onClick={this.handleSaveHeatmapSetting}>
           </span>
-          <span className="glyphicon glyphicon-film"
-                style={s.GlyphiconStyle}
-                onClick={this.handleModalOpen}>
-          </span>
           <span className="glyphicon glyphicon-dashboard"
                 style={s.GlyphiconStyle}
                 onClick={this.handleClusterToggle}>
@@ -145,6 +151,14 @@ export default class ToolBoxHeader extends React.Component {
           <span className="glyphicon glyphicon-thumbs-up"
                 style={s.GlyphiconStyle}
                 onClick={this.handleSaveLocalStrage}>
+          </span>
+          <span className="glyphicon glyphicon-sort"
+                style={s.GlyphiconStyle}
+                onClick={this.handleRiskToggle}>
+          </span>
+          <span className="glyphicon glyphicon-info-sign"
+                style={s.GlyphiconStyle}
+                onClick={this.handleRouteIndexToggle}>
           </span>
         </div>
       </div>

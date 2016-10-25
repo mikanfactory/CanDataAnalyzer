@@ -32,6 +32,8 @@ func (m *Can) ToMarker(cond Condition, setting Setting) Marker {
 
 func getCans(db *sql.DB, cond Condition, setting Setting) ([]Can, error) {
 	switch {
+	case setting.Target == "All" && cond.Content == "default":
+		return getAllCans(db)
 	case setting.Target == "All":
 		return getCansForAllTarget(db, cond)
 	case cond.Content == "default":
@@ -39,6 +41,15 @@ func getCans(db *sql.DB, cond Condition, setting Setting) ([]Can, error) {
 	default:
 		return getCansByCondition(db, cond, setting)
 	}
+}
+
+func getAllCans(db *sql.DB) ([]Can, error) {
+	query := "select * from cans"
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	return ScanCans(rows)
 }
 
 func getCansForAllTarget(db *sql.DB, cond Condition) ([]Can, error) {

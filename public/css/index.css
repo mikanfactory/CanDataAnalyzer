@@ -4,3 +4,12 @@ html, body {
     margin: 0;
     padding: 0;
 }
+.overlay {
+    position: absolute;
+    /* background: yellow; */
+    text-align: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}

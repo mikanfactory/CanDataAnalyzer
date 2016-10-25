@@ -108,6 +108,10 @@ const AppConstants = {
     DESTROY_HEATMAP_LAYER: null,
     CREATE_CLUSTER_LAYER: null,
     DESTROY_CLUSTER_LAYER: null,
+    CREATE_RISK_LAYER: null,
+    DESTROY_RISK_LAYER: null,
+    CREATE_ROUTE_INDEX: null,
+    DESTROY_ROUTE_INDEX: null,
 
     // Message
     CREATE_MESSAGE: null,

@@ -14,7 +14,9 @@ let _store = {
   isGridLayerVisible: false,
   isRectangleVisibile: false,
   isHeatmapVisible: false,
+  isRouteIndexVisible: false,
   assignedClusters: [],
+  assignedRisks: [],
   divideSize: defaultDivideSize,
 }
 
@@ -46,6 +48,14 @@ function _destroy_heatmap_layer() {
   _store.isHeatmapVisible = false
 }
 
+function _create_route_index() {
+  _store.isRouteIndexVisible = true
+}
+
+function _destroy_route_index() {
+  _store.isRouteIndexVisible = false
+}
+
 function _create_cluster_layer(bounds, clusters) {
   _store.bounds = bounds
   _store.assignedClusters = clusters
@@ -53,6 +63,11 @@ function _create_cluster_layer(bounds, clusters) {
 
 function _destroy_cluster_layer() {
   _store.assignedClusters = []
+}
+
+function _create_risk_layer(bounds, risks) {
+  _store.bounds = bounds
+  _store.assignedRisks = risks
 }
 
 class LayerStoreClass extends EventEmitter {
@@ -88,8 +103,16 @@ class LayerStoreClass extends EventEmitter {
     return _store.isHeatmapVisible
   }
 
+  getRouteIndexVisibility() {
+    return _store.isRouteIndexVisible
+  }
+
   getAssignedClusters() {
     return _store.assignedClusters
+  }
+
+  getAssignedRisks() {
+    return _store.assignedRisks
   }
 }
 
@@ -109,8 +132,7 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
       break
 
     case ActionTypes.CREATE_RECTANGLE_LAYER:
-      _create_rectangle(actions.bounds)
-      _setBounds(actions.bounds)
+      _create_rectangle()
       LayerStore.emitChange()
       break
 
@@ -161,6 +183,21 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
 
     case ActionTypes.DESTROY_CLUSTER_LAYER:
       _destroy_cluster_layer()
+      LayerStore.emitChange()
+      break
+
+    case ActionTypes.CREATE_RISK_LAYER:
+      _create_risk_layer(actions.bounds, actions.risks)
+      LayerStore.emitChange()
+      break
+
+    case ActionTypes.CREATE_ROUTE_INDEX:
+      _create_route_index()
+      LayerStore.emitChange()
+      break
+
+    case ActionTypes.DESTROY_ROUTE_INDEX:
+      _destroy_route_index()
       LayerStore.emitChange()
       break
 

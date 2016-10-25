@@ -7,11 +7,11 @@ import (
 	"github.com/mikanfactory/CanDataAnalyzer/src/model"
 )
 
-// Cluster control request of cluster
-type Cluster struct{}
+// Risk control request of cluster
+type Risk struct{}
 
-func (m *Cluster) Get(c echo.Context) error {
-	cluster, err := model.ReadClusterConfig("data/output/d2/result/")
+func (m *Risk) Get(c echo.Context) error {
+	cluster, err := model.ReadRiskConfig("data/output/d2/result/")
 	if err != nil {
 		errorMessage := createErrorMessage(err)
 		return c.JSON(http.StatusBadRequest, errorMessage)

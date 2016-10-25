@@ -17,10 +17,9 @@ const LayerActions = {
     })
   },
 
-  createRectangle: (bounds) => {
+  createRectangle: () => {
     AppDispatcher.dispatch({
-      actionType: ActionTypes.CREATE_RECTANGLE_LAYER,
-      bounds: bounds
+      actionType: ActionTypes.CREATE_RECTANGLE_LAYER
     })
   },
 
@@ -80,6 +79,20 @@ const LayerActions = {
   destroyClusters: () => {
     AppDispatcher.dispatch({
       actionType: ActionTypes.DESTROY_CLUSTER_LAYER
+    })
+  },
+
+  createRiskLayer: (bounds, risks) => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CREATE_RISK_LAYER,
+      bounds: bounds,
+      risks: risks
+    })
+  },
+
+  createRouteIndex: () => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CREATE_ROUTE_INDEX
     })
   }
 }

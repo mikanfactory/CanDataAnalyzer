@@ -11,3 +11,5 @@ data/*
 config/config.toml
 /TAGS
 npm-debug.log
+venv/
+analysis/img
