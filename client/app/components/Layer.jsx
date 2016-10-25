@@ -2,7 +2,6 @@ import React from 'react'
 import GridLayer from './GridLayer'
 import HeatmapLayer from './HeatmapLayer'
 import ClusterLayer from './ClusterLayer'
-import RiskLayer from './RiskLayer'
 import OverlayLayer from './OverlayLayer'
 
 export default class Layer extends React.Component {
@@ -16,7 +15,6 @@ export default class Layer extends React.Component {
         <GridLayer gMap={this.props.gMap} />
         <HeatmapLayer gMap={this.props.gMap} />
         <ClusterLayer gMap={this.props.gMap} />
-        <RiskLayer gMap={this.props.gMap} />
         <OverlayLayer gMap={this.props.gMap} />
       </div>
     )

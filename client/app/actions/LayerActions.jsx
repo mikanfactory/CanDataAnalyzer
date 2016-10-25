@@ -90,9 +90,15 @@ const LayerActions = {
     })
   },
 
-  createRouteIndex: () => {
+  createOverlayLayer: () => {
     AppDispatcher.dispatch({
-      actionType: ActionTypes.CREATE_ROUTE_INDEX
+      actionType: ActionTypes.CREATE_OVERLAY_LAYER
+    })
+  },
+
+  destroyOverlayLayer: () => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.DESTROY_OVERLAY_LAYER
     })
   }
 }

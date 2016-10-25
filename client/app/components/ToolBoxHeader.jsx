@@ -135,11 +135,11 @@ export default class ToolBoxHeader extends React.Component {
   }
 
   handleOverlayDisplay() {
-    LayerActions.createRouteIndex()
+    LayerActions.createOverlayLayer()
   }
 
   handleOverlayErase() {
-    LayerActions.eraseRouteIndex()
+    LayerActions.eraseOverlayLayer()
   }
 
   render() {

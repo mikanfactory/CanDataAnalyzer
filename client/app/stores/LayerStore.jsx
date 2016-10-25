@@ -176,12 +176,12 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
       LayerStore.emitChange()
       break
 
-    case ActionTypes.CREATE_ROUTE_INDEX:
+    case ActionTypes.CREATE_OVERLAY_LAYER:
       _create_route_index()
       LayerStore.emitChange()
       break
 
-    case ActionTypes.DESTROY_ROUTE_INDEX:
+    case ActionTypes.DESTROY_OVERLAY_LAYER:
       _destroy_route_index()
       LayerStore.emitChange()
       break

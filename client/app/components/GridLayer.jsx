@@ -1,6 +1,6 @@
 import React from 'react'
 import LayerStore from '../stores/LayerStore'
-import LayerAction from '../actions/LayerActions'
+import LayerActions from '../actions/LayerActions'
 import { createRectangle, createRectangles, createGridPoints } from '../utils/AppGoogleMapUtil'
 import { defaultDivideSize } from '../constants/AppConstants'
 
@@ -39,12 +39,12 @@ export default class GridLayer extends React.Component {
 
     rectangle.addListener('dblclick', () => {
       const newBounds = rectangle.getBounds()
-      LayerAction.changeRectToGrid(newBounds)
+      LayerActions.changeRectToGrid(newBounds)
     })
 
     rectangle.addListener('bounds_changed', () => {
       const newBounds = rectangle.getBounds()
-      LayerAction.updateBounds(newBounds)
+      LayerActions.updateBounds(newBounds)
     })
 
     this.setState({ visibleRectangle: rectangle })
@@ -62,7 +62,7 @@ export default class GridLayer extends React.Component {
 
     rectangles.forEach( row => row.map( g => {
       g.addListener('dblclick', () => {
-        LayerAction.changeGridToRect(bounds)
+        LayerActions.changeGridToRect(bounds)
       })
     }))
 
