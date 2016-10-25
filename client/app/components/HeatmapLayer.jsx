@@ -16,6 +16,14 @@ function getStateFromStores() {
   }
 }
 
+function zoomToRadius(zoom) {
+  // TODO: ajust it
+  /* let zoomToRadiusMap = {}
+   * const radius = zoomToRadiusMap[zoom]
+   * return radius ? radius : 200*/
+  return 200
+}
+
 export default class HeatmapLayer extends React.Component {
   constructor(props) {
     super(props)
