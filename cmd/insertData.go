@@ -18,7 +18,7 @@ import (
 
 const (
 	headerLines = 2
-	segmentSize = 100
+	segmentSize = 30
 )
 
 var mutex = &sync.Mutex{}

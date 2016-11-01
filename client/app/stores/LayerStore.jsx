@@ -5,10 +5,8 @@ import { defaultDivideSize } from '../constants/AppConstants'
 const ActionTypes = AppConstants.ActionTypes
 const CHANGE_EVENT = 'change'
 
-
-
-const defaultNorthEast = { "lat":36.102769659772,"lng":140.21802601074216 }
-const defaultSouthWest = { "lat":36.0505073301923,"lng":140.1477735922241 }
+const defaultNorthEast = {"lat":36.10309039307778,"lng":140.21758612846372}
+const defaultSouthWest = {"lat":36.05082827672316,"lng":140.14733370994566}
 const defaultBounds = new window.google.maps.LatLngBounds(defaultSouthWest, defaultNorthEast)
 
 let _store = {

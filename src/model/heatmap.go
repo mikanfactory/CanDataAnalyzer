@@ -78,7 +78,7 @@ func (m *Heatmap) createHeader() []string {
 func (m *Heatmap) createContent() [][]string {
 	content := [][]string{}
 	for i, weight := range m.Weights {
-		str := []string{strconv.Itoa(i + 1)}
+		str := []string{strconv.Itoa(i)}
 		for _, val := range weight {
 			str = append(str, strconv.Itoa(int(val)))
 		}
