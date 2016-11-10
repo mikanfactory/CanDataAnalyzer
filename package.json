@@ -20,7 +20,7 @@
     "writeSchema": "go run main.go --schema && npm run scan",
     "migrate": "go run main.go --migrate",
     "scan": "cd src/model && scaneo table.go",
-    "setupDB": "npm run listUp && npm run writeSchema && npm run migrate && npm run insert && npm run cleaning",
+    "setupDB": "npm run listUp && npm run writeSchema && npm run migrate && npm run insert",
     "cleaning": "go run main.go --cleaning"
   },
   "devDependencies": {

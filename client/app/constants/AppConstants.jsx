@@ -3,6 +3,7 @@ import targets from '../../../config/targets.json'
 import features from '../../../config/cacheConfig.json'
 import chunk from 'lodash/chunk'
 
+console.table(features.columns)
 const validFeatures = features.columns
                               .filter( c => c.read )
                               .map( c => c.name )
@@ -32,13 +33,13 @@ const defaultSetting = {
     validStatuses,
     "",
     "switch (true) {",
-    "  case SpeedPerHourLowpass > 60:",
+    "  case Speed > 60:",
     "    return red",
-    "  case SpeedPerHourLowpass > 30 && SpeedPerHourLowpass < 60:",
+    "  case Speed > 30 && Speed < 60:",
     "    return yellow",
-    "  case SpeedPerHourLowpass > 10 && SpeedPerHourLowpass < 30:",
+    "  case Speed > 10 && Speed < 30:",
     "    return green",
-    "  case SpeedPerHourLowpass < 10:",
+    "  case Speed < 10:",
     "    return stop",
     "}"
   ].join("\n")

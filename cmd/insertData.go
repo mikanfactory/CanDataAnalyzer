@@ -57,7 +57,7 @@ func InsertData() {
 			insert(db, query)
 
 		case <-fin:
-			if finished < size-1 {
+			if finished < size {
 				finished++
 				continue
 			}
@@ -127,7 +127,7 @@ func calcAverage(column Column, records *[][]string) float64 {
 	var average float64
 	values := []float64{}
 	for _, record := range *records {
-		value, _ := strconv.ParseFloat(record[column.Index], 64)
+		value, _ := strconv.ParseFloat(record[column.Index-1], 64)
 		values = append(values, value)
 		average += value
 	}

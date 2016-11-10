@@ -81,16 +81,16 @@ func getCansByCondition(db *sql.DB, cond Condition, setting Setting) ([]Can, err
 }
 
 func (m *Can) getPosition() Position {
-	lat := m.GPSLatitude
-	lng := m.GPSLongtitude
+	lat := m.Latitude
+	lng := m.Longitude
 
 	// convert Tokyo Datum to WGS84
-	lngW := lng - lat*0.000046038 - lng*0.000083043 + 0.010040
-	latW := lat - lat*0.00010695 + lng*0.000017464 + 0.0046017
+	// lngW := lng - lat*0.000046038 - lng*0.000083043 + 0.010040
+	// latW := lat - lat*0.00010695 + lng*0.000017464 + 0.0046017
 
 	return Position{
-		Latitude:    latW,
-		Longutitude: lngW,
+		Latitude:    lat,
+		Longutitude: lng,
 	}
 }
 
