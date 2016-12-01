@@ -3,7 +3,6 @@ import targets from '../../../config/targets.json'
 import features from '../../../config/cacheConfig.json'
 import chunk from 'lodash/chunk'
 
-console.table(features.columns)
 const validFeatures = features.columns
                               .filter( c => c.read )
                               .map( c => c.name )
@@ -45,7 +44,7 @@ const defaultSetting = {
   ].join("\n")
 }
 
-const defaultDivideSize = 30
+const defaultDivideSize = 60
 
 const defaultModal = {
   modalType: "",
