@@ -14,3 +14,10 @@ type Column struct {
 type Targets struct {
 	Names []string `json:"names"`
 }
+
+type SwitchingPoint struct {
+	Index       int
+	Name        string
+	ColumnIndex int64
+	Value       string
+}

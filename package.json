@@ -21,7 +21,8 @@
     "migrate": "go run main.go --migrate",
     "scan": "cd src/model && scaneo table.go",
     "setupDB": "npm run listUp && npm run writeSchema && npm run migrate && npm run insert",
-    "cleaning": "go run main.go --cleaning"
+    "cleaning": "go run main.go --cleaning",
+    "detect": "go run main.go --detect"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",

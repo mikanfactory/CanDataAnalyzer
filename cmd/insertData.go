@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	headerLines = 2
+	headerLines = 1
 	segmentSize = 30
 )
 

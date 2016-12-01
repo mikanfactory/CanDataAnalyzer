@@ -79,6 +79,7 @@ func main() {
 	flags["schema"] = flag.Bool("schema", false, "write a DB schema to table.go")
 	flags["table"] = flag.Bool("migrate", false, "create table")
 	flags["clean"] = flag.Bool("cleaning", false, "clean up data")
+	flags["detect"] = flag.Bool("detect", false, "detect switching point")
 	flag.Parse()
 
 	switch {
@@ -96,6 +97,9 @@ func main() {
 		os.Exit(0)
 	case *flags["clean"]:
 		cmd.CleanData()
+		os.Exit(0)
+	case *flags["detect"]:
+		cmd.DetectSwitchingPoint()
 		os.Exit(0)
 	}
 
