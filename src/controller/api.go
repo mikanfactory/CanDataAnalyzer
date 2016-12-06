@@ -92,16 +92,16 @@ func (m *API) GetNextPedalOnOff(c echo.Context) error {
 		pairs := model.TwoPairs(cs)
 
 		for _, p := range pairs {
-			if p[0].Accel == -1.0 {
+			if p[0].Accel == -1 {
 				status := ""
 				switch {
-				case p[1].Brake == 2.0 && model.CalcDiffSecond(p) < 2.0:
+				case p[1].Brake == 2 && model.CalcDiffSecond(p) < 2:
 					status = "BrakeOn"
-				case p[1].Brake == 2.0 && model.CalcDiffSecond(p) >= 2.0:
+				case p[1].Brake == 2 && model.CalcDiffSecond(p) >= 2:
 					status = "BrakeOff"
-				case p[1].Accel == 2.0 && model.CalcDiffSecond(p) < 5.0:
+				case p[1].Accel == 2 && model.CalcDiffSecond(p) < 5:
 					status = "AccelOn"
-				case p[1].Accel == 2.0 && model.CalcDiffSecond(p) >= 5.0:
+				case p[1].Accel == 2 && model.CalcDiffSecond(p) >= 5:
 					status = "AccelOff"
 				}
 

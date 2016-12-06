@@ -31,7 +31,7 @@ func (m *Can) ToMarker(cond Condition, setting Setting) Marker {
 }
 
 func GetSwitchPoint(db *sql.DB, target string) ([]Can, error) {
-	query := fmt.Sprintf("select * from cans where target = %s and (Brake == 2.0 or Brake == -1.0 or Accel == 2.0 or Accel == -1.0)", target)
+	query := fmt.Sprintf("select * from cans where target = '%s' and (Brake == 2 or Brake == -1 or Accel == 2 or Accel == -1)", target)
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err

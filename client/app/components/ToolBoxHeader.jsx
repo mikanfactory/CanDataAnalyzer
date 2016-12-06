@@ -4,8 +4,9 @@ import MarkerStore from '../stores/MarkerStore'
 import SettingStore from '../stores/SettingStore'
 import LayerActions from '../actions/LayerActions'
 import ModalActions from '../actions/ModalActions'
+import MarkerActions from '../actions/MarkerActions'
 import MessageActions from '../actions/MessageActions'
-import { sendHeatmapSetting, fetchTasks, fetchRisks } from '../utils/AppWebAPIUtils.jsx'
+import { sendHeatmapSetting, fetchTasks, fetchRisks, fetchSwitchPoint } from '../utils/AppWebAPIUtils.jsx'
 import { createGridSetting, createGridPoints } from '../utils/AppGoogleMapUtil'
 import { convertMarkersToHeatmapData } from '../utils/AppAlgorithmUtil'
 import { ToolBoxHeaderStyle as s } from './Styles'
@@ -128,6 +129,14 @@ export default class ToolBoxHeader extends React.Component {
     LayerActions.destroyClusters()
   }
 
+  handleSwitchPointDisplay() {
+    fetchSwitchPoint(markers => {
+      MarkerActions.createMarkers(markers)
+      MessageActions.createMessage("Finished!")
+    })
+  }
+
+
   handleOverlayToggle() {
     this.state.isOverlayVisible ?
     this.handleOverlayErase() :
@@ -139,6 +148,7 @@ export default class ToolBoxHeader extends React.Component {
   handleOverlayDisplay() {
     fetchRisks((grid, risks) => {
       LayerActions.createOverlayLayer(risks)
+
     })
   }
 
@@ -178,6 +188,10 @@ export default class ToolBoxHeader extends React.Component {
           <span className="glyphicon glyphicon-info-sign"
                 style={s.GlyphiconStyle}
                 onClick={this.handleOverlayToggle}>
+          </span>
+          <span className="glyphicon glyphicon-pushpin"
+                style={s.GlyphiconStyle}
+                onClick={this.handleSwitchPointDisplay}>
           </span>
         </div>
       </div>

@@ -85,25 +85,33 @@ func segmentizeData(q, fin chan string, target string, validColumns []Column) {
 
 	allRecords = allRecords[headerLines:]
 
-	for i := 0; i < len(allRecords)/segmentSize; i++ {
-		records := allRecords[i*segmentSize : (i+1)*segmentSize]
-		averages := summurizeColumns(validColumns, &records)
-		q <- createQueryStr(target, validColumns, averages)
+	// for i := 0; i < len(allRecords)/segmentSize; i++ {
+	// 	records := allRecords[i*segmentSize : (i+1)*segmentSize]
+	// 	averages := summarizeColumns(validColumns, &records)
+	// 	q <- createQueryStr(target, validColumns, averages)
+	// }
+	for _, record := range allRecords {
+		result := []float64{}
+		for _, column := range validColumns {
+			value, _ := strconv.ParseFloat(record[column.Index], 64)
+			result = append(result, value)
+		}
+		q <- createQueryStr(target, validColumns, result)
 	}
 
 	fin <- ""
 }
 
-func summurizeColumns(columns []Column, records *[][]string) []float64 {
+func summarizeColumns(columns []Column, records *[][]string) []float64 {
 	result := []float64{}
 	for _, column := range columns {
-		result = append(result, summurizeColumn(column, records))
+		result = append(result, summarizeColumn(column, records))
 	}
 
 	return result
 }
 
-func summurizeColumn(column Column, records *[][]string) float64 {
+func summarizeColumn(column Column, records *[][]string) float64 {
 	if column.Name == "BrakeOnOff" || column.Name == "AcceleratorOnOff" {
 		return calcMax(column, records)
 	}
@@ -154,7 +162,7 @@ func createQueryStr(target string, validColumns []Column, field []float64) strin
 }
 
 func isIndexColumn(column Column) bool {
-	return column.Name == "FrameIndex" || column.Name == "FrameImageIndex"
+	return column.Name == "Brake" || column.Name == "Accel"
 }
 
 func destroyAllData() {

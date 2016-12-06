@@ -7,8 +7,8 @@ type Can struct {
   Longitude float64
   Latitude float64
   Speed float64
-  Brake float64
-  Accel float64
+  Brake int64
+  Accel int64
   AheadDistance float64
   SteeringAngle float64
 }
