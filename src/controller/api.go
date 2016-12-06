@@ -2,6 +2,8 @@ package controller
 
 import (
 	"database/sql"
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -77,4 +79,39 @@ func (m *API) GetRisk(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, &cluster)
+}
+
+func (m *API) GetNextPedalOnOff(c echo.Context) error {
+	targets := &model.Targets{}
+	file, _ := ioutil.ReadFile("config/targets.json")
+	json.Unmarshal(file, targets)
+
+	markers := []model.Marker{}
+	for _, target := range targets.Names {
+		cs, _ := model.GetSwitchPoint(m.DB, target)
+		pairs := model.TwoPairs(cs)
+
+		for _, p := range pairs {
+			if p[0].Accel == -1.0 {
+				status := ""
+				switch {
+				case p[1].Brake == 2.0 && model.CalcDiffSecond(p) < 2.0:
+					status = "BrakeOn"
+				case p[1].Brake == 2.0 && model.CalcDiffSecond(p) >= 2.0:
+					status = "BrakeOff"
+				case p[1].Accel == 2.0 && model.CalcDiffSecond(p) < 5.0:
+					status = "AccelOn"
+				case p[1].Accel == 2.0 && model.CalcDiffSecond(p) >= 5.0:
+					status = "AccelOff"
+				}
+
+				setting := model.Setting{ID: 100}
+				cond := model.Condition{Status: status}
+				marker := p[0].ToMarker(cond, setting)
+				markers = append(markers, marker)
+			}
+		}
+	}
+
+	return c.JSON(http.StatusOK, &markers)
 }

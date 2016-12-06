@@ -5,6 +5,11 @@ type Cache struct {
 	Columns []string
 }
 
+// Targets contains the names of targets
+type Targets struct {
+	Names []string `json:"names"`
+}
+
 // Marker is used for GoogleMap Marker.
 type Marker struct {
 	ID          int64    `json:"id"`

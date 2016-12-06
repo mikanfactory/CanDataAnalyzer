@@ -15,3 +15,12 @@ func GetMarkersByCondition(db *sql.DB, cond Condition, setting Setting) ([]Marke
 
 	return markers, nil
 }
+
+func TwoPairs(cs []Can) [][]Can {
+	acc := [][]Can{}
+	for i := 0; i < len(cs)-1; i++ {
+		acc = append(acc, cs[i:i+2])
+	}
+
+	return acc
+}

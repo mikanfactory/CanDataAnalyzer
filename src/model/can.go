@@ -30,6 +30,15 @@ func (m *Can) ToMarker(cond Condition, setting Setting) Marker {
 	}
 }
 
+func GetSwitchPoint(db *sql.DB, target string) ([]Can, error) {
+	query := fmt.Sprintf("select * from cans where target = %s and (Brake == 2.0 or Brake == -1.0 or Accel == 2.0 or Accel == -1.0)", target)
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	return ScanCans(rows)
+}
+
 func getCans(db *sql.DB, cond Condition, setting Setting) ([]Can, error) {
 	switch {
 	case setting.Target == "All" && cond.Content == "default":
@@ -106,4 +115,8 @@ func (m *Can) getDescription() string {
 	}
 
 	return description
+}
+
+func CalcDiffSecond(pair []Can) float64 {
+	return float64(pair[1].Time-pair[0].Time) * 0.001
 }
