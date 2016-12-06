@@ -30,7 +30,7 @@ func ExtractSwitchingPoint() {
 
 	validColumns := getValidColumns(cacheInfo)
 	for _, target := range targets.Names {
-		writeSwitchingPointData(db, target, validColumns)
+		writeSwitchingPoint(db, target, validColumns)
 	}
 }
 

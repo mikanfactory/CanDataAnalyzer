@@ -85,10 +85,19 @@ func segmentizeData(q, fin chan string, target string, validColumns []Column) {
 
 	allRecords = allRecords[headerLines:]
 
-	for i := 0; i < len(allRecords)/segmentSize; i++ {
-		records := allRecords[i*segmentSize : (i+1)*segmentSize]
-		averages := summarizeColumns(validColumns, &records)
-		q <- createQueryStr(target, validColumns, averages)
+	// for i := 0; i < len(allRecords)/segmentSize; i++ {
+	// 	records := allRecords[i*segmentSize : (i+1)*segmentSize]
+	// 	averages := summarizeColumns(validColumns, &records)
+	// 	q <- createQueryStr(target, validColumns, averages)
+	// }
+
+	for _, record := range allRecords {
+		result := []float64{}
+		for _, column := range validColumns {
+			value, _ := strconv.ParseFloat(record[column.Index], 64)
+			result = append(result, value)
+		}
+		q <- createQueryStr(target, validColumns, result)
 	}
 
 	fin <- ""
