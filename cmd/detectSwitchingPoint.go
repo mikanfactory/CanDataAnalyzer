@@ -77,7 +77,6 @@ func shouldUpdateBrake(prev []string, next []string, ri int, ci int64) (bool, Sw
 }
 
 func shouldUpdateAccel(prev []string, next []string, ri int, ci int64) (bool, SwitchingPoint) {
-
 	switch {
 	case prev[ci] == next[ci]:
 		return false, SwitchingPoint{}
