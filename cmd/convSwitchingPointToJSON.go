@@ -50,10 +50,8 @@ func writeSwitchingPoint(db *sql.DB, target string, validColumns []Column) []mod
 			status := getStatus(prev, next)
 
 			setting := model.Setting{ID: 10000}
-			m1 := prev.ToMarker(model.Condition{Status: "caution"}, setting)
-			m2 := next.ToMarker(model.Condition{Status: status}, setting)
-			markers = append(markers, m1)
-			markers = append(markers, m2)
+			marker := prev.ToMarker(model.Condition{Status: status}, setting)
+			markers = append(markers, marker)
 		}
 	}
 
