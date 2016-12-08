@@ -184,12 +184,11 @@ export const ToolBoxHeaderStyle = {
     backgroundColor: "#00BCD4",
     fontWeight: "200",
     lineHeight: "64px",
-    paddingLeft: "20px",
-    paddingRight: "10px",
-    textAlign: "right"
+    paddingLeft: "20px"
   },
 
   StringStyle: {
+    textAlign: "left",
     float: "left",
     fontSize: "24px"
   },

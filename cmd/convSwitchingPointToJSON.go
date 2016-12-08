@@ -3,6 +3,7 @@ package cmd
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -28,12 +29,18 @@ func ConvSwitchingPointToJSON() {
 	}
 
 	validColumns := getValidColumns(cacheInfo)
+
+	markers := []model.Marker{}
 	for _, target := range targets.Names {
-		writeSwitchingPoint(db, target, validColumns)
+		ms := writeSwitchingPoint(db, target, validColumns)
+		markers = append(markers, ms...)
 	}
+
+	json, _ := json.Marshal(markers)
+	ioutil.WriteFile("data/middle/switch.json", json, 0744)
 }
 
-func writeSwitchingPoint(db *sql.DB, target string, validColumns []Column) {
+func writeSwitchingPoint(db *sql.DB, target string, validColumns []Column) []model.Marker {
 	cs, _ := getSwitchingPoint(db, target)
 
 	markers := []model.Marker{}
@@ -43,15 +50,12 @@ func writeSwitchingPoint(db *sql.DB, target string, validColumns []Column) {
 			status := getStatus(prev, next)
 
 			setting := model.Setting{ID: 10000}
-			m1 := prev.ToMarker(model.Condition{Status: "caution"}, setting)
-			m2 := next.ToMarker(model.Condition{Status: status}, setting)
-			markers = append(markers, m1)
-			markers = append(markers, m2)
+			marker := prev.ToMarker(model.Condition{Status: status}, setting)
+			markers = append(markers, marker)
 		}
 	}
 
-	json, _ := json.Marshal(markers)
-	ioutil.WriteFile("data/middle/switch.json", json, 0744)
+	return markers
 }
 
 func getStatus(prev, next model.Can) string {
@@ -70,7 +74,7 @@ func getStatus(prev, next model.Can) string {
 }
 
 func getSwitchingPoint(db *sql.DB, target string) ([]model.Can, error) {
-	query := "select * from cans"
+	query := fmt.Sprintf("select * from cans where target = '%s'", target)
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err

@@ -169,39 +169,21 @@ export default class ToolBoxHeader extends React.Component {
     return (
       <div>
         <div className="ToolBoxHeader" style={s.HeaderStyle}>
-          <span style={s.StringStyle}>CANDY</span>
-          <span className="glyphicon glyphicon-plus"
-                style={s.GlyphiconStyle}
-                onClick={this.handleModalOpen}>
-          </span>
-          <span className="glyphicon glyphicon-th"
-                style={s.GlyphiconStyle}
-                onClick={this.handleLayerToggle}>
-          </span>
-          <span className="glyphicon glyphicon-fire"
-                style={s.GlyphiconStyle}
-                onClick={this.handleHeatmapToggle}>
-          </span>
-          <span className="glyphicon glyphicon-download-alt"
-                style={s.GlyphiconStyle}
-                onClick={this.handleSaveHeatmapSetting}>
-          </span>
-          <span className="glyphicon glyphicon-dashboard"
-                style={s.GlyphiconStyle}
-                onClick={this.handleTaskToggle}>
-          </span>
-          <span className="glyphicon glyphicon-sort"
-                style={s.GlyphiconStyle}
-                onClick={this.handleRiskToggle}>
-          </span>
-          <span className="glyphicon glyphicon-info-sign"
-                style={s.GlyphiconStyle}
-                onClick={this.handleOverlayToggle}>
-          </span>
-          <span className="glyphicon glyphicon-pushpin"
-                style={s.GlyphiconStyle}
-                onClick={this.handleSwitchPointDisplay}>
-          </span>
+          <div style={s.StringStyle}>CANDY</div>
+          <div className="dropmenu">
+            <div className="actions">
+              <a href="#">Actions ▼</a>
+              <ul>
+                <li onClick={this.handleModalOpen}><a href="#">新しいマーカーの作成</a></li>
+                <li onClick={this.handleLayerToggle}><a href="#">グリッドを表示/非表示</a></li>
+                <li onClick={this.handleHeatmapToggle}><a href="#">ヒートマップの表示/非表示</a></li>
+                <li onClick={this.handleSaveHeatmapSetting}><a href="#">グリッドの結果を保存</a></li>
+                <li onClick={this.handleTaskToggle}><a href="#">タスククラスタリングの結果を表示/非表示</a></li>
+                <li onClick={this.handleRiskToggle}><a href="#">危険度の結果を表示/非表示</a></li>
+                <li onClick={this.handleSwitchPointDisplay}><a href="#">動作の切り替わり点を表示</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     )

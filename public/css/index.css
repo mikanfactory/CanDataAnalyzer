@@ -6,10 +6,93 @@ html, body {
 }
 .overlay {
     position: absolute;
-    /* background: yellow; */
     text-align: center;
     border-radius: 50%;
     width: 30px;
     height: 30px;
     line-height: 30px;
+}
+.dropmenu {
+  *zoom: 1;
+  text-align: right;
+  list-style-type: none;
+}
+.dropmenu:before, .dropmenu:after {
+  content: "";
+  display: table;
+}
+.dropmenu:after{
+  clear: both;
+}
+.actions {
+  position: relative;
+  width: 190px;
+  height: 64px;
+  float: right;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  list-style-type: none;
+}
+.actions a{
+  display: block;
+  margin: 0;
+  height: 64px;
+  padding: 24px 0 15px;
+  background: #00BCD4;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  text-decoration: none;
+}
+.actions ul{
+  list-style: none;
+  position: absolute;
+  z-index: 9999;
+  top: 100%;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  width: 200px;
+}
+.actions ul li{
+  width: 100%;
+}
+.actions ul li a{
+  padding: 0 18px;
+  width: 200px;
+  display: table-cell;
+  vertical-align: middle;
+  background: #00BCD4;
+  font-size: 12px;
+  text-align: left;
+}
+.actions:hover > a {
+  background: #00a6a0;
+  color: #FFF;
+  text-decoration: none;
+}
+.actions > a:hover {
+  background: #058998;
+  color: #FFF;
+  text-decoration: none;
+}
+.actions li:hover > a{
+  background: #058998;
+  color: #FFF;
+  text-decoration: none;
+}
+.actions li a:hover {
+  background: #058998;
+  color: #Fff;
+  text-decoration: none;
+}
+.actions ul li{
+  overflow: hidden;
+  height: 0;
+  transition: .2s;
+}
+.actions:hover ul li{
+  overflow: visible;
+  height: 64px;
 }
