@@ -7,6 +7,7 @@ import { ToolBoxStyle as s } from './Styles'
 function getStateFromStores() {
   return {
     settings: SettingStore.getAllSettings(),
+    settingLatestID: SettingStore.getLatestID()
   }
 }
 
@@ -38,7 +39,7 @@ export default class AnalysisToolBox extends React.Component {
 
     return (
       <div className="AnalysisToolBox" style={s.ToolBoxStyle}>
-        <ToolBoxHeader gMap={this.props.gMap} />
+        <ToolBoxHeader gMap={this.props.gMap} latestID={this.state.settingLatestID}/>
         {markerListNodes}
       </div>
     )

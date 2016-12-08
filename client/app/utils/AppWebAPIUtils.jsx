@@ -80,8 +80,8 @@ export function fetchRisks(callback) {
     .catch(err => MessageActions.createMessage({ text: err }))
 }
 
-export function fetchSwitchPoint(callback) {
-  fetch("/api/v1/pedal", {
+export function fetchSwitchPoint(settingID, callback) {
+  fetch("/api/v1/pedal/" + settingID, {
     credentials: "same-origin",
     method: "GET",
     headers: {
