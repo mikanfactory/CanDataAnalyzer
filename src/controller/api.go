@@ -2,6 +2,8 @@ package controller
 
 import (
 	"database/sql"
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -80,7 +82,18 @@ func (m *API) GetRisk(c echo.Context) error {
 }
 
 func (m *API) GetSwitchingPoint(c echo.Context) error {
-	// TODO:
 	markers := []model.Marker{}
+	file, err := ioutil.ReadFile("data/middle/switch.json")
+	if err != nil {
+		errorMessage := createErrorMessage(err)
+		return c.JSON(http.StatusInternalServerError, errorMessage)
+	}
+
+	err = json.Unmarshal(file, markers)
+	if err != nil {
+		errorMessage := createErrorMessage(err)
+		return c.JSON(http.StatusInternalServerError, errorMessage)
+	}
+
 	return c.JSON(http.StatusOK, &markers)
 }

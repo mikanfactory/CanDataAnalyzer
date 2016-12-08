@@ -34,11 +34,11 @@ func InsertData() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	if _, err := os.Stat(dbConfig); os.IsExist(err) {
+	if _, err := os.Stat(DBConfig); os.IsExist(err) {
 		destroyAllData()
 	}
 
-	db, err := sql.Open("sqlite3", dbConfig)
+	db, err := sql.Open("sqlite3", DBConfig)
 	checkErr(err)
 
 	size := len(targets.Names)
@@ -158,7 +158,7 @@ func isIntegerColumn(column Column) bool {
 }
 
 func destroyAllData() {
-	db, err := sql.Open("sqlite3", dbConfig)
+	db, err := sql.Open("sqlite3", DBConfig)
 	checkErr(err)
 
 	_, err = db.Exec("DELETE FROM cans")

@@ -9,7 +9,7 @@ import (
 	"github.com/mikanfactory/CanDataAnalyzer/src/model"
 )
 
-func ExtractSwitchingPoint() {
+func ConvSwitchingPointToJSON() {
 	file, err := ioutil.ReadFile("config/targets.json")
 	checkErr(err)
 
@@ -23,7 +23,7 @@ func ExtractSwitchingPoint() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	if _, err := os.Stat(dbConfig); os.IsExist(err) {
+	if _, err := os.Stat(DBConfig); os.IsExist(err) {
 		destroyAllData()
 	}
 
@@ -40,17 +40,7 @@ func writeSwitchingPoint(db *sql.DB, target string, validColumns []Column) {
 	for i := 0; i < len(cs)-1; i++ {
 		prev, next := cs[i], cs[i+1]
 		if prev.Accel == -1 {
-			status := ""
-			switch {
-			case next.Brake == 2 && calcDiffSecond(prev, next) < 2:
-				status = "RedB"
-			case next.Brake == 2 && calcDiffSecond(prev, next) >= 2:
-				status = "BlueB"
-			case next.Accel == 2 && calcDiffSecond(prev, next) < 5:
-				status = "RedA"
-			case next.Accel == 2 && calcDiffSecond(prev, next) >= 5:
-				status = "BlueB"
-			}
+			status := getStatus(prev, next)
 
 			setting := model.Setting{ID: 10000}
 			m1 := prev.ToMarker(model.Condition{Status: "caution"}, setting)
@@ -61,7 +51,22 @@ func writeSwitchingPoint(db *sql.DB, target string, validColumns []Column) {
 	}
 
 	json, _ := json.Marshal(markers)
-	ioutil.WriteFile("data/switch.json", json, 0744)
+	ioutil.WriteFile("data/middle/switch.json", json, 0744)
+}
+
+func getStatus(prev, next model.Can) string {
+	switch {
+	case next.Brake == 2 && calcDiffSecond(prev, next) < 2:
+		return "RedB"
+	case next.Brake == 2 && calcDiffSecond(prev, next) >= 2:
+		return "BlueB"
+	case next.Accel == 2 && calcDiffSecond(prev, next) < 5:
+		return "RedA"
+	case next.Accel == 2 && calcDiffSecond(prev, next) >= 5:
+		return "BlueB"
+	default:
+		return "none"
+	}
 }
 
 func getSwitchingPoint(db *sql.DB, target string) ([]model.Can, error) {
