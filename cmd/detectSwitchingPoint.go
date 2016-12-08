@@ -68,9 +68,9 @@ func shouldUpdateBrake(prev []string, next []string, ri int, ci int64) (bool, Sw
 	case prev[ci] == next[ci]:
 		return false, SwitchingPoint{}
 	case prev[ci] == "0":
-		return true, SwitchingPoint{ri + 1, "Brake", ci, "2"}
+		return true, SwitchingPoint{ri, "Brake", ci, "2"}
 	case next[ci] == "0":
-		return true, SwitchingPoint{ri + 1, "Brake", ci, "-1"}
+		return true, SwitchingPoint{ri, "Brake", ci, "-1"}
 	default:
 		return false, SwitchingPoint{}
 	}
@@ -81,9 +81,9 @@ func shouldUpdateAccel(prev []string, next []string, ri int, ci int64) (bool, Sw
 	case prev[ci] == next[ci]:
 		return false, SwitchingPoint{}
 	case prev[ci] == "0":
-		return true, SwitchingPoint{ri + 1, "Brake", ci, "2"}
+		return true, SwitchingPoint{ri, "Brake", ci, "2"}
 	case next[ci] == "0":
-		return true, SwitchingPoint{ri + 1, "Brake", ci, "-1"}
+		return true, SwitchingPoint{ri, "Brake", ci, "-1"}
 	default: // Both prev and next are over 0 but not equal
 		return false, SwitchingPoint{}
 	}
@@ -92,7 +92,7 @@ func shouldUpdateAccel(prev []string, next []string, ri int, ci int64) (bool, Sw
 func getColumnIndexByName(columns []Column, name string) int64 {
 	for _, column := range columns {
 		if column.Name == name {
-			return column.Index - 1
+			return column.Index
 		}
 	}
 

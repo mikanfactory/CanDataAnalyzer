@@ -82,6 +82,7 @@ func main() {
 	flags["clean"] = flag.Bool("cleaning", false, "clean up data")
 	flags["detect"] = flag.Bool("detect", false, "detect switching point")
 	flags["extract"] = flag.Bool("extract", false, "extract switching point")
+	flags["insertSP"] = flag.Bool("insertSP", false, "insert raw data into DB")
 	flag.Parse()
 
 	switch {
@@ -105,6 +106,9 @@ func main() {
 		os.Exit(0)
 	case *flags["extract"]:
 		cmd.ExtractSwitchingPoint()
+		os.Exit(0)
+	case *flags["insertSP"]:
+		cmd.InsertSwitchingPoint()
 		os.Exit(0)
 	}
 

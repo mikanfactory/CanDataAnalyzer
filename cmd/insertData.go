@@ -85,19 +85,10 @@ func segmentizeData(q, fin chan string, target string, validColumns []Column) {
 
 	allRecords = allRecords[headerLines:]
 
-	// for i := 0; i < len(allRecords)/segmentSize; i++ {
-	// 	records := allRecords[i*segmentSize : (i+1)*segmentSize]
-	// 	averages := summarizeColumns(validColumns, &records)
-	// 	q <- createQueryStr(target, validColumns, averages)
-	// }
-
-	for _, record := range allRecords {
-		result := []float64{}
-		for _, column := range validColumns {
-			value, _ := strconv.ParseFloat(record[column.Index], 64)
-			result = append(result, value)
-		}
-		q <- createQueryStr(target, validColumns, result)
+	for i := 0; i < len(allRecords)/segmentSize; i++ {
+		records := allRecords[i*segmentSize : (i+1)*segmentSize]
+		averages := summarizeColumns(validColumns, &records)
+		q <- createQueryString(target, validColumns, averages)
 	}
 
 	fin <- ""
@@ -144,13 +135,13 @@ func calcAverage(column Column, records *[][]string) float64 {
 	return average / float64(len(*records))
 }
 
-func createQueryStr(target string, validColumns []Column, field []float64) string {
+func createQueryString(target string, validColumns []Column, field []float64) string {
 	names := "target,"
 	values := fmt.Sprintf(`"%s",`, target)
 	for i, column := range validColumns {
 		names += column.Name + ","
 
-		if isIndexColumn(column) {
+		if isIntegerColumn(column) {
 			values += strconv.FormatInt(int64(field[i]), 10) + ","
 		} else {
 			values += strconv.FormatFloat(field[i], 'G', -1, 64) + ","
@@ -162,7 +153,7 @@ func createQueryStr(target string, validColumns []Column, field []float64) strin
 	return fmt.Sprintf("INSERT INTO cans (%s) VALUES (%s);", names, values)
 }
 
-func isIndexColumn(column Column) bool {
+func isIntegerColumn(column Column) bool {
 	return column.Name == "Brake" || column.Name == "Accel"
 }
 
