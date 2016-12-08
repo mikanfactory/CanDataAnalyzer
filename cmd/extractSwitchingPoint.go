@@ -3,7 +3,6 @@ package cmd
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -44,19 +43,20 @@ func writeSwitchingPoint(db *sql.DB, target string, validColumns []Column) {
 			status := ""
 			switch {
 			case next.Brake == 2 && calcDiffSecond(prev, next) < 2:
-				status = "BrakeOn"
+				status = "RedB"
 			case next.Brake == 2 && calcDiffSecond(prev, next) >= 2:
-				status = "BrakeOff"
+				status = "BlueB"
 			case next.Accel == 2 && calcDiffSecond(prev, next) < 5:
-				status = "AccelOn"
+				status = "RedA"
 			case next.Accel == 2 && calcDiffSecond(prev, next) >= 5:
-				status = "AccelOff"
+				status = "BlueB"
 			}
 
 			setting := model.Setting{ID: 10000}
-			cond := model.Condition{Status: status}
-			marker := prev.ToMarker(cond, setting)
-			markers = append(markers, marker)
+			m1 := prev.ToMarker(model.Condition{Status: "caution"}, setting)
+			m2 := next.ToMarker(model.Condition{Status: status}, setting)
+			markers = append(markers, m1)
+			markers = append(markers, m2)
 		}
 	}
 
@@ -65,7 +65,7 @@ func writeSwitchingPoint(db *sql.DB, target string, validColumns []Column) {
 }
 
 func getSwitchingPoint(db *sql.DB, target string) ([]model.Can, error) {
-	query := fmt.Sprintf("select * from cans where target = '%s' and (Brake == 2 or Brake == -1 or Accel == 2 or Accel == -1)", target)
+	query := "select * from cans"
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err

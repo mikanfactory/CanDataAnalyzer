@@ -73,6 +73,9 @@ func createSPQueryString(q, fin chan string, target string, validColumns []Colum
 	file, err := os.Open("data/input/" + target + ".csv")
 	checkErr(err)
 
+	brakeIndex := getColumnIndexByName(validColumns, "Brake")
+	accelIndex := getColumnIndexByName(validColumns, "Accel")
+
 	r := csv.NewReader(bufio.NewReader(file))
 	r.Read() // remove header
 	for {
@@ -85,8 +88,6 @@ func createSPQueryString(q, fin chan string, target string, validColumns []Colum
 		}
 
 		// create query if row is switching point
-		brakeIndex := getColumnIndexByName(validColumns, "Brake")
-		accelIndex := getColumnIndexByName(validColumns, "Accel")
 		if isSwitchingPoint(record[brakeIndex]) || isSwitchingPoint(record[accelIndex]) {
 			result := []float64{}
 			for _, column := range validColumns {

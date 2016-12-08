@@ -17,6 +17,11 @@ var statusToFilename = map[string]string{
 	"straight": "./static/icon/straight.png",
 	"stop":     "./static/icon/stop.png",
 	"empty":    "./static/icon/empty.png",
+	"caution":  "./static/icon/caution.png",
+	"RedA":     "./static/icon/RedA.png",
+	"RedB":     "./static/icon/RedB.png",
+	"BlueA":    "./static/icon/BlueA.png",
+	"BlueB":    "./static/icon/BlueB.png",
 	"none":     "none",
 }
 
