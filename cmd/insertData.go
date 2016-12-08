@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	headerLines = 2
+	headerLines = 1
 	segmentSize = 30
 )
 
@@ -34,11 +34,11 @@ func InsertData() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	if _, err := os.Stat(dbConfig); os.IsExist(err) {
+	if _, err := os.Stat(DBConfig); os.IsExist(err) {
 		destroyAllData()
 	}
 
-	db, err := sql.Open("sqlite3", dbConfig)
+	db, err := sql.Open("sqlite3", DBConfig)
 	checkErr(err)
 
 	size := len(targets.Names)
@@ -57,7 +57,7 @@ func InsertData() {
 			insert(db, query)
 
 		case <-fin:
-			if finished < size-1 {
+			if finished < size {
 				finished++
 				continue
 			}
@@ -87,23 +87,23 @@ func segmentizeData(q, fin chan string, target string, validColumns []Column) {
 
 	for i := 0; i < len(allRecords)/segmentSize; i++ {
 		records := allRecords[i*segmentSize : (i+1)*segmentSize]
-		averages := summurizeColumns(validColumns, &records)
-		q <- createQueryStr(target, validColumns, averages)
+		averages := summarizeColumns(validColumns, &records)
+		q <- createQueryString(target, validColumns, averages)
 	}
 
 	fin <- ""
 }
 
-func summurizeColumns(columns []Column, records *[][]string) []float64 {
+func summarizeColumns(columns []Column, records *[][]string) []float64 {
 	result := []float64{}
 	for _, column := range columns {
-		result = append(result, summurizeColumn(column, records))
+		result = append(result, summarizeColumn(column, records))
 	}
 
 	return result
 }
 
-func summurizeColumn(column Column, records *[][]string) float64 {
+func summarizeColumn(column Column, records *[][]string) float64 {
 	if column.Name == "BrakeOnOff" || column.Name == "AcceleratorOnOff" {
 		return calcMax(column, records)
 	}
@@ -127,7 +127,7 @@ func calcAverage(column Column, records *[][]string) float64 {
 	var average float64
 	values := []float64{}
 	for _, record := range *records {
-		value, _ := strconv.ParseFloat(record[column.Index], 64)
+		value, _ := strconv.ParseFloat(record[column.Index-1], 64)
 		values = append(values, value)
 		average += value
 	}
@@ -135,13 +135,13 @@ func calcAverage(column Column, records *[][]string) float64 {
 	return average / float64(len(*records))
 }
 
-func createQueryStr(target string, validColumns []Column, field []float64) string {
+func createQueryString(target string, validColumns []Column, field []float64) string {
 	names := "target,"
 	values := fmt.Sprintf(`"%s",`, target)
 	for i, column := range validColumns {
 		names += column.Name + ","
 
-		if isIndexColumn(column) {
+		if isIntegerColumn(column) {
 			values += strconv.FormatInt(int64(field[i]), 10) + ","
 		} else {
 			values += strconv.FormatFloat(field[i], 'G', -1, 64) + ","
@@ -153,12 +153,12 @@ func createQueryStr(target string, validColumns []Column, field []float64) strin
 	return fmt.Sprintf("INSERT INTO cans (%s) VALUES (%s);", names, values)
 }
 
-func isIndexColumn(column Column) bool {
-	return column.Name == "FrameIndex" || column.Name == "FrameImageIndex"
+func isIntegerColumn(column Column) bool {
+	return column.Name == "Brake" || column.Name == "Accel"
 }
 
 func destroyAllData() {
-	db, err := sql.Open("sqlite3", dbConfig)
+	db, err := sql.Open("sqlite3", DBConfig)
 	checkErr(err)
 
 	_, err = db.Exec("DELETE FROM cans")

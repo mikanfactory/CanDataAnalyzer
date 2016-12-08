@@ -4,8 +4,10 @@ import MarkerStore from '../stores/MarkerStore'
 import SettingStore from '../stores/SettingStore'
 import LayerActions from '../actions/LayerActions'
 import ModalActions from '../actions/ModalActions'
+import SettingActions from '../actions/SettingActions'
+import MarkerActions from '../actions/MarkerActions'
 import MessageActions from '../actions/MessageActions'
-import { sendHeatmapSetting, fetchTasks, fetchRisks } from '../utils/AppWebAPIUtils.jsx'
+import { sendHeatmapSetting, fetchTasks, fetchRisks, fetchSwitchPoint } from '../utils/AppWebAPIUtils.jsx'
 import { createGridSetting, createGridPoints } from '../utils/AppGoogleMapUtil'
 import { convertMarkersToHeatmapData } from '../utils/AppAlgorithmUtil'
 import { ToolBoxHeaderStyle as s } from './Styles'
@@ -30,6 +32,7 @@ export default class ToolBoxHeader extends React.Component {
     this.handleTaskToggle = this.handleTaskToggle.bind(this)
     this.handleRiskToggle = this.handleRiskToggle.bind(this)
     this.handleOverlayToggle = this.handleOverlayToggle.bind(this)
+    this.handleSwitchPointDisplay = this.handleSwitchPointDisplay.bind(this)
   }
 
   handleModalOpen() {
@@ -128,6 +131,21 @@ export default class ToolBoxHeader extends React.Component {
     LayerActions.destroyClusters()
   }
 
+  handleSwitchPointDisplay() {
+    const settingID = this.props.latestID + 1
+    SettingActions.createSetting({
+      id: settingID,
+      target: "All",
+      title: "Switching Points",
+      text: "// DO NOT EDIT. \n// THIS MARKERS FETCHED BY META DB. \n// DO NOT EDIT. \n"
+    })
+    fetchSwitchPoint(settingID, markers => {
+      MarkerActions.createMarkers(markers)
+      console.log(markers)
+    })
+  }
+
+
   handleOverlayToggle() {
     this.state.isOverlayVisible ?
     this.handleOverlayErase() :
@@ -139,6 +157,7 @@ export default class ToolBoxHeader extends React.Component {
   handleOverlayDisplay() {
     fetchRisks((grid, risks) => {
       LayerActions.createOverlayLayer(risks)
+
     })
   }
 
@@ -179,6 +198,10 @@ export default class ToolBoxHeader extends React.Component {
                 style={s.GlyphiconStyle}
                 onClick={this.handleOverlayToggle}>
           </span>
+          <span className="glyphicon glyphicon-pushpin"
+                style={s.GlyphiconStyle}
+                onClick={this.handleSwitchPointDisplay}>
+          </span>
         </div>
       </div>
     )
@@ -186,5 +209,6 @@ export default class ToolBoxHeader extends React.Component {
 }
 
 ToolBoxHeader.propTypes = {
-  gMap: React.PropTypes.object
+  gMap: React.PropTypes.object,
+  latestID: React.PropTypes.number
 }

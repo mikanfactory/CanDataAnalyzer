@@ -10,16 +10,16 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-const dbConfig = "db/sqlite3.db"
+const DBConfig = "db/sqlite3.db"
 
 func CreateTable() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	err := os.Remove(dbConfig)
+	err := os.Remove(DBConfig)
 	checkErr(err)
 
-	db, err := sql.Open("sqlite3", dbConfig)
+	db, err := sql.Open("sqlite3", DBConfig)
 	checkErr(err)
 
 	q1 := createTableStr(cacheInfo)

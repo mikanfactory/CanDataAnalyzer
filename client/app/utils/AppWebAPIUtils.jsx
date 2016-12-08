@@ -62,7 +62,7 @@ export function fetchTasks(callback) {
     .then(resp => resp.json())
     .then(json => checkStatus1(json))
     .then(data => callback(data.grid, data.content))
-    .catch(err => MessageActions.createMessage( { text: err }))
+    .catch(err => MessageActions.createMessage({ text: err }))
 }
 
 export function fetchRisks(callback) {
@@ -77,5 +77,20 @@ export function fetchRisks(callback) {
     .then(resp => resp.json())
     .then(json => checkStatus1(json))
     .then(data => callback(data.grid, data.content))
-    .catch(err => MessageActions.createMessage( { text: err }))
+    .catch(err => MessageActions.createMessage({ text: err }))
+}
+
+export function fetchSwitchPoint(settingID, callback) {
+  fetch("/api/v1/pedal/" + settingID, {
+    credentials: "same-origin",
+    method: "GET",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+  .then(resp => resp.json())
+  .then(json => checkStatus1(json))
+  .then(markers => callback(markers))
+  .catch(err => MessageActions.createMessage({ text: err }))
 }

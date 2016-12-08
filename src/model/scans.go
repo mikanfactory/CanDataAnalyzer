@@ -9,19 +9,14 @@ func ScanCan(r *sql.Row) (Can, error) {
 	if err := r.Scan(
 		&s.ID,
 		&s.Target,
-		&s.FrameIndex,
-		&s.FrameImageIndex,
-		&s.GPSLatitude,
-		&s.GPSLongtitude,
-		&s.SpeedPerHourLowpass,
-		&s.BrakeOnOff,
-		&s.AcceleratorOnOff,
-		&s.WinkerRight,
-		&s.WinkerLeft,
-		&s.HazardOnOff,
-		&s.SteeringAngle,
+		&s.Time,
+		&s.Longitude,
+		&s.Latitude,
+		&s.Speed,
+		&s.Brake,
+		&s.Accel,
 		&s.AheadDistance,
-		&s.AheadRelativitySpeed,
+		&s.SteeringAngle,
 	); err != nil {
 		return Can{}, err
 	}
@@ -36,19 +31,14 @@ func ScanCans(rs *sql.Rows) ([]Can, error) {
 		if err = rs.Scan(
 			&s.ID,
 			&s.Target,
-			&s.FrameIndex,
-			&s.FrameImageIndex,
-			&s.GPSLatitude,
-			&s.GPSLongtitude,
-			&s.SpeedPerHourLowpass,
-			&s.BrakeOnOff,
-			&s.AcceleratorOnOff,
-			&s.WinkerRight,
-			&s.WinkerLeft,
-			&s.HazardOnOff,
-			&s.SteeringAngle,
+			&s.Time,
+			&s.Longitude,
+			&s.Latitude,
+			&s.Speed,
+			&s.Brake,
+			&s.Accel,
 			&s.AheadDistance,
-			&s.AheadRelativitySpeed,
+			&s.SteeringAngle,
 		); err != nil {
 			return nil, err
 		}

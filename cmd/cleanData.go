@@ -7,7 +7,7 @@ import (
 )
 
 func CleanData() {
-	db, err := sql.Open("sqlite3", dbConfig)
+	db, err := sql.Open("sqlite3", DBConfig)
 	checkErr(err)
 
 	update1(db)

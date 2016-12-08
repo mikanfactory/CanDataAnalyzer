@@ -11,6 +11,13 @@ const SettingActions = {
     })
   },
 
+  createSetting: setting => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CREATE_SETTING,
+      setting: setting
+    })
+  },
+
   updateSetting: setting => {
     AppDispatcher.dispatch({
       actionType: ActionTypes.UPDATE_SETTING,

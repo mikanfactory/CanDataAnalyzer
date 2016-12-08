@@ -29,9 +29,13 @@ function _createSettings(settings) {
   _store.currentID = lastSetting.id + 1
 }
 
-function _createSetting() {
+function _createDefaultSetting() {
   const sid = _getAndCountUpId()
   const setting = assign({}, defaultSetting, { id: sid })
+  _store.settings = [..._store.settings, setting]
+}
+
+function _createCustomSetting(setting) {
   _store.settings = [..._store.settings, setting]
 }
 
@@ -85,7 +89,7 @@ class SettingStoreClass extends EventEmitter {
 
   getLatestID() {
     const s = last(_store.settings)
-    return s.id
+    return s ? s.id : 0
   }
 }
 
@@ -100,6 +104,11 @@ SettingStore.dispatchToken = AppDispatcher.register((action) => {
       SettingStore.emitChange()
       break
 
+    case ActionTypes.CREATE_SETTING:
+      _createCustomSetting(action.setting)
+      SettingStore.emitChange()
+      break
+
     case ActionTypes.UPDATE_SETTING:
       _updateSetting(action.setting)
       SettingStore.emitChange()
@@ -111,7 +120,7 @@ SettingStore.dispatchToken = AppDispatcher.register((action) => {
       break
 
     case ActionTypes.CREATE_MODAL:
-      _createSetting()
+      _createDefaultSetting()
       SettingStore.emitChange()
       break
 

@@ -2,7 +2,10 @@ package controller
 
 import (
 	"database/sql"
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo"
 	"github.com/mikanfactory/CanDataAnalyzer/src/model"
@@ -77,4 +80,27 @@ func (m *API) GetRisk(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, &cluster)
+}
+
+func (m *API) GetSwitchingPoint(c echo.Context) error {
+	settingID, _ := strconv.ParseInt(c.Param("settingID"), 10, 0)
+
+	markers := []model.Marker{}
+	file, err := ioutil.ReadFile("data/middle/switch.json")
+	if err != nil {
+		errorMessage := createErrorMessage(err)
+		return c.JSON(http.StatusInternalServerError, errorMessage)
+	}
+
+	err = json.Unmarshal(file, &markers)
+	if err != nil {
+		errorMessage := createErrorMessage(err)
+		return c.JSON(http.StatusInternalServerError, errorMessage)
+	}
+
+	for i := range markers {
+		markers[i].SettingID = int64(settingID)
+	}
+
+	return c.JSON(http.StatusOK, &markers)
 }

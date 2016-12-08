@@ -67,6 +67,7 @@ func (s *Server) Route() {
 	s.Engine.GET("/", root.Get)
 	s.Engine.POST("/api/v1/marker", api.GetMarkersBySetting)
 	s.Engine.POST("/api/v1/heatmap", api.SaveHeatmapSetting)
+	s.Engine.GET("/api/v1/pedal/:settingID", api.GetSwitchingPoint)
 	s.Engine.GET("/api/v1/task", api.GetTask)
 	s.Engine.GET("/api/v1/risk", api.GetRisk)
 }
@@ -79,6 +80,9 @@ func main() {
 	flags["schema"] = flag.Bool("schema", false, "write a DB schema to table.go")
 	flags["table"] = flag.Bool("migrate", false, "create table")
 	flags["clean"] = flag.Bool("cleaning", false, "clean up data")
+	flags["detect"] = flag.Bool("detect", false, "detect switching point")
+	flags["insertSP"] = flag.Bool("insertSP", false, "insert raw data into DB")
+	flags["convert"] = flag.Bool("convert", false, "convert switching point to json")
 	flag.Parse()
 
 	switch {
@@ -96,6 +100,15 @@ func main() {
 		os.Exit(0)
 	case *flags["clean"]:
 		cmd.CleanData()
+		os.Exit(0)
+	case *flags["detect"]:
+		cmd.DetectSwitchingPoint()
+		os.Exit(0)
+	case *flags["insertSP"]:
+		cmd.InsertSwitchingPoint()
+		os.Exit(0)
+	case *flags["convert"]:
+		cmd.ConvSwitchingPointToJSON()
 		os.Exit(0)
 	}
 
