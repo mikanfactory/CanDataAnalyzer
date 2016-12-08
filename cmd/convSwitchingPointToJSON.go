@@ -79,5 +79,5 @@ func getSwitchingPoint(db *sql.DB, target string) ([]model.Can, error) {
 }
 
 func calcDiffSecond(prev, next model.Can) float64 {
-	return float64(prev.Time-next.Time) * 0.001
+	return float64(next.Time-prev.Time) * 0.001
 }

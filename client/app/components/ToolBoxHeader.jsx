@@ -137,7 +137,7 @@ export default class ToolBoxHeader extends React.Component {
       id: settingID,
       target: "All",
       title: "Switching Points",
-      text: "\\ DO NOT EDIT. \n \\ THIS MARKERS FETCHED BY META DB. \n \\ DO NOT EDIT. \n"
+      text: "// DO NOT EDIT. \n// THIS MARKERS FETCHED BY META DB. \n// DO NOT EDIT. \n"
     })
     fetchSwitchPoint(settingID, markers => {
       MarkerActions.createMarkers(markers)
