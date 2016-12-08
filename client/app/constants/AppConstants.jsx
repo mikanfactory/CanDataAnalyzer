@@ -81,6 +81,7 @@ const AppConstants = {
 
     // Setting
     CREATE_SETTINGS: null,
+    CREATE_SETTING: null,
     UPDATE_SETTING: null,
     DESTROY_SETTING: null,
 
