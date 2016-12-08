@@ -26,7 +26,7 @@ html, body {
 }
 .actions {
   position: relative;
-  width: 180px;
+  width: 190px;
   height: 64px;
   float: right;
   margin: 0;
@@ -53,18 +53,18 @@ html, body {
   left: 0;
   margin: 0;
   padding: 0;
-  width: 180px;
+  width: 200px;
 }
 .actions ul li{
   width: 100%;
 }
 .actions ul li a{
-  width: 180px;
   padding: 0 18px;
+  width: 200px;
   display: table-cell;
   vertical-align: middle;
   background: #00BCD4;
-  font-size: 14px;
+  font-size: 12px;
   text-align: left;
 }
 .actions:hover > a {
