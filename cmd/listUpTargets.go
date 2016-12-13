@@ -13,7 +13,7 @@ func ListUpTargets() {
 	d := regexp.MustCompile(`\.DS_Store`)
 	c := regexp.MustCompile(`.*cache.*`)
 
-	files, _ := ioutil.ReadDir("data/input")
+	files, _ := ioutil.ReadDir("data/original")
 	targets := []string{}
 	for _, file := range files {
 		name := file.Name()
