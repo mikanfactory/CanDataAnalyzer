@@ -83,6 +83,9 @@ func main() {
 	flags["detect"] = flag.Bool("detect", false, "detect switching point")
 	flags["insertSP"] = flag.Bool("insertSP", false, "insert raw data into DB")
 	flags["convert"] = flag.Bool("convert", false, "convert switching point to json")
+	flags["extractHeader"] = flag.Bool("extractHeader", false, "extract header and make cache config")
+	flags["listUpInvalids"] = flag.Bool("listUpInvalids", false, "list up invalid targets and write it")
+	flags["common"] = flag.Bool("common", false, "convert invalids to common fields")
 	flag.Parse()
 
 	switch {
@@ -109,6 +112,15 @@ func main() {
 		os.Exit(0)
 	case *flags["convert"]:
 		cmd.ConvSwitchingPointToJSON()
+		os.Exit(0)
+	case *flags["extractHeader"]:
+		cmd.ExtractHeader()
+		os.Exit(0)
+	case *flags["listUpInvalids"]:
+		cmd.ListUpInvalidTargets()
+		os.Exit(0)
+	case *flags["common"]:
+		cmd.ConvertToCommonFields()
 		os.Exit(0)
 	}
 
