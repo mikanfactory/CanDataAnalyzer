@@ -9,12 +9,16 @@ import (
 )
 
 func ExtractHeader() {
-	// t1 := "Data01_2119_20161007142516.csv"
+	t1 := "Data01_2119_20161007142516.csv"
 	t2 := "L53E-DM05_2119_20161102142424.csv"
 
-	cacheInfo := extractHeader(t2)
-	json, _ := json.Marshal(cacheInfo)
-	ioutil.WriteFile("config/cacheConfigX.json", json, 0744)
+	c1 := extractHeader(t1)
+	j1, _ := json.Marshal(c1)
+	ioutil.WriteFile("config/cacheConfigT.json", j1, 0744)
+
+	c2 := extractHeader(t2)
+	j2, _ := json.Marshal(c2)
+	ioutil.WriteFile("config/cacheConfigF.json", j2, 0744)
 }
 
 func extractHeader(target string) CacheInfo {
