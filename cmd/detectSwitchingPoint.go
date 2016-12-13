@@ -26,14 +26,15 @@ func DetectSwitchingPoint() {
 }
 
 func detectSwitchingPoint(target string, columns []Column) {
-	file, err := os.Open("data/input/" + target + ".csv")
+	file, err := os.Open("data/original/" + target + ".csv")
+	defer file.Close()
 	checkErr(err)
 
 	r := csv.NewReader(bufio.NewReader(file))
 	allRecords, err := r.ReadAll()
 	checkErr(err)
 
-	out, err := os.OpenFile("data/"+target+"-ds.csv", os.O_WRONLY|os.O_CREATE, 0644)
+	out, err := os.OpenFile("data/input/"+target+"-ds.csv", os.O_WRONLY|os.O_CREATE, 0644)
 	checkErr(err)
 	w := csv.NewWriter(out)
 
@@ -59,6 +60,7 @@ func detectSwitchingPoint(target string, columns []Column) {
 	for _, v := range updateList {
 		allRecords[v.Index][v.ColumnIndex] = v.Value
 	}
+
 	w.WriteAll(allRecords)
 	w.Flush()
 }
@@ -78,14 +80,18 @@ func shouldUpdateBrake(prev []string, next []string, ri int, ci int64) (bool, Sw
 
 func shouldUpdateAccel(prev []string, next []string, ri int, ci int64) (bool, SwitchingPoint) {
 	switch {
-	case prev[ci] == next[ci]:
+	case prev[ci] == next[ci]: // Both prev and next are 0 or same positive value
+		// Convert positive values to 1
+		if prev[ci] != "0" {
+			return true, SwitchingPoint{ri, "Brake", ci, "1"}
+		}
 		return false, SwitchingPoint{}
 	case prev[ci] == "0":
 		return true, SwitchingPoint{ri, "Brake", ci, "2"}
 	case next[ci] == "0":
 		return true, SwitchingPoint{ri, "Brake", ci, "-1"}
 	default: // Both prev and next are over 0 but not equal
-		return false, SwitchingPoint{}
+		return true, SwitchingPoint{ri, "Brake", ci, "1"}
 	}
 }
 

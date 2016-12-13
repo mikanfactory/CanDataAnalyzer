@@ -84,7 +84,8 @@ func createSPQueryString(q, fin chan string, target string, validColumns []Colum
 			break
 		}
 		if err != nil {
-			log.Fatal(err)
+			log.Printf("[Warning] %s\n", err.Error())
+			continue
 		}
 
 		// create query if row is switching point
