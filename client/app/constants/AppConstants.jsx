@@ -1,6 +1,6 @@
 import keyMirror from 'keymirror'
 import targets from '../../../config/targets.json'
-import features from '../../../config/cacheConfig.json'
+import features from '../../../config/cacheConfigT.json'
 import chunk from 'lodash/chunk'
 
 const validFeatures = features.columns

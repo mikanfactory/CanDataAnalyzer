@@ -57,7 +57,7 @@ func InsertData() {
 			insert(db, query)
 
 		case <-fin:
-			if finished < size {
+			if finished < size-1 {
 				finished++
 				continue
 			}
@@ -104,35 +104,46 @@ func summarizeColumns(columns []Column, records *[][]string) []float64 {
 }
 
 func summarizeColumn(column Column, records *[][]string) float64 {
-	if column.Name == "BrakeOnOff" || column.Name == "AcceleratorOnOff" {
-		return calcMax(column, records)
+	if column.Name == "Brake" || column.Name == "Accel" {
+		return calcMaxOrMin(column, records)
 	}
 
 	return calcAverage(column, records)
 }
 
-func calcMax(column Column, records *[][]string) float64 {
-	max := -100.0
+func calcMaxOrMin(column Column, records *[][]string) float64 {
+	max, min := -100, 100
 	for _, record := range *records {
-		value, _ := strconv.ParseFloat(record[column.Index], 64)
-		if max < value {
-			max = value
+		value, _ := strconv.ParseInt(record[column.Index], 10, 0)
+		intv := int(value)
+		if min > intv {
+			min = intv
+		}
+
+		if max < intv {
+			max = intv
 		}
 	}
 
-	return max
+	if min == -1 {
+		return float64(min)
+	}
+
+	return float64(max)
 }
 
 func calcAverage(column Column, records *[][]string) float64 {
 	var average float64
+	counter := 0
 	values := []float64{}
 	for _, record := range *records {
-		value, _ := strconv.ParseFloat(record[column.Index-1], 64)
+		value, _ := strconv.ParseFloat(record[column.Index], 64)
 		values = append(values, value)
 		average += value
+		counter++
 	}
 
-	return average / float64(len(*records))
+	return average / float64(counter)
 }
 
 func createQueryString(target string, validColumns []Column, field []float64) string {
@@ -158,6 +169,7 @@ func isIntegerColumn(column Column) bool {
 }
 
 func destroyAllData() {
+	os.Remove(DBConfig)
 	db, err := sql.Open("sqlite3", DBConfig)
 	checkErr(err)
 
@@ -177,7 +189,7 @@ func getValidColumns(cacheInfo CacheInfo) []Column {
 }
 
 func readCacheConfig(c *CacheInfo) {
-	file, err := ioutil.ReadFile("config/cacheConfig.json")
+	file, err := ioutil.ReadFile("config/cacheConfigT.json")
 	if err != nil {
 		log.Fatal(err)
 	}

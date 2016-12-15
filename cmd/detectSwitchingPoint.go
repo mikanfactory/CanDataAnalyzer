@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"sync"
 )
 
 func DetectSwitchingPoint() {
@@ -19,14 +20,21 @@ func DetectSwitchingPoint() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
+	var wg sync.WaitGroup
+
 	validColumns := getValidColumns(cacheInfo)
 	for _, targets := range targets.Names {
-		detectSwitchingPoint(targets, validColumns)
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			detectSwitchingPoint(targets, validColumns)
+		}()
 	}
+	wg.Wait()
 }
 
 func detectSwitchingPoint(target string, columns []Column) {
-	file, err := os.Open("data/original/" + target + ".csv")
+	file, err := os.Open("data/pre/" + target + ".csv")
 	defer file.Close()
 	checkErr(err)
 
@@ -34,7 +42,7 @@ func detectSwitchingPoint(target string, columns []Column) {
 	allRecords, err := r.ReadAll()
 	checkErr(err)
 
-	out, err := os.OpenFile("data/input/"+target+"-ds.csv", os.O_WRONLY|os.O_CREATE, 0644)
+	out, err := os.OpenFile("data/input/"+target+".csv", os.O_WRONLY|os.O_CREATE, 0644)
 	checkErr(err)
 	w := csv.NewWriter(out)
 
