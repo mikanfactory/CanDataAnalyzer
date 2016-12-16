@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
-	"sync"
 )
 
 func DetectSwitchingPoint() {
@@ -20,17 +19,20 @@ func DetectSwitchingPoint() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	var wg sync.WaitGroup
+	// var wg sync.WaitGroup
 
 	validColumns := getValidColumns(cacheInfo)
-	for _, targets := range targets.Names {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			detectSwitchingPoint(targets, validColumns)
-		}()
+	// for _, target := range targets.Names {
+	// 	wg.Add(1)
+	// 	go func() {
+	// 		defer wg.Done()
+	// 		detectSwitchingPoint(target, validColumns)
+	// 	}()
+	// }
+	// wg.Wait()
+	for _, target := range targets.Names {
+		detectSwitchingPoint(target, validColumns)
 	}
-	wg.Wait()
 }
 
 func detectSwitchingPoint(target string, columns []Column) {
