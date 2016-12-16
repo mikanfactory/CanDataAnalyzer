@@ -36,7 +36,7 @@ export const ToolBoxStyle = {
     position: 'relative',
     float: 'left',
     width: '25%',
-    height: appHeight
+    height: appHeight,
     overflow: 'scroll'
   }
 }

@@ -3,6 +3,7 @@ import GridLayer from './GridLayer'
 import HeatmapLayer from './HeatmapLayer'
 import ClusterLayer from './ClusterLayer'
 import OverlayLayer from './OverlayLayer'
+import TaskIndexLayer from './TaskIndex.jsx'
 
 export default class Layer extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ export default class Layer extends React.Component {
         <HeatmapLayer gMap={this.props.gMap} />
         <ClusterLayer gMap={this.props.gMap} />
         <OverlayLayer gMap={this.props.gMap} />
+        <TaskIndexLayer gMap={this.props.gMap} />
       </div>
     )
   }

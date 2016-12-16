@@ -113,6 +113,10 @@ class LayerStoreClass extends EventEmitter {
   getRouteIndex() {
     return _store.routeIndex
   }
+
+  getTaskIndex() {
+    return _store.taskIndex
+  }
 }
 
 const LayerStore = new LayerStoreClass
