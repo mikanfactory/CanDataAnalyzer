@@ -16,6 +16,7 @@ let _store = {
   isHeatmapVisible: false,
   assignedClusters: [],
   routeIndex: [],
+  taskIndex: [],
   divideSize: defaultDivideSize,
 }
 
@@ -62,6 +63,14 @@ function _create_cluster_layer(bounds, clusters) {
 
 function _destroy_cluster_layer() {
   _store.assignedClusters = []
+}
+
+function _create_task_index_layer(taskIndex) {
+  _store.taskIndex = taskIndex
+}
+
+function _destroy_task_index_layer() {
+  _store.taskIndex = []
 }
 
 class LayerStoreClass extends EventEmitter {
@@ -183,6 +192,16 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
 
     case ActionTypes.DESTROY_OVERLAY_LAYER:
       _destroy_route_index()
+      LayerStore.emitChange()
+      break
+
+    case ActionTypes.CREATE_TASK_INDEX_LAYER:
+      _create_task_index_layer(actions.taskIndex)
+      LayerStore.emitChange()
+      break
+
+    case ActionTypes.DESTROY_TASK_INDEX_LAYER:
+      _destroy_task_index_layer()
       LayerStore.emitChange()
       break
 
