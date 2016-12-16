@@ -189,7 +189,7 @@ func getValidColumns(cacheInfo CacheInfo) []Column {
 }
 
 func readCacheConfig(c *CacheInfo) {
-	file, err := ioutil.ReadFile("config/cacheConfigT.json")
+	file, err := ioutil.ReadFile("config/cacheConfig.json")
 	if err != nil {
 		log.Fatal(err)
 	}

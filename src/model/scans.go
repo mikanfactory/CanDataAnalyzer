@@ -16,7 +16,10 @@ func ScanCan(r *sql.Row) (Can, error) {
 		&s.Brake,
 		&s.Accel,
 		&s.AheadDistance,
+		&s.CurveRadius,
 		&s.SteeringAngle,
+		&s.DistDivergence,
+		&s.RoadType,
 	); err != nil {
 		return Can{}, err
 	}
@@ -38,7 +41,10 @@ func ScanCans(rs *sql.Rows) ([]Can, error) {
 			&s.Brake,
 			&s.Accel,
 			&s.AheadDistance,
+			&s.CurveRadius,
 			&s.SteeringAngle,
+			&s.DistDivergence,
+			&s.RoadType,
 		); err != nil {
 			return nil, err
 		}

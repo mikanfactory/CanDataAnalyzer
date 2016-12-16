@@ -1,6 +1,6 @@
 package model
 
-// Cache contains the columns specified by config/cacheConfigT.json
+// Cache contains the columns specified by config/cacheConfig.json
 type Cache struct {
 	Columns []string
 }

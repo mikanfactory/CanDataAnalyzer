@@ -9,16 +9,11 @@ import (
 )
 
 func ExtractHeader() {
-	t1 := "Data01_2119_20161007142516.csv"
-	t2 := "L53E-DM05_2119_20161102142424.csv"
+	t1 := "L53E-DM05_2119_20161102142424.csv"
 
 	c1 := extractHeader(t1)
 	j1, _ := json.Marshal(c1)
-	ioutil.WriteFile("config/cacheConfigT.json", j1, 0744)
-
-	c2 := extractHeader(t2)
-	j2, _ := json.Marshal(c2)
-	ioutil.WriteFile("config/cacheConfigF.json", j2, 0744)
+	ioutil.WriteFile("config/cacheConfig.json", j1, 0744)
 }
 
 func extractHeader(target string) CacheInfo {
@@ -37,13 +32,16 @@ func extractHeader(target string) CacheInfo {
 	}
 
 	convName := map[string]string{
-		"VSO[km/h]":         "Speed",
-		"LON_GPS[deg]":      "Longitude",
-		"LAT_GPS[deg]":      "Latitude",
-		"BRKSWTM[]":         "Brake",
-		"RawPedal_APOFS[%]": "Accel",
-		"Z_ABST_toAT[m]":    "AheadDistance",
-		"STRANGLE[deg]":     "SteeringAngle",
+		"VSO[km/h]":              "Speed",
+		"LON_GPS[deg]":           "Longitude",
+		"LAT_GPS[deg]":           "Latitude",
+		"BRKSWTM[]":              "Brake",
+		"RawPedal_APOFS[%]":      "Accel",
+		"Z_ABST_toAT[m]":         "AheadDistance",
+		"STRANGLE[deg]":          "SteeringAngle",
+		"Curve_0[\ufffd\ufffdm]": "CurveRadius",
+		"DistDivergence[m]":      "DistDivergence",
+		"RoadType[]":             "RoadType",
 	}
 
 	columns := []Column{}

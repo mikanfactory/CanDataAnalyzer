@@ -17,10 +17,10 @@
     "server": "go run main.go",
     "scan": "cd src/model && scaneo table.go",
     "writeSchema": "go run main.go --schema && npm run scan",
-    "compileOriginal": "go run main.go --extractHeader && go run main.go --listUpInvalids && go run main.go --common",
-    "compilePre": "go run main.go --detect",
+    "extract": "go run main.go --extractHeader",
+    "detect": "go run main.go --detect",
     "writeSP": "go run main.go --insertSP && go run main.go --convert",
-    "setupDB": "go run main.go --listUp && npm run writeSchema && go run main.go --migrate && go run main.go --insert",
+    "setupDB": "go run main.go --listUp && npm run writeSchema && go run main.go --migrate && go run main.go --insert"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",

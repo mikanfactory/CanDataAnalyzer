@@ -1,5 +1,7 @@
 package cmd
 
+// ***DO NOT USE THIS SCRIPT***
+
 import (
 	"encoding/json"
 	"io/ioutil"
@@ -14,7 +16,7 @@ func ListUpInvalidTargets() {
 	d := regexp.MustCompile(`\.DS_Store`)
 	c := regexp.MustCompile(`.*cache.*`)
 
-	file, err := ioutil.ReadFile("config/cacheConfigT.json")
+	file, err := ioutil.ReadFile("config/cacheConfig.json")
 	checkErr(err)
 
 	cacheInfo := &CacheInfo{}

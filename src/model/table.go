@@ -10,5 +10,8 @@ type Can struct {
   Brake int64
   Accel int64
   AheadDistance float64
+  CurveRadius float64
   SteeringAngle float64
+  DistDivergence float64
+  RoadType float64
 }

@@ -36,7 +36,7 @@ func DetectSwitchingPoint() {
 }
 
 func detectSwitchingPoint(target string, columns []Column) {
-	file, err := os.Open("data/pre/" + target + ".csv")
+	file, err := os.Open("data/original/" + target + ".csv")
 	defer file.Close()
 	checkErr(err)
 

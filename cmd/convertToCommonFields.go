@@ -1,5 +1,7 @@
 package cmd
 
+// ***DO NOT USE THIS SCRIPT***
+
 import (
 	"bufio"
 	"encoding/csv"
@@ -11,7 +13,7 @@ import (
 )
 
 func ConvertToCommonFields() {
-	file, err := ioutil.ReadFile("config/cacheConfigT.json")
+	file, err := ioutil.ReadFile("config/cacheConfig.json")
 	checkErr(err)
 
 	cacheInfo := &CacheInfo{}
