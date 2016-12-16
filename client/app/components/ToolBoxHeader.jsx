@@ -166,6 +166,24 @@ export default class ToolBoxHeader extends React.Component {
     LayerActions.destroyOverlayLayer()
   }
 
+  handleTaskIndexToggle() {
+    this.state.isTaskIndexVisible ?
+    this.handleTaskIndexErase() :
+    this.handleTaskIndexDisplay()
+
+    this.setState({ isTaskIndexVisible: !this.state.isTaskIndexVisible })
+  }
+
+  handleTaskIndexDisplay() {
+    fetchTasks((grid, clusters) => {
+      LayerActions.createTaskIndexLayer(clusters)
+    })
+  }
+
+  handleTaskIndexErase() {
+    LayerAction.destroyTaskIndexLayer()
+  }
+
   render() {
     return (
       <div>
