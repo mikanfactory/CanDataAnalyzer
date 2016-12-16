@@ -19,7 +19,7 @@ function getStateFromStores() {
 class TaskIndexOverlay extends window.google.maps.OverlayView {
   constructor(index, position, gMap) {
     super()
-    this._index = index
+    this._index = index-1
     this._position = position
     this._gMap = gMap
 
