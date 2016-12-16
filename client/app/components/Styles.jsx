@@ -1,3 +1,5 @@
+const appHeight = '1000px'
+
 export const ContainerStyle = {
   ContainerStyle: {
     position: 'relative',
@@ -19,7 +21,7 @@ export const GoogleMapStyle = {
     position: 'relative',
     float: 'left',
     width: '75%',
-    height: '770px'
+    height: appHeight
   },
 
   MapStyle: {
@@ -34,7 +36,7 @@ export const ToolBoxStyle = {
     position: 'relative',
     float: 'left',
     width: '25%',
-    height: '770px',
+    height: appHeight
     overflow: 'scroll'
   }
 }

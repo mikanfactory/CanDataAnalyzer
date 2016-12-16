@@ -2,30 +2,30 @@ import { defaultDivideSize } from '../constants/AppConstants'
 
 let clusterColors = [
   "#FFFFFF",
-  "#ff0000",
-  "#ffa500",
-  "#ffff00",
-  "#008000",
-  "#00ffff",
-  "#0000ff",
-  "#800080"
-]
-
-let cluster13Colors = [
-  "#FFFFFF",
-  "#f39700",
-  "#e60012",
-  "#9caeb7",
-  "#00a7db",
-  "#009944",
-  "#d7c447",
-  "#967cb6",
-  "#00ada9",
-  "#bb641d",
-  "#e85298",
-  "#0079c2",
-  "#6cbb5a",
-  "#b6007a"
+  "#FE2400",
+  "#EC2127",
+  "#D21E4E",
+  "#B21D72",
+  "#951E93",
+  "#7421B1",
+  "#5023D0",
+  "#3025EA",
+  "#082EFD",
+  "#1147CE",
+  "#247395",
+  "#389D51",
+  "#49C900",
+  "#81D503",
+  "#AFE400",
+  "#DAF201",
+  "#FFFF01",
+  "#FEE600",
+  "#FECD02",
+  "#FEAF07",
+  "#FF9400",
+  "#FE7701",
+  "#FD5800",
+  "#FF3900",
 ]
 
 export function createRectangle(gMap, bounds) {

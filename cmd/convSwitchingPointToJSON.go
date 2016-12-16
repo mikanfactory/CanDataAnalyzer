@@ -67,7 +67,7 @@ func getStatus(prev, next model.Can) string {
 	case next.Accel == 2 && calcDiffSecond(prev, next) < 5:
 		return "RedA"
 	case next.Accel == 2 && calcDiffSecond(prev, next) >= 5:
-		return "BlueB"
+		return "BlueA"
 	default:
 		return "none"
 	}

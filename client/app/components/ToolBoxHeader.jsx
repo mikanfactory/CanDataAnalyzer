@@ -25,6 +25,7 @@ export default class ToolBoxHeader extends React.Component {
       isLayerVisible: false,
       isHeatmapVisible: false,
       isClusterVisible: false,
+      isTaskIndexVisible: false
     }
 
     this.handleLayerToggle = this.handleLayerToggle.bind(this)
@@ -139,6 +140,7 @@ export default class ToolBoxHeader extends React.Component {
       title: "Switching Points",
       text: "// DO NOT EDIT. \n// THIS MARKERS FETCHED BY META DB. \n// DO NOT EDIT. \n"
     })
+
     fetchSwitchPoint(settingID, markers => {
       MarkerActions.createMarkers(markers)
       console.log(markers)
@@ -157,7 +159,6 @@ export default class ToolBoxHeader extends React.Component {
   handleOverlayDisplay() {
     fetchRisks((grid, risks) => {
       LayerActions.createOverlayLayer(risks)
-
     })
   }
 
@@ -180,6 +181,7 @@ export default class ToolBoxHeader extends React.Component {
                 <li onClick={this.handleSaveHeatmapSetting}><a href="#">グリッドの結果を保存</a></li>
                 <li onClick={this.handleTaskToggle}><a href="#">タスククラスタリングの結果を表示/非表示</a></li>
                 <li onClick={this.handleRiskToggle}><a href="#">危険度の結果を表示/非表示</a></li>
+                <li onClick={this.handleOverlayToggle}><a href="#">通過点のインデックスを表示</a></li>
                 <li onClick={this.handleSwitchPointDisplay}><a href="#">動作の切り替わり点を表示</a></li>
               </ul>
             </div>

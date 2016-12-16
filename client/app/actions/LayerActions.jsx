@@ -93,6 +93,19 @@ const LayerActions = {
     AppDispatcher.dispatch({
       actionType: ActionTypes.DESTROY_OVERLAY_LAYER
     })
+  },
+
+  createTaskIndexLayer: taskIndex => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CREATE_TASK_INDEX_LAYER,
+      taskIndex: taskIndex
+    })
+  },
+
+  destroyTaskIndexLayer: () => {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.DESTROY_TASK_INDEX_LAYER
+    })
   }
 }
 

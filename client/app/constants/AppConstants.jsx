@@ -111,6 +111,8 @@ const AppConstants = {
     DESTROY_CLUSTER_LAYER: null,
     CREATE_OVERLAY_LAYER: null,
     DESTROY_OVERLAY_LAYER: null,
+    CREATE_TASK_INDEX_LAYER: null,
+    DESTROY_TASK_INDEX_LAYER: null,
 
     // Message
     CREATE_MESSAGE: null,
