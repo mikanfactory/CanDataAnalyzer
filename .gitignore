@@ -7,7 +7,9 @@ public/js/bundle.js
 Godeps/_workspace
 !.eslintrc.js
 !.editorconfig
-data/*
+data/input/*.csv
+data/original/*.csv
+data/output/d*
 config/config.toml
 /TAGS
 npm-debug.log
