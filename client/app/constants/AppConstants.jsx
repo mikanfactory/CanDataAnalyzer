@@ -4,8 +4,8 @@ import features from '../../../config/cacheConfig.json'
 import chunk from 'lodash/chunk'
 
 const validFeatures = features.columns
-                              .filter( c => c.read )
-                              .map( c => c.name )
+                              .filter( c => c.Read )
+                              .map( c => c.Name )
 
 const settingTextHeader = chunk(validFeatures, 3)
   .map( c => "// " + c.join(" "))

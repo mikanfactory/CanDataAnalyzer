@@ -124,4 +124,5 @@
     {"Read": false, "Name": "GZmin[m\/s^2]", "Type": "float64", "Index": 121},
     {"Read": false, "Name": "GZmax[m\/s^2]", "Type": "float64", "Index": 122},
     {"Read": false, "Name": "GZave[m\/s^2]", "Type": "float64", "Index": 123}
-  ]}
+  ]
+}
