@@ -18,6 +18,7 @@ func ScanCan(r *sql.Row) (Can, error) {
 		&s.AheadDistance,
 		&s.CurveRadius,
 		&s.SteeringAngle,
+		&s.DistTollgate,
 		&s.DistDivergence,
 		&s.RoadType,
 	); err != nil {
@@ -43,6 +44,7 @@ func ScanCans(rs *sql.Rows) ([]Can, error) {
 			&s.AheadDistance,
 			&s.CurveRadius,
 			&s.SteeringAngle,
+			&s.DistTollgate,
 			&s.DistDivergence,
 			&s.RoadType,
 		); err != nil {

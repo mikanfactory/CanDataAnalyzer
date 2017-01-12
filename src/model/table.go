@@ -12,6 +12,7 @@ type Can struct {
   AheadDistance float64
   CurveRadius float64
   SteeringAngle float64
+  DistTollgate float64
   DistDivergence float64
   RoadType float64
 }
