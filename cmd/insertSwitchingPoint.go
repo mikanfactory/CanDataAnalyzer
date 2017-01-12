@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"math"
 	"os"
 	"strconv"
 
@@ -92,7 +93,12 @@ func createSPQueryString(q, fin chan string, target string, validColumns []Colum
 		if isSwitchingPoint(record[brakeIndex]) || isSwitchingPoint(record[accelIndex]) {
 			result := []float64{}
 			for _, column := range validColumns {
-				value, _ := strconv.ParseFloat(record[column.Index], 64)
+				value, err := strconv.ParseFloat(record[column.Index], 64)
+				checkErr(err)
+
+				if math.IsInf(value, 0) {
+					value = 10000
+				}
 				result = append(result, value)
 			}
 
