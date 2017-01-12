@@ -111,7 +111,7 @@ func main() {
 		cmd.InsertSwitchingPoint()
 		os.Exit(0)
 	case *flags["convertToJSON"]:
-		cmd.ConvSwitchingPointToJSON()
+		cmd.ConvertSwitchingPointToJSON()
 		os.Exit(0)
 	case *flags["createConfig"]:
 		cmd.CreateConfig()

@@ -10,7 +10,7 @@ import (
 	"github.com/mikanfactory/CanDataAnalyzer/src/model"
 )
 
-func ConvSwitchingPointToJSON() {
+func ConvertSwitchingPointToJSON() {
 	file, err := ioutil.ReadFile("config/targets.json")
 	checkErr(err)
 
