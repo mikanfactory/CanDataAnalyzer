@@ -80,12 +80,11 @@ func main() {
 	flags["schema"] = flag.Bool("schema", false, "write a DB schema to table.go")
 	flags["table"] = flag.Bool("migrate", false, "create table")
 	flags["clean"] = flag.Bool("cleaning", false, "clean up data")
-	flags["detect"] = flag.Bool("detect", false, "detect switching point")
+	flags["preprocess"] = flag.Bool("preprocess", false, "detect switching point")
 	flags["insertSP"] = flag.Bool("insertSP", false, "insert raw data into DB")
 	flags["convertToJSON"] = flag.Bool("convertToJSON", false, "convert switching point to json")
 	flags["createConfig"] = flag.Bool("createConfig", false, "extract header and make cache config")
-	flags["listUpInvalids"] = flag.Bool("listUpInvalids", false, "list up invalid targets and write it")
-	flags["common"] = flag.Bool("common", false, "convert invalids to common fields")
+	flags["convertToCSV"] = flag.Bool("convertToCSV", false, "convert switching point to csv")
 	flag.Parse()
 
 	switch {
@@ -104,8 +103,8 @@ func main() {
 	case *flags["clean"]:
 		cmd.CleanData()
 		os.Exit(0)
-	case *flags["detect"]:
-		cmd.DetectSwitchingPoint()
+	case *flags["preprocess"]:
+		cmd.Preprocess()
 		os.Exit(0)
 	case *flags["insertSP"]:
 		cmd.InsertSwitchingPoint()
@@ -113,14 +112,11 @@ func main() {
 	case *flags["convertToJSON"]:
 		cmd.ConvertSwitchingPointToJSON()
 		os.Exit(0)
+	case *flags["convertToCSV"]:
+		cmd.ConvertSwitchingPointToCSV()
+		os.Exit(0)
 	case *flags["createConfig"]:
 		cmd.CreateConfig()
-		os.Exit(0)
-	case *flags["listUpInvalids"]:
-		cmd.ListUpInvalidTargets()
-		os.Exit(0)
-	case *flags["common"]:
-		cmd.ConvertToCommonFields()
 		os.Exit(0)
 	}
 

@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func DetectSwitchingPoint() {
+func Preprocess() {
 	file, err := ioutil.ReadFile("config/targets.json")
 	checkErr(err)
 

@@ -17,7 +17,9 @@
     "server": "go run main.go",
     "scan": "cd src/model && scaneo table.go",
     "writeSchema": "go run main.go --schema && npm run scan",
-    "preprocess": "go run main.go --listUp && go run main.go --createConfig && go run main.go --detect && npm run writeSchema",
+    "createConfig": "go run main.go --listUp && go run main.go --createConfig",
+    "preprocess": "go run main.go --preprocess && npm run writeSchema",
+    "allPreprocess": "npm run createConfig && npm run preprocess",
     "kml": "go run main.go --insertSP && go run main.go --convertToJSON && python cmd/exportSPtoKML.py",
     "csv": "go run main.go --insertSP && go run main.go --convertToCSV",
     "setupDB": "go run main.go --migrate && go run main.go --insert"
