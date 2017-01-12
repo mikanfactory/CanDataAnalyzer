@@ -33,7 +33,7 @@ func extractHeader(target string) CacheInfo {
 	checkErr(err)
 
 	convType := map[string]string{
-		"Time":              "int64",
+		"Time":              "float64",
 		"BRKSWTM":           "int64",
 		"RawPedal_APOFS[%]": "int64",
 	}

@@ -3,7 +3,7 @@ package model
 type Can struct {
   ID int64
   Target string
-  Time int64
+  Time float64
   Longitude float64
   Latitude float64
   Speed float64
