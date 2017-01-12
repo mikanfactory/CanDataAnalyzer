@@ -8,8 +8,15 @@ import (
 	"os"
 )
 
-func ExtractHeader() {
-	t1 := "L53E-DM05_2119_20161102142424.csv"
+func CreateConfig() {
+	file, err := ioutil.ReadFile("config/targets.json")
+	checkErr(err)
+
+	targets := &Targets{}
+	err = json.Unmarshal(file, targets)
+	checkErr(err)
+
+	t1 := targets.Names[0]
 
 	c1 := extractHeader(t1)
 	j1, _ := json.Marshal(c1)
@@ -17,7 +24,7 @@ func ExtractHeader() {
 }
 
 func extractHeader(target string) CacheInfo {
-	file, err := os.Open("data/original/" + target)
+	file, err := os.Open("data/original/" + target + ".csv")
 	checkErr(err)
 	defer file.Close()
 
@@ -27,7 +34,7 @@ func extractHeader(target string) CacheInfo {
 
 	convType := map[string]string{
 		"Time":              "int64",
-		"BRKSWTM[]":         "int64",
+		"BRKSWTM":           "int64",
 		"RawPedal_APOFS[%]": "int64",
 	}
 
@@ -35,13 +42,14 @@ func extractHeader(target string) CacheInfo {
 		"VSO[km/h]":              "Speed",
 		"LON_GPS[deg]":           "Longitude",
 		"LAT_GPS[deg]":           "Latitude",
-		"BRKSWTM[]":              "Brake",
+		"BRKSWTM":                "Brake",
 		"RawPedal_APOFS[%]":      "Accel",
 		"Z_ABST_toAT[m]":         "AheadDistance",
 		"STRANGLE[deg]":          "SteeringAngle",
 		"Curve_0[\ufffd\ufffdm]": "CurveRadius",
+		"DistTollgate[m]":        "DistTollgate",
 		"DistDivergence[m]":      "DistDivergence",
-		"RoadType[]":             "RoadType",
+		"RoadType":               "RoadType",
 	}
 
 	columns := []Column{}
