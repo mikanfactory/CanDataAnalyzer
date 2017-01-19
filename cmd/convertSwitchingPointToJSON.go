@@ -32,8 +32,10 @@ func ConvertSwitchingPointToJSON() {
 		markers = append(markers, ms...)
 	}
 
-	json, _ := json.Marshal(markers)
-	ioutil.WriteFile("data/middle/sp.json", json, 0744)
+	json, err := json.Marshal(markers)
+	checkErr(err)
+	err = ioutil.WriteFile("data/middle/sp.json", json, 0744)
+	checkErr(err)
 }
 
 func writeSwitchingPoint(db *sql.DB, target string, validColumns []Column) []model.Marker {
@@ -80,5 +82,5 @@ func getSwitchingPoint(db *sql.DB, target string) ([]model.Can, error) {
 }
 
 func calcDiffSecond(prev, next model.Can) float64 {
-	return float64(next.Time-prev.Time) * 0.001
+	return float64(next.Time - prev.Time)
 }

@@ -23,16 +23,22 @@ func ConvertSwitchingPointToCSV() {
 
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
-
 	validColumns := getValidColumns(cacheInfo)
 
+	out, err := os.OpenFile("data/middle/sp.csv", os.O_WRONLY|os.O_CREATE, 0644)
+	w := csv.NewWriter(out)
+
+	err = w.Write(toCSV(validColumns))
+	checkErr(err)
+
 	for _, target := range targets.Names {
-		out, err := os.OpenFile("data/middle/"+target+".csv", os.O_WRONLY|os.O_CREATE, 0644)
 		checkErr(err)
-		w := csv.NewWriter(out)
 
 		ms := outputSwitchingPoint(db, target, validColumns)
-		w.WriteAll(ms)
+		for _, v := range ms {
+			err := w.Write(v)
+			checkErr(err)
+		}
 		w.Flush()
 	}
 }
