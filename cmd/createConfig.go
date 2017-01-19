@@ -46,7 +46,7 @@ func extractHeader(target string) CacheInfo {
 		"RawPedal_APOFS[%]":      "Accel",
 		"TACHO[Tr/min]":          "Engine",
 		"Z_ABST_toAT[m]":         "AheadDistance",
-		"Curve_0[\ufffd\ufffdm]": "CurveRadius",
+		"Curve_0[\u0403\u0433m]": "CurveRadius",
 		"STRANGLE[deg]":          "SteeringAngle",
 		"D_BRANCH_FLG":           "BranchFlag",
 		"DistTollgate[m]":        "DistTollgate",

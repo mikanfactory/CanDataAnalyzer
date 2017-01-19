@@ -11,28 +11,28 @@ type Can struct {
   Accel int64
   Engine float64
   AheadDistance float64
-  CurveRadius float64
+  Curve float64
   SteeringAngle float64
-  BranchFlag float64
+  BranchFlag int64
   DistTollgate float64
-  RoadType float64
-  GreenLamp float64
-  RedLamp float64
-  RightLamp float64
-  UpLamp float64
-  LeftLamp float64
-  StopSign float64
-  Limit30Sign float64
-  Limit50Sign float64
-  BrakeCar float64
-  LeftCar float64
-  ManBicycleCount float64
-  ManBicycle float64
+  RoadType int64
+  GreenLamp int64
+  RedLamp int64
+  RightLamp int64
+  UpLamp int64
+  LeftLamp int64
+  StopSign int64
+  Limit30Sign int64
+  Limit50Sign int64
+  BrakeCar int64
+  LeftCar int64
+  ManBicycleCount int64
+  ManBicycle int64
   DistManBicycle float64
   Pitch float64
   DistSignal float64
   PathType float64
-  LaneCount float64
+  LaneCount int64
   AccelerationSpeed float64
   Jerk float64
   TimeHeadway float64

@@ -40,7 +40,10 @@ func (m *Can) ToCSV(status string) []string {
 
 	v := reflect.ValueOf(m).Elem()
 	for i := 0; i < v.NumField(); i++ {
-		f := v.Field(i)
+		f, t := v.Field(i), v.Type().Field(i)
+		if t.Name == "Target" || t.Name == "ID" {
+			continue
+		}
 		cmp := fmt.Sprintf("%v", f.Interface())
 		content = append(content, cmp)
 	}
