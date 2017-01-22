@@ -10,7 +10,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
 	"github.com/mikanfactory/CanDataAnalyzer/cmd"
 	"github.com/mikanfactory/CanDataAnalyzer/src/config"
@@ -56,7 +55,7 @@ func (s *Server) Init() {
 	t := &controller.TemplateController{
 		Templates: template.Must(template.ParseGlob("src/view/*.tmpl")),
 	}
-	s.Engine.SetRenderer(t)
+	s.Engine.Renderer = t
 }
 
 // Route setting router for this app.
@@ -124,5 +123,5 @@ func main() {
 	s := New()
 	s.Init()
 	s.Route()
-	s.Engine.Run(standard.New(addr))
+	s.Engine.Start(addr)
 }
