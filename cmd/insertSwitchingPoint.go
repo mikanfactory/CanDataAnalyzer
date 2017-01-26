@@ -60,7 +60,7 @@ func InsertSwitchingPoint() {
 			insert(db, query)
 
 		case <-fin:
-			if finished < size-1 {
+			if finished < size {
 				finished++
 				continue
 			}
@@ -99,6 +99,7 @@ func createSPQueryString(q, fin chan string, target string, validColumns []Colum
 				if math.IsInf(value, 0) {
 					value = 10000
 				}
+
 				result = append(result, value)
 			}
 

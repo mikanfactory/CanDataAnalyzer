@@ -11,6 +11,8 @@ type Can struct {
   Accel int64
   Engine float64
   AheadDistance float64
+  Curve150 float64
+  Curve100 float64
   Curve float64
   SteeringAngle float64
   BranchFlag int64
@@ -38,4 +40,6 @@ type Can struct {
   TimeHeadway float64
   TimeToCollision float64
   RiskFactor float64
+  AverageVelocity float64
+  CurveAverage float64
 }

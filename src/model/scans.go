@@ -17,6 +17,8 @@ func ScanCan(r *sql.Row) (Can, error) {
 		&s.Accel,
 		&s.Engine,
 		&s.AheadDistance,
+		&s.Curve150,
+		&s.Curve100,
 		&s.Curve,
 		&s.SteeringAngle,
 		&s.BranchFlag,
@@ -44,6 +46,8 @@ func ScanCan(r *sql.Row) (Can, error) {
 		&s.TimeHeadway,
 		&s.TimeToCollision,
 		&s.RiskFactor,
+		&s.AverageVelocity,
+		&s.CurveAverage,
 	); err != nil {
 		return Can{}, err
 	}
@@ -66,6 +70,8 @@ func ScanCans(rs *sql.Rows) ([]Can, error) {
 			&s.Accel,
 			&s.Engine,
 			&s.AheadDistance,
+			&s.Curve150,
+			&s.Curve100,
 			&s.Curve,
 			&s.SteeringAngle,
 			&s.BranchFlag,
@@ -93,6 +99,8 @@ func ScanCans(rs *sql.Rows) ([]Can, error) {
 			&s.TimeHeadway,
 			&s.TimeToCollision,
 			&s.RiskFactor,
+			&s.AverageVelocity,
+			&s.CurveAverage,
 		); err != nil {
 			return nil, err
 		}
