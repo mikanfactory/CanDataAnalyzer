@@ -37,9 +37,8 @@ type Can struct {
   LaneCount int64
   AccelerationSpeed float64
   Jerk float64
-  TimeHeadway float64
-  TimeToCollision float64
-  RiskFactor float64
   AverageVelocity float64
+  MaxSpeed float64
+  MinSpeed float64
   CurveAverage float64
 }

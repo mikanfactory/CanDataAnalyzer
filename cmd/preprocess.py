@@ -8,6 +8,8 @@ ACCEL = "RawPedal_APOFS[%]"
 SPEED= "VSO[km/h]"
 AVERAGE_VELOCITY = "AverageVelocity"
 CURVE_AVERAGE = "CurveAverage"
+MAX_SPEED = "MaxSpeed"
+MIN_SPEED = "MinSpeed"
 
 CURVES1 = [
     "Curve_0[\xef\xbf\xbd\xef\xbf\xbdm]",
@@ -33,10 +35,14 @@ CURVES2 = [
 
 def addAvgVelocity(df):
   df[AVERAGE_VELOCITY] = 0
+  df[MAX_SPEED] = 0
+  df[MIN_SPEED] = 0
   accelOffs = df[df[ACCEL] == -1].index
-  starts = df.ix[accelOffs][ACCEL].apply(lambda x: max(0, x-1000))
+  starts = df.ix[accelOffs].index.map(lambda x: max(0, x-1000))
   for start, stop in zip(starts, accelOffs):
       df.loc[stop, AVERAGE_VELOCITY] = df.ix[start:stop][SPEED].mean()
+      df.loc[stop, MAX_SPEED] = df.ix[start:stop][SPEED].max()
+      df.loc[stop, MIN_SPEED] = df.ix[start:stop][SPEED].min()
 
 
 def addCurveAverage(df):

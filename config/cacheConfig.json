@@ -1102,19 +1102,19 @@
       "Name": "TimeHeadway",
       "Type": "float64",
       "Index": 184,
-      "Read": true
+      "Read": false
     },
     {
       "Name": "TimeToCollision",
       "Type": "float64",
       "Index": 185,
-      "Read": true
+      "Read": false
     },
     {
       "Name": "RiskFactor",
       "Type": "float64",
       "Index": 186,
-      "Read": true
+      "Read": false
     },
     {
       "Name": "DistSTOP",
@@ -1129,9 +1129,21 @@
       "Read": true
     },
     {
-      "Name": "CurveAverage",
+      "Name": "MaxSpeed",
       "Type": "float64",
       "Index": 189,
+      "Read": true
+    },
+    {
+      "Name": "MinSpeed",
+      "Type": "float64",
+      "Index": 190,
+      "Read": true
+    },
+    {
+      "Name": "CurveAverage",
+      "Type": "float64",
+      "Index": 191,
       "Read": true
     }
   ]
