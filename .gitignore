@@ -19,3 +19,4 @@ config/config.toml
 npm-debug.log
 venv/
 analysis/img
+analysis/hist
