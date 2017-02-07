@@ -66,25 +66,6 @@ def addCurveAverage(df):
     df.loc[lowSpeeds, CURVE_AVERAGE] = df[lowSpeeds].apply(lambda x: min(x[C0], x[C1], x[C2], x[C3], x[C4]), axis=1)
 
 
-def addFactors(df):
-    df[THW] = 0
-    df[TTC] = 0
-    df[RF] = 0
-    vsp = df[SPEED]/3.6
-    vspMA7 = vsp.rolling(window=7).mean()
-
-    df[AHEAD_DISTANCE] = df[AHEAD_DISTANCE].where(df[AHEAD_DISTANCE] != 0, 90)
-    aheadDistMA17 = df[AHEAD_DISTANCE].rolling(window=17).mean()
-    for i in range(len(df["Time"])-1):
-        relativitySpeed = vsp + (aheadDistMA17[i+1] - aheadDistMA17[i])/0.1
-
-    df[THW] = aheadDistMA17/vspMA7
-    df[TTC] = aheadDistMA17/(relativitySpeed - vspMA7)
-
-    a, b = RF_CONST["a"], RF_CONST["b"]
-    df[RF] = a/df[THW] + b/df[TTC]
-
-
 def updateCSV(target, integers):
     df = pd.read_csv(target)
     names = [df.columns[idx] for idx in integers]
@@ -93,7 +74,6 @@ def updateCSV(target, integers):
     df[names] = df[names].astype(int)
     addAvgVelocity(df)
     addCurveAverage(df)
-    # addFactors(df)
     df.to_csv(target, index=False)
 
 

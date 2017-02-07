@@ -18,7 +18,7 @@
     "scan": "cd src/model && scaneo table.go",
     "writeSchema": "go run main.go --schema && npm run scan",
     "createConfig": "go run main.go --listUp && go run main.go --createConfig",
-    "preprocess": "go run main.go --preprocess && npm run writeSchema",
+    "preprocess": "go run main.go --preprocess && python cmd/preprocess.py && npm run writeSchema",
     "allPreprocess": "npm run createConfig && npm run preprocess",
     "kml": "go run main.go --insertSP && go run main.go --convertToJSON && python cmd/exportSPtoKML.py",
     "csv": "go run main.go --insertSP && go run main.go --convertToCSV",

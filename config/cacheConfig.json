@@ -1102,19 +1102,19 @@
       "Name": "TimeHeadway",
       "Type": "float64",
       "Index": 184,
-      "Read": false
+      "Read": true
     },
     {
       "Name": "TimeToCollision",
       "Type": "float64",
       "Index": 185,
-      "Read": false
+      "Read": true
     },
     {
       "Name": "RiskFactor",
       "Type": "float64",
       "Index": 186,
-      "Read": false
+      "Read": true
     },
     {
       "Name": "DistSTOP",
