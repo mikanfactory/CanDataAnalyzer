@@ -15,3 +15,10 @@ Red: Mean correct/predict = 0.633449
 Blue: Mean correct/predict = 0.538239
 CV value: 0.402115
 CV value: 0.386777
+
+# NaiveClassifier V3
+Red/All = 593/1042 = 0.569098
+1 - Red/All = 449/1042 = 0.430902
+Red: Mean correct/predict = 0.646309
+Blue: Mean correct/predict = 0.571601
+CV value: 0.382912
