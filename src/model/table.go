@@ -41,4 +41,7 @@ type Can struct {
   MaxSpeed float64
   MinSpeed float64
   CurveAverage float64
+  THW float64
+  TTC float64
+  RF float64
 }
