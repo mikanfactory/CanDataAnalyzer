@@ -9,20 +9,20 @@
     "npm": "^3.8.6"
   },
   "scripts": {
-    "deps": "npm install && go get && go get -u github.com/variadico/scaneo",
+    "deps": "npm install && godep get && godep get -u github.com/variadico/scaneo",
     "build": "webpack -p --config webpack.config.js",
     "watch": "webpack -w --config webpack.config.js",
     "test": "mocha --compilers js:babel-register || exit 0",
     "watch-test": "mocha --compilers js:babel-register -w",
-    "server": "go run main.go",
+    "server": "godep go run main.go",
     "scan": "cd src/model && scaneo table.go",
-    "writeSchema": "go run main.go --schema && npm run scan",
-    "createConfig": "go run main.go --listUp && go run main.go --createConfig",
-    "preprocess": "go run main.go --preprocess && python cmd/preprocess.py && npm run writeSchema",
+    "writeSchema": "godep go run main.go --schema && npm run scan",
+    "createConfig": "godep go run main.go --listUp && godep go run main.go --createConfig",
+    "preprocess": "godep go run main.go --preprocess && python cmd/preprocess.py && npm run writeSchema",
     "allPreprocess": "npm run createConfig && npm run preprocess",
-    "kml": "go run main.go --insertSP && go run main.go --convertToJSON && python cmd/exportSPtoKML.py",
-    "csv": "go run main.go --insertSP && go run main.go --convertToCSV",
-    "setupDB": "go run main.go --migrate && go run main.go --insert"
+    "kml": "godep go run main.go --insertSP && godep go run main.go --convertToJSON && python cmd/exportSPtoKML.py",
+    "csv": "godep go run main.go --insertSP && godep go run main.go --convertToCSV",
+    "setupDB": "godep go run main.go --migrate && godep go run main.go --insert"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",
