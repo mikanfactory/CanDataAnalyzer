@@ -112,9 +112,5 @@ func createSPQueryString(q, fin chan string, target string, validColumns []Colum
 }
 
 func isSwitchingPoint(column string) bool {
-	if column == "-1" || column == "2" {
-		return true
-	}
-
-	return false
+	return column == "-1" || column == "2"
 }

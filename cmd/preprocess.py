@@ -15,6 +15,12 @@ AHEAD_DISTANCE = "Z_ABST_toAT[m]"
 THW = "TimeHeadway"
 TTC = "TimeToCollision"
 RF = "RiskFactor"
+DIFF_AVG_SPEED = "DiffAvgSpeed"
+EMPTINESS_OF_ROAD = "EmptinessOfRoad"
+ROAD_FACTOR = "RoadFactor"
+LANE_COUNT = "VC_LaneCount.1"
+BRAKE_CAR = "VC_CarBrake"
+MAN_CYCLE_COUNTS = "VC_ManCycleCount"
 
 CURVES1 = [
     "Curve_0[\xef\xbf\xbd\xef\xbf\xbdm]",
@@ -66,6 +72,37 @@ def addCurveAverage(df):
     df.loc[lowSpeeds, CURVE_AVERAGE] = df[lowSpeeds].apply(lambda x: min(x[C0], x[C1], x[C2], x[C3], x[C4]), axis=1)
 
 
+def addDeviatinFromAvgSpeed(df):
+    df[DIFF_AVG_SPEED] = 0
+    meanSpeeds = df.groupby(ROAD_TYPE).agg("mean")[SPEED]
+    for rtype in [0, 2, 3, 4, 5, 6, 7]:
+        meanSpeed = meanSpeeds[rtype]
+        rtypeIdx = df[ROAD_TYPE] == rtype
+        df[DIFF_AVG_SPEED][rtypeIdx] = df[SPEED][rtypeIdx] - meanSpeed
+
+
+def addEmptinessOfRoad(df):
+    df[EMPTINESS_OF_ROAD] = 0
+    emptiness = df[(df[AHEAD_DISTANCE] > 90) | (df[AHEAD_DISTANCE] == 0)].groupby(ROAD_TYPE).size()
+    counts = df.groupby(ROAD_TYPE).size()
+    for rtype in [0, 2, 3, 4, 5, 6, 7]:
+        emp = float(emptiness[rtype]) / counts[rtype]
+        rtypeIdx = df[ROAD_TYPE] == rtype
+        df[EMPTINESS_OF_ROAD][rtypeIdx] = [(df[rtypeIdx][AHEAD_DISTANCE] > 90) | (df[rtypeIdx][AHEAD_DISTANCE] == 0)][0].apply(int)*0.1 + emp
+
+
+def addRoadFactor(df):
+    df[ROAD_FACTOR] = 0
+    accelOffs = df[df[ACCEL] == -1].index
+    starts = df.ix[accelOffs].index.map(lambda x: max(0, x-30))
+    for start, stop in zip(starts, accelOffs):
+        fastOrElse = df.loc[stop, ROAD_TYPE] not in [0.0, 2.0, 3.0]
+        wideOrElse = df.loc[stop, LANE_COUNT] < 2
+        aheadBrakeOrElse = df.ix[start:stop][BRAKE_CAR].sum() >= 1
+        manyObstacleOrElse = df.ix[start:stop][MAN_CYCLE_COUNTS].sum() > 3
+        df.loc[stop, ROAD_FACTOR] = int(fastOrElse) + int(wideOrElse) + int(aheadBrakeOrElse) + int(manyObstacleOrElse)
+
+
 def updateCSV(target, integers):
     df = pd.read_csv(target)
     names = [df.columns[idx] for idx in integers]
@@ -74,6 +111,9 @@ def updateCSV(target, integers):
     df[names] = df[names].astype(int)
     addAvgVelocity(df)
     addCurveAverage(df)
+    addDeviatinFromAvgSpeed(df)
+    addEmptinessOfRoad(df)
+    addRoadFactor(df)
     df.to_csv(target, index=False)
 
 

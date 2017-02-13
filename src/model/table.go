@@ -44,4 +44,7 @@ type Can struct {
   MaxSpeed float64
   MinSpeed float64
   CurveAverage float64
+  DiffAvgSpeed float64
+  EmptinessOfRoad float64
+  RoadFactor float64
 }

@@ -50,6 +50,9 @@ func ScanCan(r *sql.Row) (Can, error) {
 		&s.MaxSpeed,
 		&s.MinSpeed,
 		&s.CurveAverage,
+		&s.DiffAvgSpeed,
+		&s.EmptinessOfRoad,
+		&s.RoadFactor,
 	); err != nil {
 		return Can{}, err
 	}
@@ -105,6 +108,9 @@ func ScanCans(rs *sql.Rows) ([]Can, error) {
 			&s.MaxSpeed,
 			&s.MinSpeed,
 			&s.CurveAverage,
+			&s.DiffAvgSpeed,
+			&s.EmptinessOfRoad,
+			&s.RoadFactor,
 		); err != nil {
 			return nil, err
 		}
