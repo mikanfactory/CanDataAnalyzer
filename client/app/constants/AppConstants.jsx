@@ -4,8 +4,8 @@ import features from '../../../config/cacheConfig.json'
 import chunk from 'lodash/chunk'
 
 const validFeatures = features.columns
-                              .filter( c => c.read )
-                              .map( c => c.name )
+                              .filter( c => c.Read )
+                              .map( c => c.Name )
 
 const settingTextHeader = chunk(validFeatures, 3)
   .map( c => "// " + c.join(" "))
@@ -32,14 +32,22 @@ const defaultSetting = {
     validStatuses,
     "",
     "switch (true) {",
-    "  case Speed > 60:",
-    "    return red",
-    "  case Speed > 30 && Speed < 60:",
-    "    return yellow",
-    "  case Speed > 10 && Speed < 30:",
-    "    return green",
-    "  case Speed < 10:",
-    "    return stop",
+    "  case RoadType == 0.0:",
+    "    return green      ",
+    "  case RoadType == 1.0:",
+    "  	return yellow     ",
+    "  case RoadType == 2.0:",
+    "  	return red        ",
+    "  case RoadType == 3.0:",
+    "  	return up         ",
+    "  case RoadType == 4.0:",
+    "  	return down       ",
+    "  case RoadType == 5.0:",
+    "  	return right      ",
+    "  case RoadType == 6.0:",
+    "  	return left       ",
+    "  case RoadType == 7.0:",
+ 	  "  	return straight",
     "}"
   ].join("\n")
 }

@@ -57,7 +57,7 @@ func InsertData() {
 			insert(db, query)
 
 		case <-fin:
-			if finished < size-1 {
+			if finished < size {
 				finished++
 				continue
 			}
@@ -104,7 +104,7 @@ func summarizeColumns(columns []Column, records *[][]string) []float64 {
 }
 
 func summarizeColumn(column Column, records *[][]string) float64 {
-	if column.Name == "Brake" || column.Name == "Accel" {
+	if column.Name == "Brake" || column.Name == "Accel" || column.Name == "RoadType" {
 		return calcMaxOrMin(column, records)
 	}
 

@@ -17,7 +17,15 @@ type Targets struct {
 
 type SwitchingPoint struct {
 	Index       int
-	Name        string
 	ColumnIndex int64
 	Value       string
+}
+
+func toCSV(columns []Column) []string {
+	acc := []string{}
+	for _, v := range columns {
+		acc = append(acc, v.Name)
+	}
+	acc = append(acc, "flag")
+	return acc
 }

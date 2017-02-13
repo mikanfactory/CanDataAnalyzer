@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func DetectSwitchingPoint() {
+func Preprocess() {
 	file, err := ioutil.ReadFile("config/targets.json")
 	checkErr(err)
 
@@ -19,17 +19,7 @@ func DetectSwitchingPoint() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	// var wg sync.WaitGroup
-
 	validColumns := getValidColumns(cacheInfo)
-	// for _, target := range targets.Names {
-	// 	wg.Add(1)
-	// 	go func() {
-	// 		defer wg.Done()
-	// 		detectSwitchingPoint(target, validColumns)
-	// 	}()
-	// }
-	// wg.Wait()
 	for _, target := range targets.Names {
 		detectSwitchingPoint(target, validColumns)
 	}
@@ -77,12 +67,13 @@ func detectSwitchingPoint(target string, columns []Column) {
 
 func shouldUpdateBrake(prev []string, next []string, ri int, ci int64) (bool, SwitchingPoint) {
 	switch {
+	// Since all brake value is either 1 or 0, no need to convert value.
 	case prev[ci] == next[ci]:
 		return false, SwitchingPoint{}
 	case prev[ci] == "0":
-		return true, SwitchingPoint{ri, "Brake", ci, "2"}
+		return true, SwitchingPoint{ri, ci, "2"}
 	case next[ci] == "0":
-		return true, SwitchingPoint{ri, "Brake", ci, "-1"}
+		return true, SwitchingPoint{ri, ci, "-1"}
 	default:
 		return false, SwitchingPoint{}
 	}
@@ -93,15 +84,15 @@ func shouldUpdateAccel(prev []string, next []string, ri int, ci int64) (bool, Sw
 	case prev[ci] == next[ci]: // Both prev and next are 0 or same positive value
 		// Convert positive values to 1
 		if prev[ci] != "0" {
-			return true, SwitchingPoint{ri, "Brake", ci, "1"}
+			return true, SwitchingPoint{ri, ci, "1"}
 		}
 		return false, SwitchingPoint{}
 	case prev[ci] == "0":
-		return true, SwitchingPoint{ri, "Brake", ci, "2"}
+		return true, SwitchingPoint{ri, ci, "2"}
 	case next[ci] == "0":
-		return true, SwitchingPoint{ri, "Brake", ci, "-1"}
+		return true, SwitchingPoint{ri, ci, "-1"}
 	default: // Both prev and next are over 0 but not equal
-		return true, SwitchingPoint{ri, "Brake", ci, "1"}
+		return true, SwitchingPoint{ri, ci, "1"}
 	}
 }
 

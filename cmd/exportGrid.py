@@ -119,7 +119,7 @@ def clusterStyle(i, color):
 
 
 def main():
-    targetDir = "data/output/d4/Result/"
+    targetDir = "data/output/d5/Result/"
     clustersFile = targetDir + "clusters.csv"
     settingFile = targetDir + "setting.json"
     print "Target dir is", targetDir

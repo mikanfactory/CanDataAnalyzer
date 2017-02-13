@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"os"
 
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/mikanfactory/CanDataAnalyzer/src/model"
 )
 
-func ConvSwitchingPointToJSON() {
+func ConvertSwitchingPointToJSON() {
 	file, err := ioutil.ReadFile("config/targets.json")
 	checkErr(err)
 
@@ -24,10 +24,6 @@ func ConvSwitchingPointToJSON() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	if _, err := os.Stat(DBConfig); os.IsExist(err) {
-		destroyAllData()
-	}
-
 	validColumns := getValidColumns(cacheInfo)
 
 	markers := []model.Marker{}
@@ -36,12 +32,15 @@ func ConvSwitchingPointToJSON() {
 		markers = append(markers, ms...)
 	}
 
-	json, _ := json.Marshal(markers)
-	ioutil.WriteFile("data/middle/switch.json", json, 0744)
+	json, err := json.Marshal(markers)
+	checkErr(err)
+	err = ioutil.WriteFile("data/middle/sp.json", json, 0744)
+	checkErr(err)
 }
 
 func writeSwitchingPoint(db *sql.DB, target string, validColumns []Column) []model.Marker {
-	cs, _ := getSwitchingPoint(db, target)
+	cs, err := getSwitchingPoint(db, target)
+	checkErr(err)
 
 	markers := []model.Marker{}
 	for i := 0; i < len(cs)-1; i++ {
@@ -74,7 +73,7 @@ func getStatus(prev, next model.Can) string {
 }
 
 func getSwitchingPoint(db *sql.DB, target string) ([]model.Can, error) {
-	query := fmt.Sprintf("select * from cans where target = '%s'", target)
+	query := fmt.Sprintf("SELECT * FROM cans WHERE target == '%s';", target)
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
@@ -83,5 +82,5 @@ func getSwitchingPoint(db *sql.DB, target string) ([]model.Can, error) {
 }
 
 func calcDiffSecond(prev, next model.Can) float64 {
-	return float64(next.Time-prev.Time) * 0.001
+	return float64(next.Time - prev.Time)
 }

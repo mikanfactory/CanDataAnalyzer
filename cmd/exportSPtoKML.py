@@ -36,12 +36,7 @@ def newPoint(lng, lat):
 
 
 def main():
-    if len(sys.argv) < 2:
-        print "Please specify target csv file"
-        return
-
-    target = sys.argv[1]
-    print "Target file is", target
+    target = "data/middle/sp.json"
 
     with open(target, "r") as f:
         raw = json.load(f)
@@ -53,7 +48,7 @@ def main():
         lat, lng = place["position"]["lat"], place["position"]["lng"]
         places.append(newPlace(state, [lat, lng]))
 
-    with open("data/middle/switching_point.kml", "w+") as f:
+    with open("data/middle/sp.kml", "w+") as f:
         kml = newKML("\n".join(places))
         f.write(kml)
 

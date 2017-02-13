@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"math"
 	"os"
 	"strconv"
 
@@ -59,7 +60,7 @@ func InsertSwitchingPoint() {
 			insert(db, query)
 
 		case <-fin:
-			if finished < size-1 {
+			if finished < size {
 				finished++
 				continue
 			}
@@ -92,7 +93,13 @@ func createSPQueryString(q, fin chan string, target string, validColumns []Colum
 		if isSwitchingPoint(record[brakeIndex]) || isSwitchingPoint(record[accelIndex]) {
 			result := []float64{}
 			for _, column := range validColumns {
-				value, _ := strconv.ParseFloat(record[column.Index], 64)
+				value, err := strconv.ParseFloat(record[column.Index], 64)
+				checkErr(err)
+
+				if math.IsInf(value, 0) {
+					value = 10000
+				}
+
 				result = append(result, value)
 			}
 
@@ -105,9 +112,5 @@ func createSPQueryString(q, fin chan string, target string, validColumns []Colum
 }
 
 func isSwitchingPoint(column string) bool {
-	if column == "-1" || column == "2" {
-		return true
-	}
-
-	return false
+	return column == "-1" || column == "2"
 }

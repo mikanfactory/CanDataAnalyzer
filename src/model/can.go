@@ -35,6 +35,23 @@ func (m *Can) ToMarker(cond Condition, setting Setting) Marker {
 	}
 }
 
+func (m *Can) ToCSV(status string) []string {
+	content := []string{}
+
+	v := reflect.ValueOf(m).Elem()
+	for i := 0; i < v.NumField(); i++ {
+		f, t := v.Field(i), v.Type().Field(i)
+		if t.Name == "Target" || t.Name == "ID" {
+			continue
+		}
+		cmp := fmt.Sprintf("%v", f.Interface())
+		content = append(content, cmp)
+	}
+	content = append(content, status)
+
+	return content
+}
+
 func getCans(db *sql.DB, cond Condition, setting Setting) ([]Can, error) {
 	switch {
 	case setting.Target == "All" && cond.Content == "default":

@@ -10,7 +10,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
 	"github.com/mikanfactory/CanDataAnalyzer/cmd"
 	"github.com/mikanfactory/CanDataAnalyzer/src/config"
@@ -56,7 +55,7 @@ func (s *Server) Init() {
 	t := &controller.TemplateController{
 		Templates: template.Must(template.ParseGlob("src/view/*.tmpl")),
 	}
-	s.Engine.SetRenderer(t)
+	s.Engine.Renderer = t
 }
 
 // Route setting router for this app.
@@ -80,12 +79,11 @@ func main() {
 	flags["schema"] = flag.Bool("schema", false, "write a DB schema to table.go")
 	flags["table"] = flag.Bool("migrate", false, "create table")
 	flags["clean"] = flag.Bool("cleaning", false, "clean up data")
-	flags["detect"] = flag.Bool("detect", false, "detect switching point")
+	flags["preprocess"] = flag.Bool("preprocess", false, "detect switching point")
 	flags["insertSP"] = flag.Bool("insertSP", false, "insert raw data into DB")
-	flags["convert"] = flag.Bool("convert", false, "convert switching point to json")
-	flags["extractHeader"] = flag.Bool("extractHeader", false, "extract header and make cache config")
-	flags["listUpInvalids"] = flag.Bool("listUpInvalids", false, "list up invalid targets and write it")
-	flags["common"] = flag.Bool("common", false, "convert invalids to common fields")
+	flags["convertToJSON"] = flag.Bool("convertToJSON", false, "convert switching point to json")
+	flags["createConfig"] = flag.Bool("createConfig", false, "extract header and make cache config")
+	flags["convertToCSV"] = flag.Bool("convertToCSV", false, "convert switching point to csv")
 	flag.Parse()
 
 	switch {
@@ -104,23 +102,20 @@ func main() {
 	case *flags["clean"]:
 		cmd.CleanData()
 		os.Exit(0)
-	case *flags["detect"]:
-		cmd.DetectSwitchingPoint()
+	case *flags["preprocess"]:
+		cmd.Preprocess()
 		os.Exit(0)
 	case *flags["insertSP"]:
 		cmd.InsertSwitchingPoint()
 		os.Exit(0)
-	case *flags["convert"]:
-		cmd.ConvSwitchingPointToJSON()
+	case *flags["convertToJSON"]:
+		cmd.ConvertSwitchingPointToJSON()
 		os.Exit(0)
-	case *flags["extractHeader"]:
-		cmd.ExtractHeader()
+	case *flags["convertToCSV"]:
+		cmd.ConvertSwitchingPointToCSV()
 		os.Exit(0)
-	case *flags["listUpInvalids"]:
-		cmd.ListUpInvalidTargets()
-		os.Exit(0)
-	case *flags["common"]:
-		cmd.ConvertToCommonFields()
+	case *flags["createConfig"]:
+		cmd.CreateConfig()
 		os.Exit(0)
 	}
 
@@ -128,5 +123,5 @@ func main() {
 	s := New()
 	s.Init()
 	s.Route()
-	s.Engine.Run(standard.New(addr))
+	s.Engine.Start(addr)
 }

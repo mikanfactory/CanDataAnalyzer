@@ -8,10 +8,15 @@ Godeps/_workspace
 !.eslintrc.js
 !.editorconfig
 data/input/*.csv
+data/middle/*
+!data/middle/.gitkeep
+data/output/*
+!data/output/.gitkeep
 data/original/*.csv
-data/output/d*
+data/sp/*.csv
 config/config.toml
 /TAGS
 npm-debug.log
 venv/
 analysis/img
+analysis/hist
