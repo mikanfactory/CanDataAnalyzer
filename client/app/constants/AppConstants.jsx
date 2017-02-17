@@ -52,7 +52,7 @@ const defaultSetting = {
   ].join("\n")
 }
 
-const defaultDivideSize = 60
+const defaultDivideSize = 30
 
 const defaultModal = {
   modalType: "",

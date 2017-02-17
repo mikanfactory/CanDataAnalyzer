@@ -107,12 +107,12 @@ func (m *Can) getPosition() Position {
 	lng := m.Longitude
 
 	// convert Tokyo Datum to WGS84
-	// lngW := lng - lat*0.000046038 - lng*0.000083043 + 0.010040
-	// latW := lat - lat*0.00010695 + lng*0.000017464 + 0.0046017
+	lngW := lng - lat*0.000046038 - lng*0.000083043 + 0.010040
+	latW := lat - lat*0.00010695 + lng*0.000017464 + 0.0046017
 
 	return Position{
-		Latitude:    lat,
-		Longutitude: lng,
+		Latitude:    latW,
+		Longutitude: lngW,
 	}
 }
 
