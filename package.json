@@ -9,7 +9,7 @@
     "npm": "^3.8.6"
   },
   "scripts": {
-    "deps": "npm install && godep get && godep get -u github.com/variadico/scaneo",
+    "deps": "npm install && godep get && godep get github.com/variadico/scaneo",
     "build": "webpack -p --config webpack.config.js",
     "watch": "webpack -w --config webpack.config.js",
     "test": "mocha --compilers js:babel-register || exit 0",
