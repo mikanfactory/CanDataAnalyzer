@@ -22,7 +22,7 @@
     "allPreprocess": "npm run createConfig && npm run preprocess",
     "kml": "godep go run main.go --insertSP && godep go run main.go --convertToJSON && python cmd/exportSPtoKML.py",
     "csv": "godep go run main.go --insertSP && godep go run main.go --convertToCSV",
-    "setupDB": "godep go run main.go --migrate && godep go run main.go --insert"
+    "setupDB": "npm run preprocess && godep go run main.go --migrate && godep go run main.go --insert"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",
