@@ -9,7 +9,7 @@
     "npm": "^3.8.6"
   },
   "scripts": {
-    "deps": "npm install && godep get && godep get -u github.com/variadico/scaneo",
+    "deps": "npm install && godep get && godep get github.com/variadico/scaneo",
     "build": "webpack -p --config webpack.config.js",
     "watch": "webpack -w --config webpack.config.js",
     "test": "mocha --compilers js:babel-register || exit 0",
@@ -18,7 +18,7 @@
     "scan": "cd src/model && scaneo table.go",
     "writeSchema": "godep go run main.go --schema && npm run scan",
     "createConfig": "godep go run main.go --listUp && godep go run main.go --createConfig",
-    "preprocess": "godep go run main.go --preprocess && python cmd/preprocess.py && npm run writeSchema",
+    "preprocess": "godep go run main.go --preprocess && npm run writeSchema",
     "allPreprocess": "npm run createConfig && npm run preprocess",
     "kml": "godep go run main.go --insertSP && godep go run main.go --convertToJSON && python cmd/exportSPtoKML.py",
     "csv": "godep go run main.go --insertSP && godep go run main.go --convertToCSV",
