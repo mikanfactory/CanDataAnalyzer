@@ -8,7 +8,7 @@ ENV GOPATH /home/worker/go
 
 # Update
 RUN apt-get update
-RUN apt-get install -y git curl
+RUN apt-get install -y git curl vim
 
 # Install Node.js
 RUN apt-get install -y nodejs npm
@@ -28,3 +28,7 @@ RUN go get golang.org/x/sys/unix
 
 # Install sqlite3
 RUN apt-get install sqlite3
+
+# Setup config
+RUN cd /home/worker/go/src/github.com/mikanfactory/CanDataAnalyzer && \
+    cp config/config.toml.org config/config.toml
