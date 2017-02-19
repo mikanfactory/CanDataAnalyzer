@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func ConvertSwitchingPointToCSV() {
@@ -18,7 +18,7 @@ func ConvertSwitchingPointToCSV() {
 	err = json.Unmarshal(file, targets)
 	checkErr(err)
 
-	db, err := sql.Open("sqlite3", metaDBConfig)
+	db, err := sql.Open("mysql", metaDBConfig)
 	checkErr(err)
 
 	cacheInfo := CacheInfo{}

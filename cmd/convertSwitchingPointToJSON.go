@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/mikanfactory/CanDataAnalyzer/src/model"
 )
 

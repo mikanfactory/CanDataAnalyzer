@@ -78,7 +78,6 @@ func main() {
 	flags["insert"] = flag.Bool("insert", false, "convert raw data and insert it into DB")
 	flags["schema"] = flag.Bool("schema", false, "write a DB schema to table.go")
 	flags["table"] = flag.Bool("migrate", false, "create table")
-	flags["clean"] = flag.Bool("cleaning", false, "clean up data")
 	flags["preprocess"] = flag.Bool("preprocess", false, "detect switching point")
 	flags["insertSP"] = flag.Bool("insertSP", false, "insert raw data into DB")
 	flags["convertToJSON"] = flag.Bool("convertToJSON", false, "convert switching point to json")

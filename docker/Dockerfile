@@ -28,6 +28,6 @@ RUN go get golang.org/x/sys/unix
 RUN rm go1.7.linux-amd64.tar.gz
 
 # Install MySQL
-RUN echo "mysql-server mysql-server/root_password password passw0rd" | debconf-set-selections && \
-    echo "mysql-server mysql-server/root_password_again password passw0rd" | debconf-set-selections && \
+RUN echo "mysql-server mysql-server/root_password password ***" | debconf-set-selections && \
+    echo "mysql-server mysql-server/root_password_again password ***" | debconf-set-selections && \
     apt-get -y install mysql-server

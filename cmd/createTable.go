@@ -7,10 +7,10 @@ import (
 	"os"
 	"strings"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/go-sql-driver/mysql"
 )
 
-const DBConfig = "db/sqlite3.db"
+const DBConfig = "root:@/summary"
 
 func CreateTable() {
 	cacheInfo := CacheInfo{}
@@ -19,7 +19,7 @@ func CreateTable() {
 	err := os.Remove(DBConfig)
 	checkErr(err)
 
-	db, err := sql.Open("sqlite3", DBConfig)
+	db, err := sql.Open("mysql", DBConfig)
 	checkErr(err)
 
 	q1 := createTableStr(cacheInfo)
@@ -33,14 +33,14 @@ func CreateTable() {
 
 func createTableStr(cacheInfo CacheInfo) string {
 	convertTypeMap := map[string]string{
-		"int64":   "INTEGER",
-		"float64": "REAL",
-		"string":  "TEXT",
+		"int64":   "int",
+		"float64": "float",
+		"string":  "varchar(255)",
 	}
 
 	query := `CREATE TABLE cans (
-  id INTEGER NOT NULL PRIMARY KEY,
-  target TEXT NOT NULL,
+  id int(11) NOT NULL PRIMARY KEY,
+  target varchar(255) NOT NULL,
 `
 	for _, column := range cacheInfo.Columns {
 		if column.Read {

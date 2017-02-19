@@ -117,13 +117,13 @@
     {
       "Read": false,
       "Name": "Date",
-      "Type": "float64",
+      "Type": "string",
       "Index": 19
     },
     {
-      "Read": true,
+      "Read": false,
       "Name": "Time",
-      "Type": "float64",
+      "Type": "string",
       "Index": 20
     },
     {
@@ -135,7 +135,7 @@
     {
       "Read": true,
       "Name": "Brake",
-      "Type": "float64",
+      "Type": "int64",
       "Index": 22
     },
     {
@@ -147,7 +147,7 @@
     {
       "Read": true,
       "Name": "Accel",
-      "Type": "float64",
+      "Type": "int64",
       "Index": 24
     },
     {

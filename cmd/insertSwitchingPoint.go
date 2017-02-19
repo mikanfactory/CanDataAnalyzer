@@ -12,10 +12,10 @@ import (
 	"os"
 	"strconv"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/go-sql-driver/mysql"
 )
 
-const metaDBConfig = "db/sp.db"
+const metaDBConfig = "root:@/sp"
 
 func InsertSwitchingPoint() {
 	// create table
@@ -25,7 +25,7 @@ func InsertSwitchingPoint() {
 	err := os.Remove(metaDBConfig)
 	checkErr(err)
 
-	db, err := sql.Open("sqlite3", metaDBConfig)
+	db, err := sql.Open("mysql", metaDBConfig)
 	checkErr(err)
 
 	q1 := createTableStr(cacheInfo)

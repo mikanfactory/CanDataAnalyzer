@@ -13,7 +13,7 @@ import (
 	"strings"
 	"sync"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 const (
@@ -38,7 +38,7 @@ func InsertData() {
 		destroyAllData()
 	}
 
-	db, err := sql.Open("sqlite3", DBConfig)
+	db, err := sql.Open("mysql", DBConfig)
 	checkErr(err)
 
 	size := len(targets.Names)
