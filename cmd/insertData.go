@@ -41,41 +41,20 @@ func InsertData() {
 	db, err := sql.Open("mysql", DBConfig)
 	checkErr(err)
 
-	size := len(targets.Names)
-	q := make(chan string, 1000)
-	fin := make(chan string, size)
 	validColumns := getValidColumns(cacheInfo)
 
 	for _, target := range targets.Names {
-		go segmentizeData(q, fin, target, validColumns)
-	}
-
-	finished := 0
-	for {
-		select {
-		case query := <-q:
-			insert(db, query)
-
-		case <-fin:
-			if finished < size {
-				finished++
-				continue
-			}
-
-			return
-		}
+		log.Printf("target is %s ...", target)
+		segmentizeData(db, target, validColumns)
 	}
 }
 
 func insert(db *sql.DB, query string) {
-	mutex.Lock()
-	defer mutex.Unlock()
-
 	_, err := db.Exec(query)
 	checkErr(err)
 }
 
-func segmentizeData(q, fin chan string, target string, validColumns []Column) {
+func segmentizeData(db *sql.DB, target string, validColumns []Column) {
 	file, err := os.Open("data/input/" + target + ".csv")
 	checkErr(err)
 
@@ -88,10 +67,9 @@ func segmentizeData(q, fin chan string, target string, validColumns []Column) {
 	for i := 0; i < len(allRecords)/segmentSize; i++ {
 		records := allRecords[i*segmentSize : (i+1)*segmentSize]
 		averages := summarizeColumns(validColumns, &records)
-		q <- createQueryString(target, validColumns, averages)
+		query := createQueryString(target, validColumns, averages)
+		insert(db, query)
 	}
-
-	fin <- ""
 }
 
 func summarizeColumns(columns []Column, records *[][]string) []float64 {

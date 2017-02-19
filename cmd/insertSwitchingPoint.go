@@ -44,33 +44,15 @@ func InsertSwitchingPoint() {
 	err = json.Unmarshal(file, targets)
 	checkErr(err)
 
-	size := len(targets.Names)
-	q := make(chan string, 1000)
-	fin := make(chan string, size)
 	validColumns := getValidColumns(cacheInfo)
 
 	for _, target := range targets.Names {
-		go createSPQueryString(q, fin, target, validColumns)
-	}
-
-	finished := 0
-	for {
-		select {
-		case query := <-q:
-			insert(db, query)
-
-		case <-fin:
-			if finished < size {
-				finished++
-				continue
-			}
-
-			return
-		}
+		log.Printf("target is %s ...", target)
+		insertSP(db, target, validColumns)
 	}
 }
 
-func createSPQueryString(q, fin chan string, target string, validColumns []Column) {
+func insertSP(db *sql.DB, target string, validColumns []Column) {
 	file, err := os.Open("data/input/" + target + ".csv")
 	checkErr(err)
 
@@ -103,12 +85,11 @@ func createSPQueryString(q, fin chan string, target string, validColumns []Colum
 				result = append(result, value)
 			}
 
-			q <- createQueryString(target, validColumns, result)
+			query := createQueryString(target, validColumns, result)
+			insert(db, query)
 		}
 
 	}
-
-	fin <- ""
 }
 
 func isSwitchingPoint(column string) bool {
