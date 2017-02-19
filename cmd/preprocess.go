@@ -65,6 +65,8 @@ func detectSwitchingPoint(target string, columns []Column) {
 	w.Flush()
 }
 
+// ri: record index (prev)
+// ci: column index
 func shouldUpdateBrake(prev []string, next []string, ri int, ci int64) (bool, SwitchingPoint) {
 	switch {
 	// Since all brake value is either 1 or 0, no need to convert value.
