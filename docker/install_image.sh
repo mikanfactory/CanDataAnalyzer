@@ -1,1 +1,1 @@
-docker build -f dockerfile -t candy .
+docker build -f Dockerfile -t candy .

@@ -25,10 +25,9 @@ ENV PATH $PATH:/usr/local/go/bin
 ENV PATH $GOPATH/bin:$PATH
 RUN go get github.com/tools/godep
 RUN go get golang.org/x/sys/unix
+RUN rm go1.7.linux-amd64.tar.gz
 
-# Install sqlite3
-RUN apt-get install sqlite3
-
-# Setup config
-RUN cd /home/worker/go/src/github.com/mikanfactory/CanDataAnalyzer && \
-    cp config/config.toml.org config/config.toml
+# Install MySQL
+RUN echo "mysql-server mysql-server/root_password password passw0rd" | debconf-set-selections && \
+    echo "mysql-server mysql-server/root_password_again password passw0rd" | debconf-set-selections && \
+    apt-get -y install mysql-server
