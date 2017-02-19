@@ -16,6 +16,7 @@
     "watch-test": "mocha --compilers js:babel-register -w",
     "start-db": "/etc/init.d/mysql start",
     "server": "npm run start-db && godep go run main.go",
+    "server-dev": "godep go run main.go",
     "scan": "cd src/model && scaneo table.go",
     "writeSchema": "godep go run main.go --schema && npm run scan",
     "createConfig": "godep go run main.go --listUp && godep go run main.go --createConfig",

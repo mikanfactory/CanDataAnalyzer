@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -18,7 +18,7 @@ import (
 
 const (
 	addr   = ":1323"
-	dbconf = "db/sqlite3.db"
+	dbconf = "root:@/summary"
 )
 
 // Server is whole server implementation for this app.
@@ -38,7 +38,7 @@ func New() *Server {
 // Init initialize server state. Read Config files, compiling templates,
 // and apply middleware.
 func (s *Server) Init() {
-	db, err := sql.Open("sqlite3", dbconf)
+	db, err := sql.Open("mysql", dbconf)
 	if err != nil {
 		log.Fatal(err)
 	}
