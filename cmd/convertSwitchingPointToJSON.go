@@ -18,7 +18,7 @@ func ConvertSwitchingPointToJSON() {
 	err = json.Unmarshal(file, targets)
 	checkErr(err)
 
-	db, err := sql.Open("sqlite3", MetaDBConfig)
+	db, err := sql.Open("mysql", MetaDBConfig)
 	checkErr(err)
 
 	cacheInfo := CacheInfo{}
@@ -73,7 +73,7 @@ func getStatus(prev, next model.Can) string {
 }
 
 func getSwitchingPoint(db *sql.DB, target string) ([]model.Can, error) {
-	query := fmt.Sprintf("SELECT * FROM cans WHERE target == '%s';", target)
+	query := fmt.Sprintf("SELECT * FROM cans WHERE target = '%s';", target)
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
