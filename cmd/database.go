@@ -52,7 +52,7 @@ func createTableStr(cacheInfo CacheInfo) string {
 	}
 
 	query := `CREATE TABLE cans (
-  id int(11) NOT NULL PRIMARY KEY,
+  id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   target varchar(255) NOT NULL,
 `
 	for _, column := range cacheInfo.Columns {

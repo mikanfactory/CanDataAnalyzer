@@ -96,7 +96,7 @@ func main() {
 		cmd.CreateGoSchema()
 		os.Exit(0)
 	case *flags["table"]:
-		cmd.CreateTable(dbconf)
+		cmd.CleanTable(dbconf)
 		os.Exit(0)
 	case *flags["preprocess"]:
 		cmd.Preprocess()

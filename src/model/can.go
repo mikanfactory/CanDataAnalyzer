@@ -53,6 +53,7 @@ func (m *Can) ToCSV(status string) []string {
 }
 
 func getCans(db *sql.DB, cond Condition, setting Setting) ([]Can, error) {
+	cond.UpdateContent()
 	switch {
 	case setting.Target == "All" && cond.Content == "default":
 		return getAllCans(db)
@@ -84,7 +85,7 @@ func getCansForAllTarget(db *sql.DB, cond Condition) ([]Can, error) {
 }
 
 func getCansByDefaultCondition(db *sql.DB, setting Setting) ([]Can, error) {
-	query := fmt.Sprintf("select * from cans where target == \"%s\"", setting.Target)
+	query := fmt.Sprintf("select * from cans where target = \"%s\"", setting.Target)
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
@@ -93,8 +94,9 @@ func getCansByDefaultCondition(db *sql.DB, setting Setting) ([]Can, error) {
 }
 
 func getCansByCondition(db *sql.DB, cond Condition, setting Setting) ([]Can, error) {
-	query := fmt.Sprintf("select * from cans where target == \"%s\" AND %s",
+	query := fmt.Sprintf("select * from cans where target = \"%s\" AND %s",
 		setting.Target, cond.Content)
+	fmt.Println(query)
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
