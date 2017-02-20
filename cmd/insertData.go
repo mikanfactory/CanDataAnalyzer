@@ -34,9 +34,7 @@ func InsertData() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	if _, err := os.Stat(DBConfig); os.IsExist(err) {
-		destroyAllData()
-	}
+	CleanTable(DBConfig)
 
 	db, err := sql.Open("mysql", DBConfig)
 	checkErr(err)
@@ -144,15 +142,6 @@ func createQueryString(target string, validColumns []Column, field []float64) st
 
 func isIntegerColumn(column Column) bool {
 	return column.Name == "Brake" || column.Name == "Accel"
-}
-
-func destroyAllData() {
-	os.Remove(DBConfig)
-	db, err := sql.Open("sqlite3", DBConfig)
-	checkErr(err)
-
-	_, err = db.Exec("DELETE FROM cans")
-	checkErr(err)
 }
 
 func getValidColumns(cacheInfo CacheInfo) []Column {

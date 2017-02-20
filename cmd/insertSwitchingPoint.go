@@ -15,25 +15,14 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-const metaDBConfig = "root:@/sp"
-
 func InsertSwitchingPoint() {
 	// create table
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	err := os.Remove(metaDBConfig)
-	checkErr(err)
+	CleanTable(MetaDBConfig)
 
-	db, err := sql.Open("mysql", metaDBConfig)
-	checkErr(err)
-
-	q1 := createTableStr(cacheInfo)
-	_, err = db.Exec(q1)
-	checkErr(err)
-
-	q2 := "create index targetIndex on cans(target)"
-	_, err = db.Exec(q2)
+	db, err := sql.Open("mysql", MetaDBConfig)
 	checkErr(err)
 
 	// insert data

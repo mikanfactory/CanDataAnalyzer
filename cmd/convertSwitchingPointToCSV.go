@@ -18,7 +18,7 @@ func ConvertSwitchingPointToCSV() {
 	err = json.Unmarshal(file, targets)
 	checkErr(err)
 
-	db, err := sql.Open("mysql", metaDBConfig)
+	db, err := sql.Open("mysql", MetaDBConfig)
 	checkErr(err)
 
 	cacheInfo := CacheInfo{}

@@ -18,7 +18,7 @@ func ConvertSwitchingPointToJSON() {
 	err = json.Unmarshal(file, targets)
 	checkErr(err)
 
-	db, err := sql.Open("sqlite3", metaDBConfig)
+	db, err := sql.Open("sqlite3", MetaDBConfig)
 	checkErr(err)
 
 	cacheInfo := CacheInfo{}
