@@ -4,22 +4,21 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-const DBConfig = "root:@/summary"
+const (
+	DBConfig     = "root:@/summary"
+	MetaDBConfig = "root:@/sp"
+)
 
-func CreateTable() {
+func CreateTable(dbconfig string) {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	err := os.Remove(DBConfig)
-	checkErr(err)
-
-	db, err := sql.Open("mysql", DBConfig)
+	db, err := sql.Open("mysql", dbconfig)
 	checkErr(err)
 
 	q1 := createTableStr(cacheInfo)
@@ -29,6 +28,20 @@ func CreateTable() {
 	q2 := "create index targetIndex on cans(target)"
 	_, err = db.Exec(q2)
 	checkErr(err)
+}
+
+func DropTable(dbconfig string) {
+	db, err := sql.Open("mysql", dbconfig)
+	checkErr(err)
+
+	query := "drop table if exists cans"
+	_, err = db.Exec(query)
+	checkErr(err)
+}
+
+func CleanTable(dbconfig string) {
+	DropTable(dbconfig)
+	CreateTable(dbconfig)
 }
 
 func createTableStr(cacheInfo CacheInfo) string {
