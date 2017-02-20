@@ -5,10 +5,11 @@ type CacheInfo struct {
 }
 
 type Column struct {
-	Index int64
-	Type  string
-	Name  string
-	Read  bool
+	Index   int64
+	Type    string
+	Name    string
+	Read    bool
+	Summary string
 }
 
 type Targets struct {

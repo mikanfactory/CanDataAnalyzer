@@ -96,10 +96,11 @@ func extractHeader(target string) CacheInfo {
 		}
 
 		column := Column{
-			Index: int64(i),
-			Type:  t,
-			Name:  n,
-			Read:  r,
+			Index:   int64(i),
+			Type:    t,
+			Name:    n,
+			Read:    r,
+			Summary: "average",
 		}
 
 		columns = append(columns, column)
