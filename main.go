@@ -60,8 +60,8 @@ func (s *Server) Init() {
 
 // Route setting router for this app.
 func (s *Server) Route() {
-	api := &controller.API{DB: s.db}
-	root := &controller.Root{}
+	api := &controller.API{DB: s.db, TargetDir: s.Config.Cluster.Dir}
+	root := &controller.Root{Key: s.Config.GoogleMap.Key}
 
 	s.Engine.GET("/", root.Get)
 	s.Engine.POST("/api/v1/marker", api.GetMarkersBySetting)

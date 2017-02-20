@@ -8,10 +8,15 @@ import (
 
 type Config struct {
 	GoogleMap GoogleMap
+	Cluster   Cluster
 }
 
 type GoogleMap struct {
 	Key string
+}
+
+type Cluster struct {
+	Dir string
 }
 
 func LoadConfig() *Config {

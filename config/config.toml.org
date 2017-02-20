@@ -1,2 +1,5 @@
 [GoogleMap]
 key = ""
+
+[Cluster]
+dir = ""

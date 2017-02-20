@@ -13,10 +13,9 @@ import (
 
 // API control request of apis
 type API struct {
-	DB *sql.DB
+	DB        *sql.DB
+	TargetDir string
 }
-
-const targetDir = "data/output/d5/Result/"
 
 func (m *API) GetMarkersBySetting(c echo.Context) error {
 	setting := model.Setting{}
@@ -63,7 +62,7 @@ func (m *API) SaveHeatmapSetting(c echo.Context) error {
 }
 
 func (m *API) GetTask(c echo.Context) error {
-	cluster, err := model.ReadClusterConfig("tasks", targetDir)
+	cluster, err := model.ReadClusterConfig("tasks", m.TargetDir)
 	if err != nil {
 		errorMessage := createErrorMessage(err)
 		return c.JSON(http.StatusBadRequest, errorMessage)
@@ -73,7 +72,7 @@ func (m *API) GetTask(c echo.Context) error {
 }
 
 func (m *API) GetRisk(c echo.Context) error {
-	cluster, err := model.ReadClusterConfig("risks", targetDir)
+	cluster, err := model.ReadClusterConfig("risks", m.TargetDir)
 	if err != nil {
 		errorMessage := createErrorMessage(err)
 		return c.JSON(http.StatusBadRequest, errorMessage)
