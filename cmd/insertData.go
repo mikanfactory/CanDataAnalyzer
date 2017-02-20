@@ -80,8 +80,17 @@ func summarizeColumns(columns []Column, records *[][]string) []float64 {
 }
 
 func summarizeColumn(column Column, records *[][]string) float64 {
-	if column.Name == "Brake" || column.Name == "Accel" || column.Name == "RoadType" {
-		return calcMaxOrMin(column, records)
+	if isIntegerColumn(column) {
+		switch {
+		case column.Summary == "max":
+			return calcMax(column, records)
+		case column.Summary == "min":
+			return calcMin(column, records)
+		case column.Summary == "max||min":
+			return calcMaxOrMin(column, records)
+		default:
+			return calcAverage(column, records)
+		}
 	}
 
 	return calcAverage(column, records)
@@ -106,6 +115,32 @@ func calcMaxOrMin(column Column, records *[][]string) float64 {
 	}
 
 	return float64(max)
+}
+
+func calcMax(column Column, records *[][]string) float64 {
+	max := -100
+	for _, record := range *records {
+		value, _ := strconv.ParseInt(record[column.Index], 10, 0)
+		intv := int(value)
+		if max < intv {
+			max = intv
+		}
+	}
+
+	return float64(max)
+}
+
+func calcMin(column Column, records *[][]string) float64 {
+	min := 100
+	for _, record := range *records {
+		value, _ := strconv.ParseInt(record[column.Index], 10, 0)
+		intv := int(value)
+		if min > intv {
+			min = intv
+		}
+	}
+
+	return float64(min)
 }
 
 func calcAverage(column Column, records *[][]string) float64 {
@@ -141,7 +176,7 @@ func createQueryString(target string, validColumns []Column, field []float64) st
 }
 
 func isIntegerColumn(column Column) bool {
-	return column.Name == "Brake" || column.Name == "Accel"
+	return column.Type == "int64"
 }
 
 func getValidColumns(cacheInfo CacheInfo) []Column {
