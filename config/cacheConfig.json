@@ -1,1534 +1,1126 @@
 {
   "columns": [
     {
-      "Read": false,
-      "Name": "RollSpeed",
+      "Read": true,
+      "Name": "Time",
       "Type": "float64",
       "Index": 0
     },
     {
       "Read": false,
-      "Name": "PitchSpeed",
+      "Name": "YEAR[year]",
       "Type": "float64",
       "Index": 1
     },
     {
       "Read": false,
-      "Name": "YawSpeed",
+      "Name": "SEC[sec]",
       "Type": "float64",
       "Index": 2
     },
     {
       "Read": false,
-      "Name": "AccelerationX",
+      "Name": "MONTH[month]",
       "Type": "float64",
       "Index": 3
     },
     {
       "Read": false,
-      "Name": "AccelerationY",
+      "Name": "MINUTE[min]",
       "Type": "float64",
       "Index": 4
     },
     {
       "Read": false,
-      "Name": "AccelerationZ",
+      "Name": "HOUR[hour]",
       "Type": "float64",
       "Index": 5
     },
     {
       "Read": false,
-      "Name": "RollAngele",
+      "Name": "DAY[day]",
       "Type": "float64",
       "Index": 6
     },
     {
       "Read": false,
-      "Name": "PitchAngel",
+      "Name": "STAT",
       "Type": "float64",
       "Index": 7
     },
     {
       "Read": false,
-      "Name": "YawAngle",
+      "Name": "GPS_S_NUM",
       "Type": "float64",
       "Index": 8
     },
     {
       "Read": true,
-      "Name": "Latitude",
+      "Name": "Longitude",
       "Type": "float64",
       "Index": 9
     },
     {
       "Read": true,
-      "Name": "Longitude",
+      "Name": "Latitude",
       "Type": "float64",
       "Index": 10
     },
     {
-      "Read": true,
-      "Name": "GPSSpeed",
+      "Read": false,
+      "Name": "ALT[m]",
       "Type": "float64",
       "Index": 11
     },
     {
       "Read": false,
-      "Name": "GPSDirection",
+      "Name": "GPS_TMP2",
       "Type": "float64",
       "Index": 12
     },
     {
       "Read": false,
-      "Name": "GPSHeight",
+      "Name": "GPS_TMP1",
       "Type": "float64",
       "Index": 13
     },
     {
       "Read": false,
-      "Name": "PositioningStatus",
+      "Name": "ALTITUDE",
       "Type": "float64",
       "Index": 14
     },
     {
       "Read": false,
-      "Name": "NumOfSatellite",
+      "Name": "AZIMUTH",
       "Type": "float64",
       "Index": 15
     },
     {
       "Read": false,
-      "Name": "GPSDifference",
+      "Name": "SPEED",
       "Type": "float64",
       "Index": 16
     },
     {
       "Read": false,
-      "Name": "Speed",
+      "Name": "VSP40_MET[km\/h]",
       "Type": "float64",
       "Index": 17
     },
     {
       "Read": false,
-      "Name": "Mileage",
+      "Name": "VS_DISP",
       "Type": "float64",
       "Index": 18
     },
     {
-      "Read": false,
-      "Name": "Date",
-      "Type": "string",
+      "Read": true,
+      "Name": "Speed",
+      "Type": "float64",
       "Index": 19
     },
     {
       "Read": false,
-      "Name": "Time",
-      "Type": "string",
-      "Index": 20
-    },
-    {
-      "Read": false,
-      "Name": "ErrorState",
+      "Name": "V_APO[%]",
       "Type": "float64",
-      "Index": 21
+      "Index": 20
     },
     {
       "Read": true,
       "Name": "Brake",
       "Type": "int64",
+      "Index": 21
+    },
+    {
+      "Read": false,
+      "Name": "PSS_02[bar]",
+      "Type": "float64",
       "Index": 22
     },
     {
       "Read": false,
-      "Name": "A02",
+      "Name": "YAW_RATE_02[deg\/s]",
       "Type": "float64",
       "Index": 23
     },
     {
-      "Read": true,
-      "Name": "Accel",
-      "Type": "int64",
+      "Read": false,
+      "Name": "TRANS_ACC_02[G]",
+      "Type": "float64",
       "Index": 24
     },
     {
       "Read": false,
-      "Name": "A04",
+      "Name": "LONG_ACC_02[G]",
       "Type": "float64",
       "Index": 25
     },
     {
       "Read": true,
-      "Name": "SteeringAngle",
-      "Type": "float64",
+      "Name": "Accel",
+      "Type": "int64",
       "Index": 26
     },
     {
-      "Read": false,
-      "Name": "A06",
+      "Read": true,
+      "Name": "Engine",
       "Type": "float64",
       "Index": 27
     },
     {
       "Read": false,
-      "Name": "A07",
+      "Name": "TTEPTD_ETRQDR[Nm]",
       "Type": "float64",
       "Index": 28
     },
     {
       "Read": false,
-      "Name": "SyncSignal",
+      "Name": "ErgonomicPedal_ATAPOST[%]",
       "Type": "float64",
       "Index": 29
     },
     {
       "Read": false,
-      "Name": "A09",
+      "Name": "TENG2[Nm]",
       "Type": "float64",
       "Index": 30
     },
     {
-      "Read": false,
-      "Name": "A10",
+      "Read": true,
+      "Name": "AheadDistance",
       "Type": "float64",
       "Index": 31
     },
     {
       "Read": false,
-      "Name": "A11",
+      "Name": "TWN[degC]",
       "Type": "float64",
       "Index": 32
     },
     {
       "Read": false,
-      "Name": "A12",
+      "Name": "CURGPV",
       "Type": "float64",
       "Index": 33
     },
     {
       "Read": false,
-      "Name": "A13",
+      "Name": "TIM_FINE[mm3]",
       "Type": "float64",
       "Index": 34
     },
     {
       "Read": false,
-      "Name": "A14",
+      "Name": "Curve_20[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 35
     },
     {
       "Read": false,
-      "Name": "A15",
+      "Name": "Curve_19[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 36
     },
     {
       "Read": false,
-      "Name": "A16",
+      "Name": "Curve_18[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 37
     },
     {
       "Read": false,
-      "Name": "D01",
+      "Name": "Curve_17[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 38
     },
     {
       "Read": false,
-      "Name": "D02",
+      "Name": "Curve_16[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 39
     },
     {
       "Read": false,
-      "Name": "D03",
+      "Name": "Curve_15[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 40
     },
     {
       "Read": false,
-      "Name": "D04",
+      "Name": "Curve_14[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 41
     },
     {
       "Read": false,
-      "Name": "D05",
+      "Name": "Curve_13[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 42
     },
     {
       "Read": false,
-      "Name": "D06",
+      "Name": "Curve_12[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 43
     },
     {
       "Read": false,
-      "Name": "D07",
+      "Name": "Curve_11[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 44
     },
     {
       "Read": false,
-      "Name": "D08",
+      "Name": "Curve_10[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 45
     },
     {
       "Read": false,
-      "Name": "R_blinker",
+      "Name": "Curve_9[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 46
     },
     {
       "Read": false,
-      "Name": "L_blinker",
+      "Name": "Curve_8[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 47
     },
     {
       "Read": false,
-      "Name": "Brakelamp",
+      "Name": "Curve_7[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 48
     },
     {
       "Read": false,
-      "Name": "D12",
+      "Name": "Curve_6[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 49
     },
     {
       "Read": false,
-      "Name": "D13",
+      "Name": "Curve_5[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 50
     },
     {
       "Read": false,
-      "Name": "D14",
+      "Name": "Curve_4[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 51
     },
     {
       "Read": false,
-      "Name": "Cover_BP",
+      "Name": "Curve_3[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 52
     },
     {
       "Read": false,
-      "Name": "Cover_AP",
+      "Name": "Curve_2[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 53
     },
     {
       "Read": false,
-      "Name": "D17",
+      "Name": "Curve_1[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 54
     },
     {
       "Read": false,
-      "Name": "D18",
+      "Name": "Curve_0[\ufffd\ufffdm]",
       "Type": "float64",
       "Index": 55
     },
     {
       "Read": false,
-      "Name": "D19",
+      "Name": "STRSPEED[deg\/s]",
       "Type": "float64",
       "Index": 56
     },
     {
-      "Read": false,
-      "Name": "D20",
+      "Read": true,
+      "Name": "SteeringAngle",
       "Type": "float64",
       "Index": 57
     },
     {
       "Read": false,
-      "Name": "D21",
+      "Name": "OWN_LOCATION",
       "Type": "float64",
       "Index": 58
     },
     {
-      "Read": false,
-      "Name": "D22",
+      "Read": true,
+      "Name": "BranchFlag",
       "Type": "float64",
       "Index": 59
     },
     {
       "Read": false,
-      "Name": "D23",
+      "Name": "LINKF_FLG",
       "Type": "float64",
       "Index": 60
     },
     {
       "Read": false,
-      "Name": "D24",
+      "Name": "LINKF_DIST[m]",
       "Type": "float64",
       "Index": 61
     },
     {
       "Read": false,
-      "Name": "Radar1-1 HorizontalPositionX",
+      "Name": "OUTREADY",
       "Type": "float64",
       "Index": 62
     },
     {
       "Read": false,
-      "Name": "Radar1-1 HighPositionY",
+      "Name": "OUT_DIST[m]",
       "Type": "float64",
       "Index": 63
     },
     {
       "Read": false,
-      "Name": "Radar1-1 RelativityDistanceZ",
+      "Name": "GPSPositionSta",
       "Type": "float64",
       "Index": 64
     },
     {
       "Read": false,
-      "Name": "Radar1-1 CarLineProbability",
+      "Name": "TurningFlag",
       "Type": "float64",
       "Index": 65
     },
     {
       "Read": false,
-      "Name": "Radar1-1 CarShapeProbability",
+      "Name": "MatchingSta",
       "Type": "float64",
       "Index": 66
     },
     {
-      "Read": false,
-      "Name": "Radar1-1 SampleState",
+      "Read": true,
+      "Name": "DistTollgate",
       "Type": "float64",
       "Index": 67
     },
     {
       "Read": false,
-      "Name": "Radar1-1 RelativitySpeedX",
+      "Name": "DistDivergence[m]",
       "Type": "float64",
       "Index": 68
     },
     {
       "Read": false,
-      "Name": "Radar1-1 RelativitySpeedZ",
+      "Name": "RootGuidingFlag",
       "Type": "float64",
       "Index": 69
     },
     {
       "Read": false,
-      "Name": "Radar1-1 HorizontalSizeX",
+      "Name": "RootGuideSta",
       "Type": "float64",
       "Index": 70
     },
     {
-      "Read": false,
-      "Name": "Radar1-1 HighSizeY",
+      "Read": true,
+      "Name": "RoadType",
       "Type": "float64",
       "Index": 71
     },
     {
       "Read": false,
-      "Name": "Radar1-1 DepthHeightZ",
+      "Name": "LinkType",
       "Type": "float64",
       "Index": 72
     },
     {
       "Read": false,
-      "Name": "Radar1-1 RelativityAcceleration",
+      "Name": "InGuidingFlag",
       "Type": "float64",
       "Index": 73
     },
     {
       "Read": false,
-      "Name": "Radar1-2 HorizontalPositionX",
+      "Name": "INPREV[rpm]",
       "Type": "float64",
       "Index": 74
     },
     {
       "Read": false,
-      "Name": "Radar1-2 HighPositionY",
+      "Name": "OUTREV[rpm]",
       "Type": "float64",
       "Index": 75
     },
     {
       "Read": false,
-      "Name": "Radar1-2 RelativityDistanceZ",
+      "Name": "AscMode_Status",
       "Type": "float64",
       "Index": 76
     },
     {
       "Read": false,
-      "Name": "Radar1-2 CarLineProbability",
+      "Name": "NEXTGP",
       "Type": "float64",
       "Index": 77
     },
     {
       "Read": false,
-      "Name": "Radar1-2 CarShapeProbability",
+      "Name": "CURGP",
       "Type": "float64",
       "Index": 78
     },
     {
       "Read": false,
-      "Name": "Radar1-2 SampleState",
+      "Name": "HL_HIGH_REQ",
       "Type": "float64",
       "Index": 79
     },
     {
       "Read": false,
-      "Name": "Radar1-2 RelativitySpeedX",
+      "Name": "TURN_IND",
       "Type": "float64",
       "Index": 80
     },
     {
       "Read": false,
-      "Name": "Radar1-2 RelativitySpeedZ",
+      "Name": "TAIL_L_REQ",
       "Type": "float64",
       "Index": 81
     },
     {
       "Read": false,
-      "Name": "Radar1-2 HorizontalSizeY",
+      "Name": "HL_LOW_REQ",
       "Type": "float64",
       "Index": 82
     },
     {
       "Read": false,
-      "Name": "Radar1-2 HighSizeY",
+      "Name": "TENG[Nm]",
       "Type": "float64",
       "Index": 83
     },
     {
       "Read": false,
-      "Name": "Radar1-2 DepthSizeZ",
+      "Name": "ACCACT",
       "Type": "float64",
       "Index": 84
     },
     {
       "Read": false,
-      "Name": "Radar1-2 RelativityAcceleration",
+      "Name": "ACC_ACT",
       "Type": "float64",
       "Index": 85
     },
     {
       "Read": false,
-      "Name": "Radar1-3 HorizontalPositionX",
+      "Name": "TECMD_S_upper[Nm]",
       "Type": "float64",
       "Index": 86
     },
     {
       "Read": false,
-      "Name": "Radar1-3 HighPositionY",
+      "Name": "TECMD_S_lower[Nm]",
       "Type": "float64",
       "Index": 87
     },
     {
       "Read": false,
-      "Name": "Radar1-3 RelativityDistanceZ",
+      "Name": "TECMD_M_upper[Nm]",
       "Type": "float64",
       "Index": 88
     },
     {
       "Read": false,
-      "Name": "Radar1-3 CarLineProbability",
+      "Name": "TECMD_M_lower[Nm]",
       "Type": "float64",
       "Index": 89
     },
     {
       "Read": false,
-      "Name": "Radar1-3 CarShapeProbability",
+      "Name": "SET_DIST",
       "Type": "float64",
       "Index": 90
     },
     {
       "Read": false,
-      "Name": "Radar1-3 SampleState",
+      "Name": "SET_VSP",
       "Type": "float64",
       "Index": 91
     },
     {
       "Read": false,
-      "Name": "Radar1-3 RelativitySpeedX",
+      "Name": "ASCDSW8",
       "Type": "float64",
       "Index": 92
     },
     {
       "Read": false,
-      "Name": "Radar1-3 RelativitySpeedZ",
+      "Name": "ASCDSW7",
       "Type": "float64",
       "Index": 93
     },
     {
       "Read": false,
-      "Name": "Radar1-3 HorizontalSizeY",
+      "Name": "ASCDSW6",
       "Type": "float64",
       "Index": 94
     },
     {
       "Read": false,
-      "Name": "Radar1-3 HighSizeY",
+      "Name": "ASCDSW5",
       "Type": "float64",
       "Index": 95
     },
     {
       "Read": false,
-      "Name": "Radar1-3 DepthSizeZ",
+      "Name": "ASCDSW4",
       "Type": "float64",
       "Index": 96
     },
     {
       "Read": false,
-      "Name": "Radar1-3 RelativityAcceleration",
+      "Name": "ASCDSW3",
       "Type": "float64",
       "Index": 97
     },
     {
       "Read": false,
-      "Name": "Radar1-4 HorizontalPositionX",
+      "Name": "ASCDSW2",
       "Type": "float64",
       "Index": 98
     },
     {
       "Read": false,
-      "Name": "Radar1-4 HighPositionY",
+      "Name": "ASCDSW1",
       "Type": "float64",
       "Index": 99
     },
     {
       "Read": false,
-      "Name": "Radar1-4 RelativityDistanceZ",
+      "Name": "Dr_PTC[degC]",
       "Type": "float64",
       "Index": 100
     },
     {
       "Read": false,
-      "Name": "Radar1-4 CarLineProbability",
+      "Name": "Passenger_PTC[degC]",
       "Type": "float64",
       "Index": 101
     },
     {
       "Read": false,
-      "Name": "Radar1-4 CarShapeProbability",
+      "Name": "Rear_PTC[degC]",
       "Type": "float64",
       "Index": 102
     },
     {
       "Read": false,
-      "Name": "Radar1-4 SampleState",
+      "Name": "OutsideTemp[degC or degF]",
       "Type": "float64",
       "Index": 103
     },
     {
       "Read": false,
-      "Name": "Radar1-4 RelativitySpeedX",
+      "Name": "COMP_ACT",
       "Type": "float64",
       "Index": 104
     },
     {
       "Read": false,
-      "Name": "Radar1-4 RelativitySpeedZ",
+      "Name": "AC_COMP_REQ",
       "Type": "float64",
       "Index": 105
     },
     {
       "Read": false,
-      "Name": "Radar1-4 HorizontalSizeY",
+      "Name": "OutsideTemp_AD[degC]",
       "Type": "float64",
       "Index": 106
     },
     {
       "Read": false,
-      "Name": "Radar1-4 HighSizeY",
+      "Name": "EventSw[-]",
       "Type": "float64",
       "Index": 107
     },
     {
       "Read": false,
-      "Name": "Radar1-4 DepthSizeZ",
+      "Name": "ErrorFrameCnt[Count\/sec]",
       "Type": "float64",
       "Index": 108
     },
     {
       "Read": false,
-      "Name": "Radar1-4 RelativityAcceleration",
+      "Name": "BusLoad[%]",
       "Type": "float64",
       "Index": 109
     },
     {
       "Read": false,
-      "Name": "Radar1-5 HorizontalPositionX",
+      "Name": "ErrorFrameCnt[Count\/sec]",
       "Type": "float64",
       "Index": 110
     },
     {
       "Read": false,
-      "Name": "Radar1-5 HighPositionY",
+      "Name": "BusLoad[%]",
       "Type": "float64",
       "Index": 111
     },
     {
       "Read": false,
-      "Name": "Radar1-5 RelativityDistanceZ",
+      "Name": "BaudRate[kbps]",
       "Type": "float64",
       "Index": 112
     },
     {
       "Read": false,
-      "Name": "Radar1-5 CarLineProbability",
+      "Name": "BytesToBeTransferred[byte]",
       "Type": "float64",
       "Index": 113
     },
     {
       "Read": false,
-      "Name": "Radar1-5 CarShapeProbability",
+      "Name": "InternalTemp[degC]",
       "Type": "float64",
       "Index": 114
     },
     {
       "Read": false,
-      "Name": "Radar1-5 SampleState",
+      "Name": "GXmin[m\/s^2]",
       "Type": "float64",
       "Index": 115
     },
     {
       "Read": false,
-      "Name": "Radar1-5 RelativitySpeedX",
+      "Name": "GXmax[m\/s^2]",
       "Type": "float64",
       "Index": 116
     },
     {
       "Read": false,
-      "Name": "Radar1-5 RelativitySpeedZ",
+      "Name": "GXave[m\/s^2]",
       "Type": "float64",
       "Index": 117
     },
     {
       "Read": false,
-      "Name": "Radar1-5 HorizontalSizeY",
+      "Name": "GYmin[m\/s^2]",
       "Type": "float64",
       "Index": 118
     },
     {
       "Read": false,
-      "Name": "Radar1-5 HighSizeY",
+      "Name": "GYmax[m\/s^2]",
       "Type": "float64",
       "Index": 119
     },
     {
       "Read": false,
-      "Name": "Radar1-5 DepthSizeZ",
+      "Name": "GYave[m\/s^2]",
       "Type": "float64",
       "Index": 120
     },
     {
       "Read": false,
-      "Name": "Radar1-5 RelativityAcceleration",
+      "Name": "GZmin[m\/s^2]",
       "Type": "float64",
       "Index": 121
     },
     {
       "Read": false,
-      "Name": "Radar1-6 HorizontalPositionX",
+      "Name": "GZmax[m\/s^2]",
       "Type": "float64",
       "Index": 122
     },
     {
       "Read": false,
-      "Name": "Radar1-6 HighPositionY",
+      "Name": "GZave[m\/s^2]",
       "Type": "float64",
       "Index": 123
     },
     {
-      "Read": false,
-      "Name": "Radar1-6 RelativityDistanceZ",
-      "Type": "float64",
-      "Index": 124
-    },
-    {
-      "Read": false,
-      "Name": "Radar1-6 CarLineProbability",
+      "Read": true,
+      "Name": "GreenLamp",
       "Type": "float64",
       "Index": 125
     },
     {
       "Read": false,
-      "Name": "Radar1-6 CarShapeProbability",
+      "Name": "VC_GreenLampDistance[m]",
       "Type": "float64",
       "Index": 126
     },
     {
-      "Read": false,
-      "Name": "Radar1-6 SampleState",
+      "Read": true,
+      "Name": "RedLamp",
       "Type": "float64",
       "Index": 127
     },
     {
       "Read": false,
-      "Name": "Radar1-6 RelativitySpeedX",
+      "Name": "VC_RedLampDistance[m]",
       "Type": "float64",
       "Index": 128
     },
     {
-      "Read": false,
-      "Name": "Radar1-6 RelativitySpeedZ",
+      "Read": true,
+      "Name": "RightLamp",
       "Type": "float64",
       "Index": 129
     },
     {
       "Read": false,
-      "Name": "Radar1-6 HorizontalSizeY",
+      "Name": "VC_RightLampDistance[m]",
       "Type": "float64",
       "Index": 130
     },
     {
-      "Read": false,
-      "Name": "Radar1-6 HighSizeY",
+      "Read": true,
+      "Name": "UpLamp",
       "Type": "float64",
       "Index": 131
     },
     {
       "Read": false,
-      "Name": "Radar1-6 DepthSizeZ",
+      "Name": "VC_UpLampDistance[m]",
       "Type": "float64",
       "Index": 132
     },
     {
-      "Read": false,
-      "Name": "Radar1-6 RelativityAcceleration",
+      "Read": true,
+      "Name": "LeftLamp",
       "Type": "float64",
       "Index": 133
     },
     {
       "Read": false,
-      "Name": "Radar1-7 HorizontalPositionX",
+      "Name": "VC_LeftLampDistance[m]",
       "Type": "float64",
       "Index": 134
     },
     {
-      "Read": false,
-      "Name": "Radar1-7 HighPositionY",
+      "Read": true,
+      "Name": "StopSign",
       "Type": "float64",
       "Index": 135
     },
     {
       "Read": false,
-      "Name": "Radar1-7 RelativityDistanceZ",
+      "Name": "VC_StopSignDistance[m]",
       "Type": "float64",
       "Index": 136
     },
     {
-      "Read": false,
-      "Name": "Radar1-7 CarLineProbability",
+      "Read": true,
+      "Name": "Limit30Sign",
       "Type": "float64",
       "Index": 137
     },
     {
       "Read": false,
-      "Name": "Radar1-7 CarShapeProbability",
+      "Name": "VC_30SignDistance[m]",
       "Type": "float64",
       "Index": 138
     },
     {
-      "Read": false,
-      "Name": "Radar1-7 SampleState",
+      "Read": true,
+      "Name": "Limit50Sign",
       "Type": "float64",
       "Index": 139
     },
     {
       "Read": false,
-      "Name": "Radar1-7 RelativitySpeedX",
+      "Name": "VC_50SignDistance[m]",
       "Type": "float64",
       "Index": 140
     },
     {
       "Read": false,
-      "Name": "Radar1-7 RelativitySpeedZ",
+      "Name": "VC_NotParkingSign",
       "Type": "float64",
       "Index": 141
     },
     {
       "Read": false,
-      "Name": "Radar1-7 HorizontalSizeY",
+      "Name": "VC_NotParkingSignDistance[m]",
       "Type": "float64",
       "Index": 142
     },
     {
       "Read": false,
-      "Name": "Radar1-7 HighSizeY",
+      "Name": "VC_NotParkingAndStopSign",
       "Type": "float64",
       "Index": 143
     },
     {
       "Read": false,
-      "Name": "Radar1-7 DepthSizeZ",
+      "Name": "VC_NotParkingAndStopSignDistance[m]",
       "Type": "float64",
       "Index": 144
     },
     {
       "Read": false,
-      "Name": "Radar1-7 RelativityAcceleration",
+      "Name": "VC_CarCount",
       "Type": "float64",
       "Index": 145
     },
     {
       "Read": false,
-      "Name": "Radar1-8 HorizontalPositionX",
+      "Name": "VC_Car",
       "Type": "float64",
       "Index": 146
     },
     {
       "Read": false,
-      "Name": "Radar1-8 HighPositionY",
+      "Name": "VC_CarDistance[m]",
       "Type": "float64",
       "Index": 147
     },
     {
-      "Read": false,
-      "Name": "Radar1-8 RelativityDistanceZ",
+      "Read": true,
+      "Name": "BrakeCar",
       "Type": "float64",
       "Index": 148
     },
     {
       "Read": false,
-      "Name": "Radar1-8 CarLineProbability",
+      "Name": "VC_CarBrakeDistance[m]",
       "Type": "float64",
       "Index": 149
     },
     {
-      "Read": false,
-      "Name": "Radar1-8 CarShapeProbability",
+      "Read": true,
+      "Name": "LeftCar",
       "Type": "float64",
       "Index": 150
     },
     {
       "Read": false,
-      "Name": "Radar1-8 SampleState",
+      "Name": "VC_LeftCarDistance[m]",
       "Type": "float64",
       "Index": 151
     },
     {
       "Read": false,
-      "Name": "Radar1-8 RelativitySpeedX",
+      "Name": "VC_RightCar",
       "Type": "float64",
       "Index": 152
     },
     {
       "Read": false,
-      "Name": "Radar1-8 RelativitySpeedZ",
+      "Name": "VC_RightCarDistance[m]",
       "Type": "float64",
       "Index": 153
     },
     {
-      "Read": false,
-      "Name": "Radar1-8 HorizontalSizeY",
+      "Read": true,
+      "Name": "ManBicycleCount",
       "Type": "float64",
       "Index": 154
     },
     {
-      "Read": false,
-      "Name": "Radar1-8 HighSizeY",
+      "Read": true,
+      "Name": "ManBicycle",
       "Type": "float64",
       "Index": 155
     },
     {
-      "Read": false,
-      "Name": "Radar1-8 DepthSizeZ",
+      "Read": true,
+      "Name": "DistManBicycle",
       "Type": "float64",
       "Index": 156
     },
     {
       "Read": false,
-      "Name": "Radar1-8 RelativityAcceleration",
+      "Name": "VC_CrossCarCount",
       "Type": "float64",
       "Index": 157
     },
     {
       "Read": false,
-      "Name": "Radar2-1 HorizontalPositionX",
+      "Name": "VC_CrossCar",
       "Type": "float64",
       "Index": 158
     },
     {
       "Read": false,
-      "Name": "Radar2-1 HighPositionY",
+      "Name": "VC_Heigth",
       "Type": "float64",
       "Index": 159
     },
     {
-      "Read": false,
-      "Name": "Radar2-1 RelativityDistanceZ",
+      "Read": true,
+      "Name": "Pitch",
       "Type": "float64",
       "Index": 160
     },
     {
       "Read": false,
-      "Name": "Radar2-1 CarLineProbability",
+      "Name": "VC_DistSlopeStart",
       "Type": "float64",
       "Index": 161
     },
     {
       "Read": false,
-      "Name": "Radar2-1 CarShapeProbability",
+      "Name": "VC_DistSlopeEnd",
       "Type": "float64",
       "Index": 162
     },
     {
       "Read": false,
-      "Name": "Radar2-1 SampleState",
+      "Name": "VC_Distance",
       "Type": "float64",
       "Index": 163
     },
     {
       "Read": false,
-      "Name": "Radar2-1 RelativitySpeedX",
+      "Name": "VC_Curvature",
       "Type": "float64",
       "Index": 164
     },
     {
-      "Read": false,
-      "Name": "Radar2-1 RelativitySpeedZ",
+      "Read": true,
+      "Name": "DistSignal",
       "Type": "float64",
       "Index": 165
     },
     {
       "Read": false,
-      "Name": "Radar2-1 HorizontalSizeY",
+      "Name": "VC_RoadCls",
       "Type": "float64",
       "Index": 166
     },
     {
-      "Read": false,
-      "Name": "Radar2-1 HighSizeY",
+      "Read": true,
+      "Name": "PathType",
       "Type": "float64",
       "Index": 167
     },
     {
       "Read": false,
-      "Name": "Radar2-1 DepthSizeZ",
+      "Name": "VC_LinkCls",
       "Type": "float64",
       "Index": 168
     },
     {
       "Read": false,
-      "Name": "Radar2-1 RelativityAcceleration",
+      "Name": "VC_Manager",
       "Type": "float64",
       "Index": 169
     },
     {
       "Read": false,
-      "Name": "Radar2-2 HorizontalPositionX",
+      "Name": "VC_Width",
       "Type": "float64",
       "Index": 170
     },
     {
       "Read": false,
-      "Name": "Radar2-2 HighPositionY",
+      "Name": "VC_WideArea",
       "Type": "float64",
       "Index": 171
     },
     {
       "Read": false,
-      "Name": "Radar2-2 RelativityDistanceZ",
+      "Name": "VC_Island",
       "Type": "float64",
       "Index": 172
     },
     {
       "Read": false,
-      "Name": "Radar2-2 CarLineProbability",
+      "Name": "VC_Bypass",
       "Type": "float64",
       "Index": 173
     },
     {
       "Read": false,
-      "Name": "Radar2-2 CarShapeProbability",
+      "Name": "VC_CarOnly",
       "Type": "float64",
       "Index": 174
     },
     {
       "Read": false,
-      "Name": "Radar2-2 SampleState",
+      "Name": "VC_RoadNo",
       "Type": "float64",
       "Index": 175
     },
     {
       "Read": false,
-      "Name": "Radar2-2 RelativitySpeedX",
+      "Name": "VC_RoadCode",
       "Type": "float64",
       "Index": 176
     },
     {
-      "Read": false,
-      "Name": "Radar2-2 RelativitySpeedZ",
+      "Read": true,
+      "Name": "LaneCount",
       "Type": "float64",
       "Index": 177
     },
     {
       "Read": false,
-      "Name": "Radar2-2 HorizontalSizeY",
+      "Name": "VC_NoPass",
       "Type": "float64",
       "Index": 178
     },
     {
       "Read": false,
-      "Name": "Radar2-2 HighSizeY",
+      "Name": "VC_OneWay",
       "Type": "float64",
       "Index": 179
     },
     {
       "Read": false,
-      "Name": "Radar2-2 DepthSizeZ",
+      "Name": "VC_ErrorDistance[m]",
       "Type": "float64",
       "Index": 180
     },
     {
-      "Read": false,
-      "Name": "Radar2-2 RelativityAcceleration",
+      "Read": true,
+      "Name": "AccelerationSpeed",
       "Type": "float64",
       "Index": 181
     },
     {
-      "Read": false,
-      "Name": "Radar2-3 HorizontalPositionX",
+      "Read": true,
+      "Name": "Jerk",
       "Type": "float64",
       "Index": 182
     },
     {
       "Read": false,
-      "Name": "Radar2-3 HighPositionY",
+      "Name": "slope",
       "Type": "float64",
       "Index": 183
     },
     {
       "Read": false,
-      "Name": "Radar2-3 RelativityDistanceZ",
+      "Name": "TimeHeadway",
       "Type": "float64",
       "Index": 184
     },
     {
       "Read": false,
-      "Name": "Radar2-3 CarLineProbability",
+      "Name": "TimeToCollision",
       "Type": "float64",
       "Index": 185
     },
     {
       "Read": false,
-      "Name": "Radar2-3 CarShapeProbability",
+      "Name": "RiskFactor",
       "Type": "float64",
       "Index": 186
     },
     {
       "Read": false,
-      "Name": "Radar2-3 SampleState",
+      "Name": "DistSTOP",
       "Type": "float64",
       "Index": 187
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-3 RelativitySpeedX",
-      "Type": "float64",
-      "Index": 188
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-3 RelativitySpeedZ",
-      "Type": "float64",
-      "Index": 189
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-3 HorizontalSizeY",
-      "Type": "float64",
-      "Index": 190
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-3 HighSizeY",
-      "Type": "float64",
-      "Index": 191
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-3 DepthSizeZ",
-      "Type": "float64",
-      "Index": 192
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-3 RelativityAcceleration",
-      "Type": "float64",
-      "Index": 193
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-4 HorizontalPositionX",
-      "Type": "float64",
-      "Index": 194
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-4 HighPositionY",
-      "Type": "float64",
-      "Index": 195
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-4 RelativityDistanceZ",
-      "Type": "float64",
-      "Index": 196
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-4 CarLineProbability",
-      "Type": "float64",
-      "Index": 197
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-4 CarShapeProbability",
-      "Type": "float64",
-      "Index": 198
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-4 SampleState",
-      "Type": "float64",
-      "Index": 199
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-4 RelativitySpeedX",
-      "Type": "float64",
-      "Index": 200
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-4 RelativitySpeedZ",
-      "Type": "float64",
-      "Index": 201
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-4 HorizontalSizeY",
-      "Type": "float64",
-      "Index": 202
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-4 HighSizeY",
-      "Type": "float64",
-      "Index": 203
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-4 DepthSizeZ",
-      "Type": "float64",
-      "Index": 204
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-4 RelativityAcceleration",
-      "Type": "float64",
-      "Index": 205
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-5 HorizontalPositionX",
-      "Type": "float64",
-      "Index": 206
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-5 HighPositionY",
-      "Type": "float64",
-      "Index": 207
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-5 RelativityDistanceZ",
-      "Type": "float64",
-      "Index": 208
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-5 CarLineProbability",
-      "Type": "float64",
-      "Index": 209
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-5 CarShapeProbability",
-      "Type": "float64",
-      "Index": 210
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-5 SampleState",
-      "Type": "float64",
-      "Index": 211
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-5 RelativitySpeedX",
-      "Type": "float64",
-      "Index": 212
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-5 RelativitySpeedZ",
-      "Type": "float64",
-      "Index": 213
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-5 HorizontalSizeY",
-      "Type": "float64",
-      "Index": 214
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-5 HighSizeY",
-      "Type": "float64",
-      "Index": 215
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-5 DepthSizeZ",
-      "Type": "float64",
-      "Index": 216
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-5 RelativityAcceleration",
-      "Type": "float64",
-      "Index": 217
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-6 HorizontalPositionX",
-      "Type": "float64",
-      "Index": 218
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-6 HighPositionY",
-      "Type": "float64",
-      "Index": 219
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-6 RelativityDistanceZ",
-      "Type": "float64",
-      "Index": 220
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-6 CarLineProbability",
-      "Type": "float64",
-      "Index": 221
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-6 CarShapeProbability",
-      "Type": "float64",
-      "Index": 222
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-6 SampleState",
-      "Type": "float64",
-      "Index": 223
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-6 RelativitySpeedX",
-      "Type": "float64",
-      "Index": 224
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-6 RelativitySpeedZ",
-      "Type": "float64",
-      "Index": 225
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-6 HorizontalSizeY",
-      "Type": "float64",
-      "Index": 226
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-6 HighSizeY",
-      "Type": "float64",
-      "Index": 227
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-6 DepthSizeZ",
-      "Type": "float64",
-      "Index": 228
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-6 RelativityAcceleration",
-      "Type": "float64",
-      "Index": 229
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-7 HorizontalPositionX",
-      "Type": "float64",
-      "Index": 230
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-7 HighPositionY",
-      "Type": "float64",
-      "Index": 231
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-7 RelativityDistanceZ",
-      "Type": "float64",
-      "Index": 232
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-7 CarLineProbability",
-      "Type": "float64",
-      "Index": 233
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-7 CarShapeProbability",
-      "Type": "float64",
-      "Index": 234
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-7 SampleState",
-      "Type": "float64",
-      "Index": 235
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-7 RelativitySpeedX",
-      "Type": "float64",
-      "Index": 236
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-7 RelativitySpeedZ",
-      "Type": "float64",
-      "Index": 237
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-7 HorizontalSizeY",
-      "Type": "float64",
-      "Index": 238
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-7 HighSizeY",
-      "Type": "float64",
-      "Index": 239
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-7 DepthSizeZ",
-      "Type": "float64",
-      "Index": 240
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-7 RelativityAcceleration",
-      "Type": "float64",
-      "Index": 241
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-8 HorizontalPositionX",
-      "Type": "float64",
-      "Index": 242
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-8 HighPositionY",
-      "Type": "float64",
-      "Index": 243
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-8 RelativityDistanceZ",
-      "Type": "float64",
-      "Index": 244
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-8 CarLineProbability",
-      "Type": "float64",
-      "Index": 245
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-8 CarShapeProbability",
-      "Type": "float64",
-      "Index": 246
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-8 SampleState",
-      "Type": "float64",
-      "Index": 247
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-8 RelativitySpeedX",
-      "Type": "float64",
-      "Index": 248
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-8 RelativitySpeedZ",
-      "Type": "float64",
-      "Index": 249
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-8 HorizontalSizeY",
-      "Type": "float64",
-      "Index": 250
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-8 HighSizeY",
-      "Type": "float64",
-      "Index": 251
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-8 DepthSizeZ",
-      "Type": "float64",
-      "Index": 252
-    },
-    {
-      "Read": false,
-      "Name": "Radar2-8 RelativityAcceleration",
-      "Type": "float64",
-      "Index": 253
-    },
-    {
-      "Read": false,
-      "Name": "SteeringWheel",
-      "Type": "float64",
-      "Index": 254
     }
   ]
 }
