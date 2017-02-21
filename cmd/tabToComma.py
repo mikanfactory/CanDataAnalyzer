@@ -4,10 +4,16 @@ import glob
 
 
 if __name__ == "__main__":
-    files = glob.glob('cmd/tmp/*.txt')
+    files = glob.glob('data/csv/*.csv')
     for file in files:
-        path, _ = os.path.splitext(file)
+        basename = os.path.basename(file)
+        name, _ = os.path.splitext(basename)
 
-        df = pd.read_table(file)
-        df = df.ix[1:]
-        df.to_csv(path + ".csv", index=False)
+        tdf = pd.read_table("data/tsv/%s.csv" % name)
+        tdf = tdf.ix[1:]
+
+        cdf = pd.read_csv("data/csv/%s.csv" % name)
+        cdf = cdf.ix[1:]
+
+        df = pd.concat(tdf, cdf, axis=1)
+        df.to_csv("data/original/%s.csv" % name, index=False)
