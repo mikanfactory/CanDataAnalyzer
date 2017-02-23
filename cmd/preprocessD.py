@@ -21,12 +21,16 @@ def updateCSV(fname, cacheConfig):
     ACCEL = accelName(df, cacheConfig)
 
     bthreshold = 1
-    df.ix[df[BRAKE] < bthreshold, BRAKE] = 0
-    df.ix[df[BRAKE] >= bthreshold, BRAKE] = 0
+    brakeZeros = df[BRAKE] < bthreshold
+    brakeOnes = df[BRAKE] >= bthreshold
+    df.ix[brakeZeros, BRAKE] = 0
+    df.ix[brakeOnes, BRAKE] = 1
 
     athreshold = 0
-    df.ix[df[ACCEL] < athreshold, ACCEL] = 0
-    df.ix[df[ACCEL] >= athreshold, ACCEL] = 0
+    accelZeros = df[ACCEL] < athreshold
+    accelOnes = df[ACCEL] >= athreshold
+    df.ix[accelZeros, ACCEL] = 0
+    df.ix[accelOnes, ACCEL] = 1
 
     df.to_csv(fname, index=False)
 
