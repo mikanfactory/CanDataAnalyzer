@@ -16,10 +16,6 @@ def accelName(df, cacheConfig):
 
 
 def updateCSV(fname, cacheConfig):
-    fname = "data/original/%s.csv" % target
-    outname = "data/input/%s.csv" % target
-    print "converting %s..." % fname
-
     df = pd.read_csv(fname)
     BRAKE = brakeName(df, cacheConfig)
     ACCEL = accelName(df, cacheConfig)
@@ -32,7 +28,7 @@ def updateCSV(fname, cacheConfig):
     df.ix[df[ACCEL] < athreshold, ACCEL] = 0
     df.ix[df[ACCEL] >= athreshold, ACCEL] = 0
 
-    df.to_csv(outname, index=False)
+    df.to_csv(fname, index=False)
 
 
 if __name__ == "__main__":
@@ -45,4 +41,6 @@ if __name__ == "__main__":
     # Update csv
     targets = tconfig["names"]
     for target in targets:
-        updateCSV(target, cacheConfig)
+        fname = "data/original/%s.csv" % target
+        print "converting %s..." % fname
+        updateCSV(fname, cacheConfig)
