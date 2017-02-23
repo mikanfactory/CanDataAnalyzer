@@ -8,6 +8,7 @@ if __name__ == "__main__":
     for file in files:
         basename = os.path.basename(file)
         name, _ = os.path.splitext(basename)
+        print "joining %s.tsv and %s.csv ..."
 
         tdf = pd.read_table("data/tsv/%s.tsv" % name)
         tdf = tdf.ix[1:]
