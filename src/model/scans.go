@@ -17,10 +17,10 @@ func ScanCan(r *sql.Row) (Can, error) {
 		&s.Accel,
 		&s.SteeringAngle,
 		&s.DetectCount,
-		&s.SettingSum,
+		&s.AfternoonSun,
 		&s.Shade,
 		&s.Sunshine,
-		&s.Clouding,
+		&s.Cloud,
 	); err != nil {
 		return Can{}, err
 	}
@@ -43,10 +43,10 @@ func ScanCans(rs *sql.Rows) ([]Can, error) {
 			&s.Accel,
 			&s.SteeringAngle,
 			&s.DetectCount,
-			&s.SettingSum,
+			&s.AfternoonSun,
 			&s.Shade,
 			&s.Sunshine,
-			&s.Clouding,
+			&s.Cloud,
 		); err != nil {
 			return nil, err
 		}

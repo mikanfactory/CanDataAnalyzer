@@ -11,8 +11,8 @@ type Can struct {
   Accel int64
   SteeringAngle float64
   DetectCount int64
-  SettingSum int64
+  AfternoonSun int64
   Shade int64
   Sunshine int64
-  Clouding int64
+  Cloud int64
 }
