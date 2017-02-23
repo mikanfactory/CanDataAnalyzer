@@ -32,6 +32,9 @@ def updateCSV(fname, cacheConfig):
     df.ix[accelZeros, ACCEL] = 0
     df.ix[accelOnes, ACCEL] = 1
 
+    df[BRAKE] = df[BRAKE].astype('int')
+    df[ACCEL] = df[ACCEL].astype('int')
+
     df.to_csv(fname, index=False)
 
 
