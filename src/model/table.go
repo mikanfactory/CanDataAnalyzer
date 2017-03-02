@@ -10,6 +10,7 @@ type Can struct {
   Brake int64
   Accel int64
   SteeringAngle float64
+  SteeringWheel float64
   DetectCount int64
   AfternoonSun int64
   Shade int64

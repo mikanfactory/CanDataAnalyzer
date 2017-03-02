@@ -254,7 +254,7 @@
     {"Summary": "avarage", "Name": "Radar2-8 HighSizeY",              "Type": "float64", "Index": 251, "Read": false},
     {"Summary": "avarage", "Name": "Radar2-8 DepthSizeZ",             "Type": "float64", "Index": 252, "Read": false},
     {"Summary": "avarage", "Name": "Radar2-8 RelativityAcceleration", "Type": "float64", "Index": 253, "Read": false},
-    {"Summary": "avarage", "Name": "SteeringWheel",                   "Type": "float64", "Index": 254, "Read": false},
+    {"Summary": "avarage", "Name": "SteeringWheel",                   "Type": "float64", "Index": 254, "Read": true},
     {"Summary": "max", "Name": "DetectCount",  "Type": "int64",   "Index": 255, "Read": true},
     {"Summary": "max", "Name": "AfternoonSun", "Type": "int64",   "Index": 256, "Read": true},
     {"Summary": "max", "Name": "Shade",        "Type": "int64",   "Index": 257, "Read": true},
