@@ -57,14 +57,23 @@ func createTableStr(cacheInfo CacheInfo) string {
 `
 	for _, column := range cacheInfo.Columns {
 		if column.Read {
-			text := fmt.Sprintf("  %s %s NOT NULL,\n", column.Name, convertTypeMap[column.Type])
-			query += text
+			if isLngLat(column) {
+				text := fmt.Sprintf("  %s %s NOT NULL,\n", column.Name, "double")
+				query += text
+			} else {
+				text := fmt.Sprintf("  %s %s NOT NULL,\n", column.Name, convertTypeMap[column.Type])
+				query += text
+			}
 		}
 	}
 	query = strings.TrimRight(query, ",\n")
 	query += "\n)"
 
 	return query
+}
+
+func isLngLat(column Column) bool {
+	return column.Name == "Latitude" || column.Name == "Longitude"
 }
 
 func checkErr(err error) {
