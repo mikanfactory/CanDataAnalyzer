@@ -200,6 +200,7 @@ export default class ToolBoxHeader extends React.Component {
                 <li onClick={this.handleSaveHeatmapSetting}><a href="#">グリッドの結果を保存</a></li>
                 <li onClick={this.handleTaskToggle}><a href="#">タスククラスタリングの結果を表示/非表示</a></li>
                 <li onClick={this.handleRiskToggle}><a href="#">危険度の結果を表示/非表示</a></li>
+                <li onClick={this.handleOverlayToggle}><a href="#">通過点のインデックスを表示</a></li>
                 <li onClick={this.handleTaskIndexToggle}><a href="#">通過点のクラスタインデックスを表示</a></li>
                 <li onClick={this.handleSwitchPointDisplay}><a href="#">動作の切り替わり点を表示</a></li>
               </ul>

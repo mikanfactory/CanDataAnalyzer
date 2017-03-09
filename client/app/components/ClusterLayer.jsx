@@ -1,7 +1,5 @@
 import React from 'react'
 import LayerStore from '../stores/LayerStore'
-import MarkerStore from '../stores/MarkerStore'
-import LayerAction from '../actions/LayerActions'
 import { createGridPoints, createColoredRectangles } from '../utils/AppGoogleMapUtil'
 import { defaultDivideSize } from '../constants/AppConstants'
 

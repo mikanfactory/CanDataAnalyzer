@@ -26,7 +26,7 @@
     "allPreprocess": "npm run createConfig && npm run preprocess",
     "kml": "godep go run main.go --insertSP && godep go run main.go --convertToJSON && python cmd/exportSPtoKML.py",
     "csv": "godep go run main.go --insertSP && godep go run main.go --convertToCSV",
-    "join": "npm run listUp && python cmd/joinCanAndMovie.py && python cmd/preprocessD.py && npm run preprocess",
+    "join": "python cmd/joinCanAndMovie.py && npm run listUp && python cmd/preprocessD.py && npm run preprocess",
     "setupDB": "npm run join && godep go run main.go --migrate && godep go run main.go --insert"
   },
   "devDependencies": {

@@ -48,7 +48,7 @@ func (s *Server) Init() {
 
 	s.Engine.Use(middleware.Logger())
 	s.Engine.Use(middleware.Recover())
-	s.Engine.Use(middleware.Gzip())
+	// s.Engine.Use(middleware.Gzip())
 
 	s.Engine.Static("/static", "public")
 
