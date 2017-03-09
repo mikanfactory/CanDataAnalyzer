@@ -82,37 +82,37 @@ func shouldUpdateBrake(prev []string, next []string, ri int, ci int64) (bool, Sw
 }
 
 // for Denso data
-func shouldUpdateAccel(prev []string, next []string, ri int, ci int64) (bool, SwitchingPoint) {
-	switch {
-	// Since all accel value is either 1 or 0, no need to convert value.
-	case prev[ci] == next[ci]:
-		return false, SwitchingPoint{}
-	case prev[ci] == "0":
-		return true, SwitchingPoint{ri, ci, "2"}
-	case next[ci] == "0":
-		return true, SwitchingPoint{ri, ci, "-1"}
-	default:
-		return false, SwitchingPoint{}
-	}
-}
-
-// for Nissan data
 // func shouldUpdateAccel(prev []string, next []string, ri int, ci int64) (bool, SwitchingPoint) {
 // 	switch {
-// 	case prev[ci] == next[ci]: // Both prev and next are 0 or same positive value
-// 		// Convert positive values to 1
-// 		if prev[ci] != "0" {
-// 			return true, SwitchingPoint{ri, ci, "1"}
-// 		}
+// 	// Since all accel value is either 1 or 0, no need to convert value.
+// 	case prev[ci] == next[ci]:
 // 		return false, SwitchingPoint{}
 // 	case prev[ci] == "0":
 // 		return true, SwitchingPoint{ri, ci, "2"}
 // 	case next[ci] == "0":
 // 		return true, SwitchingPoint{ri, ci, "-1"}
-// 	default: // Both prev and next are over 0 but not equal
-// 		return true, SwitchingPoint{ri, ci, "1"}
+// 	default:
+// 		return false, SwitchingPoint{}
 // 	}
 // }
+
+// for Nissan data
+func shouldUpdateAccel(prev []string, next []string, ri int, ci int64) (bool, SwitchingPoint) {
+	switch {
+	case prev[ci] == next[ci]: // Both prev and next are 0 or same positive value
+		// Convert positive values to 1
+		if prev[ci] != "0" {
+			return true, SwitchingPoint{ri, ci, "1"}
+		}
+		return false, SwitchingPoint{}
+	case prev[ci] == "0":
+		return true, SwitchingPoint{ri, ci, "2"}
+	case next[ci] == "0":
+		return true, SwitchingPoint{ri, ci, "-1"}
+	default: // Both prev and next are over 0 but not equal
+		return true, SwitchingPoint{ri, ci, "1"}
+	}
+}
 
 func getColumnIndexByName(columns []Column, name string) int64 {
 	for _, column := range columns {
