@@ -1,94 +1,236 @@
 # 使い方
-今回クラスタリングまでしてもらうのですが、大きく分けてこんな感じの処理をしてもらいます。
 
-0. Docker の image, container の作成
-1. データの前処理
-2. 地図上に要約したCANデータの表示し、 メッシュに区切り、そのメッシュ内に含まれるマーカーの数のカウント
-3. カウントしたデータを元にクラスタリング
-4. 解析したデータを表示
+1. Go, Node.js, MySQL (必要に応じてPython)のインストール
+2. 初期化
+3. データの前処理
+4. データの入力
 
-これらの各処理に対して細かく説明していきます。
+# 1. Go, Node.js, MySQL (必要に応じてPython)のインストール
+## Mac
+Mac の場合はパッケージ管理に Homebrew を使うと良いです。なので今回は Homebrew を使って
+環境構築していきます。Homebrew のインストールは https://brew.sh/index_ja.html
+に飛んでインストール用のスクリプトをターミナルで実行します。
+
+1. Go のインストール
+
+```
+brew update && brew install go
+mkdir ~/go
+echo '# golang \nexport GOPATH=$HOME/go \nexport PATH=$PATH:$GOPATH/bin' >> ~/.bash_profile
+source ~/.bash_profile
+```
+
+2. Node.js のインストール
+
+```
+brew install curl
+curl -L git.io/nodebrew | perl - setup
+echo 'export PATH=$HOME/.nodebrew/current/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+nodebrew install-binary v6.3.0
+nodebrew use v6.3.0
+```
+
+3. MySQL のインストール
+
+```
+brew install mysql
+```
+
+4. Python とパッケージのインストール
+Mac にはすでに Python が入っていますが、セキュリティ向上のために　Elcapitan あたりから
+local に入れた pip によるパッケージの管理が難しくなりました。そのため virtualenv を入れて
+作業する必要があります。
+
+まず
+
+`sudo easy_install pip && pip install virtualenv`
+
+で pip と virtualenv をインストールします。その後プロジェクトルートに行き
+
+`virtualenv venv`
+
+とします。するとプロジェクトルート以下に venv というディレクトリが作られ、ここに Python
+のパッケージがインストールされるようになります。そのためにはまず
+
+```
+echo 'alias venv=". venv/bin/active"' >> ~/.bash_profile
+source ~/.bash_profile
+venv
+```
+
+としてください。すると local での pip ではなく virtualenv で作った仮想的な環境での pip を
+使うように切り替えることができます。切り替わっているかどうかは terminal の一番先頭に (venv)
+といのが付きます。この状態で
+
+`pip install numpy scipy matplotlib seaborn pandas sklearn jupyter`
+
+とすると各パッケージをインストールできます。
+
+`jupyter notebook`
+
+で jupyter が起動すれば成功です。
+
+5. R のインストール
 
 
-# 0. Docker の image, container の作成
-まず新しいディレクトリを作成し（ 以下 work とする ）、その中にこの CanDataAnalyzer を入れてください。
-次に CanDataAnalyzer の直下にある docker ディレクトリの中身をすべて work に移動させてください。
+## Windows
+Windows でのインストールは基本的にバイナリを落としてきてインストールする形になります。
 
-work--CanDataAnalyzer
-     |- Dockerfile
-     |- install_container.sh
-     |- install_image.sh
-     |- remove_container.sh
-     |- restart_container.sh
+0. Github Desktop のインストール
+https://desktop.github.com から Github Desktop をダウンロードしてインストールします。
+Git が必要なのためインストールするのですが、windows で Git を使うにはこれが一番いいらしいです。
 
-そうしたら terminal で work ディレクトリに移動し、一度
+1.  Go のインストール
+https://golang.org/dl/ にある go1.8.windows-amd64.msi をクリックしてダウンロードします。
+その後、環境変数の設定で GOROOT の部分を C:\Go\ から C:\Go に修正します。
+また GOPATH という環境変数を C:\Users\username\go で新しく追加します。
+さらに Path に C:\Users\username\go\bin を追加します。
+(詳しくは http://qiita.com/kent_ocean/items/566e6a23d76ef3b4d125 参照)
 
-  `bash remove_container`
+この後再起動します。
 
-としてください。その後
+2. Node.js のインストール
+https://nodejs.org/en/ にある v6.10.1 LTS をダウンロードします。
+あとは指示に従ってインストールしてください。
 
-  `bash install_image.sh`
-
-及び
-
-  `bash install_container.sh`
-
-と打つと docker の中に入ります。この後,
-
-  `npm run init`
-
-とすると、初期化を実行します。
+3. MySQL のインストール
+https://dev.mysql.com/downloads/installer/ からダウンロードします。
+server だけインストールすればいいです。また root のパスワードは mysql とかに
+しておきましょう。
 
 
-# 1. データの前処理
-まず松儀くんが集めてくれたデータを　work/CanDataAnalyzer/data 以下に
-csv と tsv というディレクトリがあるはずなので、そこを置き換えてください。（ ここは Mac 上で操作できます ）
+# 2. 初期化
+まず Mac の場合は MySQL を起動しておきます。
 
-そうして
+`mysql.service start`
 
-  `npm run setupDB`
+Windows の場合は多分起動しています。一応
 
-とすると、データを結合し、ブレーキ、アクセルのオンオフ地点を書き加え、データベースに挿入します。
-申し訳ないのですが、この処理は時間がかかります。ので、Netflix で映画を見ながらコーヒーでも
-飲んでリラックスしていてください。この後、
+`netstat -ant | Select-String "3306"`
 
-  `npm run server`
+として LISTENING になっていれば OK です。
 
-でアプリが起動します。
+次に以下のディレクトリを作成します。
+
+`mkdir -p $GOPATH/src/github.com/mikanfactory`
+
+このプロジェクト CanDataAnalyzer は今作ったディレクトリ以下に移動し
+
+$GOPATH/src/github.com/mikanfactory/CanDataAnalyzer
+
+となるように配置してください。次にプロジェクトルートで初期化コマンドを打ちます
+
+`npm run deps`
+
+これで初期化は終了です。ちなみにこれを実行すると、必要な Node.js と Go の
+パッケージを取ってくるようになっています。
+
+# 3. データの前処理
+まずデータを CanDataAnalyzer/data/original 以下に保存してください。
+この original に置かれたファイルを元に前処理を行なった結果は input に置かれ、最終的に
+このアプリケーションで利用されます。
+
+1. 読み込むデータのリストアップ
+
+プロジェクトルートで
+
+`npm run listUp`
+
+としてください。すると CandataAnalyzer/config/targets.json に今配置したファイル名が
+上書きされます。
 
 
-# 2. 地図上に要約したCANデータの表示
-chrome で localhost:1323 にアクセスしてください。そこで各特徴量の条件を元にCANデータをマップしていきます。
-もしかしたら Chrome にキャッシュが残っているかもしれません。その場合は command + option + j を押し、
-Developer tool を起動します。すると Network というタブ？があるはずなので、そこをクリックし、
-Disable Cache を On にしてください。その後リロードするとキャッシュを消してリロードできます。
-キャッシュが消えているかどうかの判断に"新しいマーカーを作成"をクリックし、features 以下が
+2. config ファイルの自動生成 (任意)
 
-// features
-// Latitude Longitude GPSSpeed
-// Time Brake Accel
-// SteeringAngle DetectCount AfternoonSun
-// Shade Sunshine Cloud
+`npm run createConfig`
 
-になっていれば成功です。なお、Developer tool は同じく command + option + j で消せます。
+とすると、CandataAnalyzer/config/cacheConfig.json が上書きされます。これは今回使うデータ
+の特徴量を指定するファイルで、次のような構造になっています。
 
-で、本命のカウントする特徴量については山崎さんと相談してほしいのですが、
+```
+{
+  "Summary": "average",
+  "Read": true,
+  "Name": "Time",
+  "Type": "float64",
+  "Index": 0
+},
+```
 
-GPSSpeed, Brake, Accel SteeringPositive, SteeringNegative
+一番上の Summary はサマリ方を示していて、 avarage, max, min, max||min の 4 択です。
+次の Read が実際にその特徴量を使うかどうかを示しています。
+その次の Name はその名の通り名前です。今回 DB にこの名前で登録するため、英語にしてください。
+またここは Go の規約に基づいて初め大文字でお願いします。
+Type 型を示していて、ここでは int64 か float64 の 2 択です。
+最後に Index は何番目のカラムなのかを示します。ここは変更しないようにお願いします。
+CanDataAnalyzer/config/cacheConfigDenso.json にD社で使った際のものを残してあるので、
+これを参考にしてください。ここは面倒なので自動化スクリプトを書きましたが、既にあれば
+(例えば cacheConfigDenso.json を使うなど) 実行しなくても大丈夫です。また新しいカラムを追加
+するのであれば、この cacheConfig.json に新しいカラムの情報を付け加えれば OK です。
 
-と松儀くんが追加してくれた DetectCount(detectsousu), AfternoonSun(nishibi),
-Shade(hikage), Sunshine(hare), Cloud(kumori) でしょうか。 GPSSpeed などは
-カウントの条件をこの章の最後に付録しましたので参考にしてください。 基本的に
 
-1. "新しいマーカーを作成"をクリック
-2. 条件を設定
-3. なんか良さげなら"グリッドの結果を保存"をクリック (今回はグリッドの表示/非表示はしなくてOKです)
-4. すると work/CanDataAnalyzer/output/yyyy-mm-dd_HH:MM:SS の形で保存される
-5. わかりやすい名前に変更し、work/CanDataAnalyzer/output/Result1 に入れる
-6. いっぱい読み込むと重いので chrome をリロードし、他の特徴量も試す
+3. config ファイルを Go に読み込ませる
 
-をループすれば良いです。ここで得られた結果を解析していきます。一応 GPSSpeed については
-結果をおいておきます。
+`npm run writeSchema`
+
+とすると上で指定した特徴量を元に Go の struct の定義を書き換えます。
+
+4. 実際に元データに変更を加える
+
+ここは自由にしてください。スクリプトを書いてクレンジングしたり新しい特徴量を加えたりしてください。
+ただし、新しい特徴量を付け加えた場合は config ファイルを更新して(2)、それを Go に読み込ませて(3)
+ください。
+
+ここでは実際に使った、ブレーキとアクセルから変化点を検知するプログラムの走らせ方を示します。
+
+`npm run preprocess`
+
+とすると、OFF -> ON に変われば 2 を、ON -> OFF に変われば -1 を、それ以外で ON なら 1,
+OFF なら 0 に変更します。このとき、ブレーキとアクセルのカラム名は Brake と Accel になっている
+必要があります。
+
+
+# 4. データの入力
+このプロジェクトでは MySQL 上に 2 つの database を生成します。
+
++ summary
++ sp (switching point)
+
+地図上に要約した CAN データを表示する際には summary を用い、sp には動作の切り替わり点を格納します。
+
+summary にデータを格納するには
+
+`npm run setupDB`
+
+としてください。すると DB のマイグレーションを行い、input ディレクトリにあるデータ
+を入力していきます。一方、sp にデータを入れるには 2 つ方法があります。
+
+`npm run csv` または `npm run kml`
+
+どちらも sp にデータを入れたあと、 CandataAnalyzer/data/middle に sp.csv または
+sp.kml というファイルが作成されます。動作の切り替わり点を分析する際にはこのファイルを
+使用しました。
+
+
+# 5. 地図上に要約したCANデータの表示
+データを DB に格納した状態で
+
+`npm run server`
+
+とすると
+
+`http server started on [::]:1323`
+
+と表示され、1323 ポートでアプリケーションが立ち上がります。なので chrome で localhost:1323
+にアクセスしてください。そこで各特徴量の条件を元にCANデータをマップしていきます。
+
+
+
+(注) cacheConfig.json を変更して再び server を起動した場合、Chrome にキャッシュが
+残っているかもしれません。その場合は (Chromeでは) Command + Shift + R で強制リロードできます。
+その際に"新しいマーカーの作成をする"を選択した場合、 features 以下が
+変化していれば成功です。
 
 ## 付録
 ## GPSSpeed
@@ -118,7 +260,7 @@ case SteeringAngle < 4.8:
   return green
 
 
-# 3. カウントしたデータを元にクラスタリング
+# 6. カウントしたデータを元にクラスタリング
 非常に申し訳ないのですが、まず jupyter と pandas, seaborn, scikit-learn をダウンロードしてください。
 ご存知かと思われますが、
 
@@ -140,11 +282,18 @@ GPSSpeed, Brake, Accel SteeringPositive, SteeringNegative
 最後までエラーが無く実行できればOKです。
 
 
-# 4. 解析したデータを表示
+# 7. 解析したデータを表示
 解析プログラムを最後まで実行すると work/CanDataAnalyzer/data/output/Result1/Result 以下に clusters.csv
 が保存されています。この状態でアプリ上で"クラスタリングの結果を表示/非表示"ボタンを押すとクラスタリングした
 結果をもとに地図上に色が塗られるはずです。
 
+=============================================
+TODO:
 
-## 最後に
-2/24日にすべて終わらなくても大丈夫です。火曜日に僕も行くので、それまでは遊んでみてください。
++ DB pass
++ 色分け
++ segement size
+
+をそれぞれ config に入れる
+
+ドキュメントの完成
