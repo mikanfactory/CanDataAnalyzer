@@ -293,7 +293,9 @@ TODO:
 + DB pass
 + 色分け
 + segement size
++ Grid init
++ Marker default context
 
 をそれぞれ config に入れる
 
-ドキュメントの完成
+右下モーダル問題 && ドキュメントの完成
