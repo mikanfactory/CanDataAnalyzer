@@ -13,6 +13,7 @@ module.exports = {
     loaders: [
       { test: /\.json$/, loader: 'json' },
       { test: /\.csv$/, loader: 'dsv-loader' },
+      { test: /\.toml$/, loader: 'toml-loader' },
       {
         test: /\.js(x?)$/,
         cacheDirectory: true,

@@ -2,6 +2,7 @@ import keyMirror from 'keymirror'
 import targets from '../../../config/targets.json'
 import features from '../../../config/cacheConfig.json'
 import chunk from 'lodash/chunk'
+import conf from '../../../config/config.toml'
 
 const validFeatures = features.columns
                               .filter( c => c.Read )
@@ -52,7 +53,7 @@ const defaultSetting = {
   ].join("\n")
 }
 
-const defaultDivideSize = 30
+const defaultDivideSize = conf["App"].grid_size
 
 const defaultModal = {
   modalType: "",
