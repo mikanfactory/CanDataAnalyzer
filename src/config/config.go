@@ -1,22 +1,31 @@
 package config
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/BurntSushi/toml"
 )
 
 type Config struct {
-	GoogleMap GoogleMap
-	Cluster   Cluster
+	App     App
+	DB      DB
+	Command Command
 }
 
-type GoogleMap struct {
-	Key string
+type App struct {
+	GoogleMapKey string `toml:"google_map_key"`
+	AnalysisDir  string `toml:"analysis_dir"`
+	GridSize     int    `toml:"grid_size"`
+	ColorRange   int    `toml:"color_range"`
 }
 
-type Cluster struct {
-	Dir string
+type DB struct {
+	Pass string `toml:"pass"`
+}
+
+type Command struct {
+	SegmentSize int `toml:"segment_size"`
 }
 
 func LoadConfig() *Config {
@@ -27,4 +36,8 @@ func LoadConfig() *Config {
 	}
 
 	return c
+}
+
+func (m *DB) MysqlConf(dest string) string {
+	return fmt.Sprintf("root:%s@/%s", m.Pass, dest)
 }

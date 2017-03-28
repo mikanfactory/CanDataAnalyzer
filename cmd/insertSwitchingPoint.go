@@ -13,6 +13,7 @@ import (
 	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/mikanfactory/CanDataAnalyzer/src/config"
 )
 
 func InsertSwitchingPoint() {
@@ -20,9 +21,10 @@ func InsertSwitchingPoint() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	CleanTable(MetaDBConfig)
+	CleanTable("sp")
 
-	db, err := sql.Open("mysql", MetaDBConfig)
+	conf := config.LoadConfig()
+	db, err := sql.Open("mysql", conf.DB.MysqlConf("sp"))
 	checkErr(err)
 
 	// insert data

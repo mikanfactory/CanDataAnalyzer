@@ -8,6 +8,7 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/mikanfactory/CanDataAnalyzer/src/config"
 )
 
 func ConvertSwitchingPointToCSV() {
@@ -18,7 +19,8 @@ func ConvertSwitchingPointToCSV() {
 	err = json.Unmarshal(file, targets)
 	checkErr(err)
 
-	db, err := sql.Open("mysql", MetaDBConfig)
+	conf := config.LoadConfig()
+	db, err := sql.Open("mysql", conf.DB.MysqlConf("sp"))
 	checkErr(err)
 
 	cacheInfo := CacheInfo{}

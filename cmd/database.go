@@ -7,18 +7,16 @@ import (
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/mikanfactory/CanDataAnalyzer/src/config"
 )
 
-const (
-	DBConfig     = "root:@/summary"
-	MetaDBConfig = "root:@/sp"
-)
+func CreateTable(dest string) {
+	conf := config.LoadConfig()
 
-func CreateTable(dbconfig string) {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	db, err := sql.Open("mysql", dbconfig)
+	db, err := sql.Open("mysql", conf.DB.MysqlConf(dest))
 	checkErr(err)
 
 	q1 := createTableStr(cacheInfo)
@@ -30,8 +28,9 @@ func CreateTable(dbconfig string) {
 	checkErr(err)
 }
 
-func DropTable(dbconfig string) {
-	db, err := sql.Open("mysql", dbconfig)
+func DropTable(dest string) {
+	conf := config.LoadConfig()
+	db, err := sql.Open("mysql", conf.DB.MysqlConf(dest))
 	checkErr(err)
 
 	query := "drop table if exists cans"
@@ -39,9 +38,9 @@ func DropTable(dbconfig string) {
 	checkErr(err)
 }
 
-func CleanTable(dbconfig string) {
-	DropTable(dbconfig)
-	CreateTable(dbconfig)
+func CleanTable(dest string) {
+	DropTable(dest)
+	CreateTable(dest)
 }
 
 func createTableStr(cacheInfo CacheInfo) string {

@@ -17,8 +17,7 @@ import (
 )
 
 const (
-	addr   = ":1323"
-	dbconf = "root:@/summary"
+	addr = ":1323"
 )
 
 // Server is whole server implementation for this app.
@@ -38,13 +37,13 @@ func New() *Server {
 // Init initialize server state. Read Config files, compiling templates,
 // and apply middleware.
 func (s *Server) Init() {
-	db, err := sql.Open("mysql", dbconf)
+	s.Config = config.LoadConfig()
+
+	db, err := sql.Open("mysql", s.Config.DB.MysqlConf("summary"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	s.db = db
-
-	s.Config = config.LoadConfig()
 
 	s.Engine.Use(middleware.Logger())
 	s.Engine.Use(middleware.Recover())
@@ -60,8 +59,8 @@ func (s *Server) Init() {
 
 // Route setting router for this app.
 func (s *Server) Route() {
-	api := &controller.API{DB: s.db, TargetDir: s.Config.Cluster.Dir}
-	root := &controller.Root{Key: s.Config.GoogleMap.Key}
+	api := &controller.API{DB: s.db, TargetDir: s.Config.App.AnalysisDir}
+	root := &controller.Root{Key: s.Config.App.GoogleMapKey}
 
 	s.Engine.GET("/", root.Get)
 	s.Engine.POST("/api/v1/marker", api.GetMarkersBySetting)
@@ -96,7 +95,8 @@ func main() {
 		cmd.CreateGoSchema()
 		os.Exit(0)
 	case *flags["table"]:
-		cmd.CleanTable(dbconf)
+		conf := config.LoadConfig()
+		cmd.CleanTable(conf.DB.MysqlConf("summary"))
 		os.Exit(0)
 	case *flags["preprocess"]:
 		cmd.Preprocess()

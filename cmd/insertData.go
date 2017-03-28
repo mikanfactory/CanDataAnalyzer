@@ -14,6 +14,7 @@ import (
 	"sync"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/mikanfactory/CanDataAnalyzer/src/config"
 )
 
 const (
@@ -34,9 +35,10 @@ func InsertData() {
 	cacheInfo := CacheInfo{}
 	readCacheConfig(&cacheInfo)
 
-	CleanTable(DBConfig)
+	CleanTable("summary")
 
-	db, err := sql.Open("mysql", DBConfig)
+	conf := config.LoadConfig()
+	db, err := sql.Open("mysql", conf.DB.MysqlConf("summary"))
 	checkErr(err)
 
 	validColumns := getValidColumns(cacheInfo)
