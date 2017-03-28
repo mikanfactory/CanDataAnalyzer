@@ -1,34 +1,34 @@
 import { defaultDivideSize } from '../constants/AppConstants'
 
-/* let clusterColors = [
- *   "#FFFFFF",
- *   "#FE2400",
- *   "#EC2127",
- *   "#D21E4E",
- *   "#B21D72",
- *   "#951E93",
- *   "#7421B1",
- *   "#5023D0",
- *   "#3025EA",
- *   "#082EFD",
- *   "#1147CE",
- *   "#247395",
- *   "#389D51",
- *   "#49C900",
- *   "#81D503",
- *   "#AFE400",
- *   "#DAF201",
- *   "#FFFF01",
- *   "#FEE600",
- *   "#FECD02",
- *   "#FEAF07",
- *   "#FF9400",
- *   "#FE7701",
- *   "#FD5800",
- *   "#FF3900",
- * ]
- * */
-let clusterColors = [
+let clusterColors24 = [
+  "#FFFFFF",
+  "#FE2400",
+  "#EC2127",
+  "#D21E4E",
+  "#B21D72",
+  "#951E93",
+  "#7421B1",
+  "#5023D0",
+  "#3025EA",
+  "#082EFD",
+  "#1147CE",
+  "#247395",
+  "#389D51",
+  "#49C900",
+  "#81D503",
+  "#AFE400",
+  "#DAF201",
+  "#FFFF01",
+  "#FEE600",
+  "#FECD02",
+  "#FEAF07",
+  "#FF9400",
+  "#FE7701",
+  "#FD5800",
+  "#FF3900",
+]
+
+let clusterColors5 = [
   "#FFFFFF",
   "#ff0000",
   "#ff7f00",
@@ -67,8 +67,14 @@ export function createRectangles(gMap, gridPoints) {
   )
 }
 
-export function createColoredRectangles(gMap, gridPoints, clusters) {
+export function createColoredRectangles(gMap, gridPoints, clusters, clusterName) {
   const divideSize = gridPoints.length
+  let clusterColors = []
+  if (clusterName == "cluster") {
+    clusterColors = clusterColors24
+  } else if (clusterName == "risk") {
+    clusterColors = clusterColors5
+  }
   return gridPoints.map( (row, i) =>
     row.map( (bounds, j) => {
       const cluster = clusters[i*divideSize+j]

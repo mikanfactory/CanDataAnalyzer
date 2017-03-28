@@ -11,6 +11,7 @@ function getStateFromStores() {
   return {
     bounds: LayerStore.getBounds(),
     assignedClusters: LayerStore.getAssignedClusters(),
+    clusterName: LayerStore.getClusterName()
   }
 }
 
@@ -29,10 +30,10 @@ export default class ClusterLayer extends React.Component {
   }
 
   drawClusters() {
-    const { bounds, assignedClusters } = this.state
+    const { bounds, assignedClusters, clusterName } = this.state
     const { gMap } = this.props
     const gridPoints = createGridPoints(bounds, defaultDivideSize)
-    const clusters = createColoredRectangles(gMap, gridPoints, assignedClusters)
+    const clusters = createColoredRectangles(gMap, gridPoints, assignedClusters, clusterName)
 
     this.setState({ visibleClusters: clusters })
   }

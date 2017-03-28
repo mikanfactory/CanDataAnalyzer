@@ -2,6 +2,7 @@ import AppDispatcher from '../dispatcher/AppDispatcher'
 import AppConstants from '../constants/AppConstants'
 import { EventEmitter } from 'events'
 import { defaultDivideSize } from '../constants/AppConstants'
+import forEach from 'lodash/forEach'
 const ActionTypes = AppConstants.ActionTypes
 const CHANGE_EVENT = 'change'
 
@@ -16,6 +17,7 @@ let _store = {
   isGridLayerVisible: false,
   isRectangleVisibile: false,
   isHeatmapVisible: false,
+  clusterName: "",
   assignedClusters: [],
   routeIndex: [],
   taskIndex: [],
@@ -61,9 +63,25 @@ function _destroy_route_index() {
 function _create_cluster_layer(bounds, clusters) {
   _store.bounds = bounds
   _store.assignedClusters = clusters
+  if (areAllIntegers(clusters)) {
+    _store.clusterName = "cluster"
+  } else {
+    _store.clusterName = "risk"
+  }
+}
+
+function areAllIntegers(clusters) {
+  forEach(clusters, val => {
+    if (!Number.isInteger(val)) {
+      return false
+    }
+  })
+
+  return true
 }
 
 function _destroy_cluster_layer() {
+  _store.clusterName = ""
   _store.assignedClusters = []
 }
 
@@ -118,6 +136,10 @@ class LayerStoreClass extends EventEmitter {
 
   getTaskIndex() {
     return _store.taskIndex
+  }
+
+  getClusterName() {
+    return _store.clusterName
   }
 }
 
