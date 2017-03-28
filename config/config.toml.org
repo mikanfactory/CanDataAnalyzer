@@ -1,5 +1,0 @@
-[GoogleMap]
-key = ""
-
-[Cluster]
-dir = ""
