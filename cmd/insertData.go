@@ -19,10 +19,10 @@ import (
 
 const (
 	headerLines = 1
-	segmentSize = 30
 )
 
 var mutex = &sync.Mutex{}
+var segmentSize = 30
 
 func InsertData() {
 	file, err := ioutil.ReadFile("config/targets.json")
@@ -40,6 +40,9 @@ func InsertData() {
 	conf := config.LoadConfig()
 	db, err := sql.Open("mysql", conf.DB.MysqlConf("summary"))
 	checkErr(err)
+
+	segmentSize = conf.Command.SegmentSize
+	log.Printf("segment size: %d", segmentSize)
 
 	validColumns := getValidColumns(cacheInfo)
 
