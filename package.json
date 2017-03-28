@@ -17,19 +17,15 @@
     "watch": "webpack -w --config webpack.config.js",
     "test": "mocha --compilers js:babel-register || exit 0",
     "watch-test": "mocha --compilers js:babel-register -w",
-    "start-db": "/etc/init.d/mysql start",
-    "server": "npm run start-db && godep go run main.go",
-    "server-dev": "godep go run main.go",
+    "server": "npm run build && godep go run main.go",
     "scan": "cd src/model && scaneo table.go",
     "listUp": "godep go run main.go --listUp",
-    "createConfig": "npm run listUp && godep go run main.go --createConfig",
+    "createConfig": "godep go run main.go --createConfig",
     "writeSchema": "godep go run main.go --schema && npm run scan",
-    "preprocess": "godep go run main.go --preprocess && npm run writeSchema",
-    "allPreprocess": "npm run createConfig && npm run preprocess",
+    "preprocess": "godep go run main.go --preprocess",
     "kml": "godep go run main.go --insertSP && godep go run main.go --convertToJSON && python cmd/exportSPtoKML.py",
     "csv": "godep go run main.go --insertSP && godep go run main.go --convertToCSV",
-    "join": "python cmd/joinCanAndMovie.py && npm run listUp && python cmd/preprocessD.py && npm run preprocess",
-    "setupDB": "npm run join && godep go run main.go --migrate && godep go run main.go --insert"
+    "setupDB": "godep go run main.go --migrate && godep go run main.go --insert"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",

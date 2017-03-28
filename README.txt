@@ -37,6 +37,13 @@ nodebrew use v6.3.0
 brew install mysql
 ```
 
+また Mac の場合は MySQL を自動で起動するようにしておきます。
+
+```
+brew tap homebrew/services
+brew services start mysql
+```
+
 4. Python とパッケージのインストール
 Mac にはすでに Python が入っていますが、セキュリティ向上のために　Elcapitan あたりから
 local に入れた pip によるパッケージの管理が難しくなりました。そのため virtualenv を入れて
@@ -72,7 +79,7 @@ venv
 で jupyter が起動すれば成功です。
 
 5. R のインストール
-
+WIP
 
 ## Windows
 Windows でのインストールは基本的にバイナリを落としてきてインストールする形になります。
@@ -101,11 +108,17 @@ server だけインストールすればいいです。また root のパスワ�
 
 
 # 2. 初期化
-まず Mac の場合は MySQL を起動しておきます。
+Mac は先程の brew services を使って起動されているはずなので、
+起動していない場合は、先程のところを参照にするか、
 
-`mysql.service start`
+`mysql.server start`
 
-Windows の場合は多分起動しています。一応
+として起動してください。Windows の場合は多分起動しています。起動しているか
+どうかの確認は Mac なら
+
+`netstat -ant | grep 3306`
+
+で、 Windows なら
 
 `netstat -ant | Select-String "3306"`
 
@@ -277,7 +290,7 @@ case SteeringAngle < 4.8:
 GPSSpeed, Brake, Accel SteeringPositive, SteeringNegative
 
 だけで実行することをおすすめします。松儀くんにやってほしいことは新しい動画からの特徴量を付け加えることなので、
-実際にいじるところは DetectCount などの結果を付け加えて新しいdata frame を作るところと、
+実際にいじるところは DetectCount などの結果を付け加えて新しい data frame を作るところと、
 ハイパーパラメータの設定だと思います。そこ以外はそのままそのコードを実行すれば良いかと思います。
 最後までエラーが無く実行できればOKです。
 
