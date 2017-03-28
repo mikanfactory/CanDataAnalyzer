@@ -106,7 +106,7 @@ export default class ToolBoxHeader extends React.Component {
   handleTaskDisplay() {
     fetchTasks((grid, clusters) => {
       const bounds = new window.google.maps.LatLngBounds(grid.southWest, grid.northEast)
-      LayerActions.createClusters(bounds, clusters)
+      LayerActions.createClusters(bounds, clusters, "cluster")
     })
   }
 
@@ -125,7 +125,7 @@ export default class ToolBoxHeader extends React.Component {
   handleRiskDisplay() {
     fetchRisks((grid, risks) => {
       const bounds = new window.google.maps.LatLngBounds(grid.southWest, grid.northEast)
-      LayerActions.createClusters(bounds, risks)
+      LayerActions.createClusters(bounds, risks, "risk")
     })
   }
 

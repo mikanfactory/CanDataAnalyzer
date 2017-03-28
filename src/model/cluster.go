@@ -6,6 +6,8 @@ import (
 	"io"
 	"os"
 	"strconv"
+
+	"github.com/mikanfactory/CanDataAnalyzer/src/config"
 )
 
 var clusterFuncs = map[string]func(string) ([]int64, error){
@@ -60,6 +62,9 @@ func readRiskResults(targetDir string) ([]int64, error) {
 		return []int64{}, err
 	}
 
+	conf := config.LoadConfig()
+	desc := float64(conf.App.ColorMax) / float64(5)
+
 	results := []int64{}
 	r := csv.NewReader(bufio.NewReader(file))
 	for {
@@ -75,23 +80,23 @@ func readRiskResults(targetDir string) ([]int64, error) {
 		if err != nil {
 			return []int64{}, err
 		}
-		results = append(results, discretization(res))
+		results = append(results, discretization(res, desc))
 	}
 
 	return results, err
 }
 
-func discretization(x float64) int64 {
+func discretization(x float64, desc float64) int64 {
 	switch true {
 	case x < 0.0001:
 		return 0
-	case x < 1:
+	case x < desc:
 		return 5
-	case x < 1.5:
+	case x < desc*2:
 		return 4
-	case x < 2:
+	case x < desc*3:
 		return 3
-	case x < 2.5:
+	case x < desc*4:
 		return 2
 	default:
 		return 1

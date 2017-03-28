@@ -17,7 +17,7 @@ type App struct {
 	GoogleMapKey string `toml:"google_map_key"`
 	AnalysisDir  string `toml:"analysis_dir"`
 	GridSize     int    `toml:"grid_size"`
-	ColorRange   int    `toml:"color_range"`
+	ColorMax     int    `toml:"color_max"`
 }
 
 type DB struct {

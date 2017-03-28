@@ -68,11 +68,12 @@ const LayerActions = {
     })
   },
 
-  createClusters: (bounds, clusters) => {
+  createClusters: (bounds, clusters, name) => {
     AppDispatcher.dispatch({
       actionType: ActionTypes.CREATE_CLUSTER_LAYER,
       bounds: bounds,
-      clusters: clusters
+      clusters: clusters,
+      name: name
     })
   },
 

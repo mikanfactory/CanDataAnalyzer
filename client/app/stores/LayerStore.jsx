@@ -60,24 +60,10 @@ function _destroy_route_index() {
   _store.routeIndex = []
 }
 
-function _create_cluster_layer(bounds, clusters) {
+function _create_cluster_layer(bounds, clusters, name) {
   _store.bounds = bounds
   _store.assignedClusters = clusters
-  if (areAllIntegers(clusters)) {
-    _store.clusterName = "cluster"
-  } else {
-    _store.clusterName = "risk"
-  }
-}
-
-function areAllIntegers(clusters) {
-  forEach(clusters, val => {
-    if (!Number.isInteger(val)) {
-      return false
-    }
-  })
-
-  return true
+  _store.clusterName = name
 }
 
 function _destroy_cluster_layer() {
@@ -204,7 +190,7 @@ LayerStore.dispatchToken = AppDispatcher.register((actions) => {
       break
 
     case ActionTypes.CREATE_CLUSTER_LAYER:
-      _create_cluster_layer(actions.bounds, actions.clusters)
+      _create_cluster_layer(actions.bounds, actions.clusters, actions.name)
       LayerStore.emitChange()
       break
 
