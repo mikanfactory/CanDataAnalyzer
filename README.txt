@@ -78,8 +78,10 @@ venv
 
 で jupyter が起動すれば成功です。
 
-5. R のインストール
-WIP
+5. R のインストールおよび jupyter で R を起動する
+
+https://cran.r-project.org/bin/macosx/ で R をインストールしてください。その後、
+https://irkernel.github.io/installation/ に従って irkernel をインストールしてください。
 
 ## Windows
 Windows でのインストールは基本的にバイナリを落としてきてインストールする形になります。
