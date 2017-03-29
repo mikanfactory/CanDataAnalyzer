@@ -63,7 +63,7 @@ func readRiskResults(targetDir string) ([]int64, error) {
 	}
 
 	conf := config.LoadConfig()
-	desc := float64(conf.App.ColorMax) / float64(5)
+	desc := conf.App.ColorMax / float64(5)
 
 	results := []int64{}
 	r := csv.NewReader(bufio.NewReader(file))

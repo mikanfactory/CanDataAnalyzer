@@ -14,10 +14,10 @@ type Config struct {
 }
 
 type App struct {
-	GoogleMapKey string `toml:"google_map_key"`
-	AnalysisDir  string `toml:"analysis_dir"`
-	GridSize     int    `toml:"grid_size"`
-	ColorMax     int    `toml:"color_max"`
+	GoogleMapKey string  `toml:"google_map_key"`
+	AnalysisDir  string  `toml:"analysis_dir"`
+	GridSize     int     `toml:"grid_size"`
+	ColorMax     float64 `toml:"color_max"`
 }
 
 type DB struct {
