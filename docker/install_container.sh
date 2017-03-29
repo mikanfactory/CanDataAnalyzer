@@ -1,1 +1,0 @@
-docker run --name tmp -v `pwd`/CanDataAnalyzer:/home/worker/go/src/github.com/mikanfactory/CanDataAnalyzer -w /home/worker/go/src/github.com/mikanfactory/CanDataAnalyzer -it -p 1323:1323 candy /bin/bash
