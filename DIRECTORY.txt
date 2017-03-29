@@ -1,0 +1,127 @@
+このファイルではディレクトリ構成について記述します。
+
+.
+├── Godeps
+├── README.txt
+├── analysis
+├── client
+├── cmd
+│   ├── convertSwitchingPointToCSV.go
+│   ├── convertSwitchingPointToJSON.go
+│   ├── convertToCommonFields.go
+│   ├── createConfig.go
+│   ├── createGoSchema.go
+│   ├── database.go
+│   ├── exportGrid.py
+│   ├── exportSPtoKML.py
+│   ├── findChangePoint.py
+│   ├── insertData.go
+│   ├── insertSwitchingPoint.go
+│   ├── joinCanAndMovie.py
+│   ├── listUpInvalidTargets.go
+│   ├── listUpTargets.go
+│   ├── preprocess.go
+│   ├── preprocess.py
+│   ├── preprocessD.py
+│   └── type.go
+├── config
+│   ├── cacheConfig.json
+│   ├── cacheConfigDenso.json
+│   ├── config.toml
+│   └── targets.json
+├── main.go
+├── package.json
+├── public
+├── src
+└── webpack.config.js
+
+# cmd
+コンフィグファイルを作成したりデータを加工したりするプログラム群です。
+データを加工するプログラムを新しく作成する場合にはここに置くのが良いでしょう。
+
+# config
+アプリケーションで使用するメタ情報、設定ファイルが置いてあります。
+
+## cacheConfig.json
+cacheConfig.json は実際にアプリケーションでどの特徴量を使用するかを
+指定するファイルで、次のような構造になっています。
+
+```
+{
+  "Summary": "average",
+  "Read": true,
+  "Name": "Time",
+  "Type": "float64",
+  "Index": 0
+},
+```
+
+一番上の Summary はサマリ方を示していて、 avarage, max, min, max||min の 4 択です。
+次の Read が実際にその特徴量を使うかどうかを示しています。
+その次の Name はその名の通り名前です。今回 DB にこの名前で登録するため、英語にしてください。
+またここは Go の規約に基づいて初め大文字でお願いします。
+Type 型を示していて、ここでは int64 か float64 の 2 択です。
+最後に Index は何番目のカラムなのかを示します。ここは変更しないようにお願いします。
+
+## cacheConfigDenso.json
+実際にD社で使ったものです。
+
+## config.toml
+このアプリケーションの設定ファイルです。
+
+### google_map_key
+google_map_key は変更しないでください。このトークンが
+正しくないと Google Map が表示されなくなります。
+
+### analysis_dir
+クラスタリングの結果を表示、または危険度の結果を表示する際に
+どのディレクトリ以下のファイルを読み込むかを指定しています。
+実際にはここで指定されたディレクトリ直下にある clusters.csv
+や risks.csv を読んでいます。
+
+### grid_size
+グリッドを表示する際のサイズを表しています。デフォルトは 30 で
+この場合 30x30 のグリッドが表示されるようになっています。
+
+### color_max
+危険度の結果を表示するさいの一番高い危険度を指定します。デフォルトは
+3.0 で、この場合 0 から 3.0 を 5 段階に区切るので、1段階は 0.6 の
+幅を持ちます。
+
+### pass
+データベースのパスワードです。Mac の場合、README.txt で指定した方法で
+インストールしていればパスワードは空文字列となります。パスワードを変更している場合は
+そのパスワードに変えてください。Windows の場合はインストールの際に自分で指定する
+はずなので、それを入力してください。
+
+### segment_size
+CANデータを summary DB に保存する際に、ある行数で平均を取るなどの操作をします。
+その行数を指定します。デフォルトでは 30 になっています。
+
+# package.json
+アプリケーションのメタ情報やコマンドの登録、JavaScript の依存ファイルなどを
+指定しています。コマンド登録のところは変更しても OK です。ここで登録した
+コマンドは、例えば sever コマンドは
+
+`npm run server`
+
+で実行できます。
+
+# analysis
+クラスタリングやリスク計算を実際に実行した jupyter notebook が
+置いてあります。特に重要ではありません。
+
+# client
+JavaScript のファイルが置いてあります。変更しないでください。
+
+# main.go
+サーバーを立てるプログラムです。変更しないでください。
+
+# public
+画像や css や JavaScript などの静的なファイルが置いてあります。変更しないでください。
+
+# src
+Go のプログラムが置いてあります。変更しないでください。
+
+# webpack.config.js
+JavaScript をビルドするための設定ファイルです。変更しないでください。

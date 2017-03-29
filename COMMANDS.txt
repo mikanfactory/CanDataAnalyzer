@@ -1,0 +1,49 @@
+このファイルでは実行コマンドについて記述します。
+
+# npm run init
+Go と JavaScript の依存しているライブラリをすべてインストールします。
+少し時間がかかります。インストール時に1度だけ実行すれば OK です。
+
+# npm run createDB
+MySQL に接続し、summary と sp というデータベースを作成します。
+Mac の場合のみ使用可能です。インストール時に1度だけ実行すれば OK です。
+
+# npm run server
+JavaScript をコンパイルし、アプリケーションを立ち上げます。
+立ち上がったアプリケーションは localhost:1323 で使用できます。
+
+# npm run listUp
+CandataAnalyzer/config/targets.json に CandataAnalyzer/data/original
+に配置したファイル名が羅列されます。このアプリケーションでは targets.json に
+指定してあるファイルのみを扱うようになっています。そのため、original ディレクトリに
+新しくファイルを追加する、使用しないデータを消す、名前を変更するなどを行った際は
+もう一度してください。
+
+# npm run createConfig
+CanDataAnalyzer/config/cacheConfig.json を自動生成します。新しいデータ形式
+を分析する際に実行すると楽です。ただしその際には使用するカラムの名前を英語に変換
+しておいてください。
+
+# npm run writeSchema
+cacheConfig.json を元に Go の struct の定義ファイルを書き換えます。
+cacheConfig.json を変更したら実行してください。
+
+# npm run preprocess
+ブレーキとアクセルから変化点を検知するプログラムを走らせます。
+OFF -> ON に変われば 2 を、ON -> OFF に変われば -1 を、それ以外で ON なら 1,
+OFF なら 0 に変更します。このとき、ブレーキとアクセルのカラム名は Brake と
+Accel になっている必要があります。またアクセルは 0 or 1 の場合と 0 とそれ以上の
+場合があり、そこを使い分けるためにはプログラムを変更してもらう必要があります。
+preprocess.go の 85 行目からは 0 or 1 の場合で、 100 行目からは 0 と
+それ以上の場合です。どちらかを // によってコメントアウトして使って下さい。
+
+# npm run kml
+sp DB にデータを入れた後、CandataAnalyzer/data/middle に sp.kml
+というファイルが作成されます。
+
+# npm run csv
+sp DB にデータを入れた後、CandataAnalyzer/data/middle に sp.csv
+というファイルが作成されます。
+
+# npm run setupDB
+summary DB にデータを入れます。

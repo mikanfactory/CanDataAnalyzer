@@ -9,7 +9,7 @@
     "npm": "^3.8.6"
   },
   "scripts": {
-    "init": " npm run createDB && npm run install-golib && npm run deps",
+    "init": "npm run install-golib && npm run deps",
     "createDB": "mysql -u root -p -e'create database summary; create database sp'",
     "install-golib": "go get github.com/tools/godep && go get golang.org/x/sys/unix",
     "deps": "npm install && godep get && godep get github.com/variadico/scaneo",

@@ -133,6 +133,18 @@ Mac は先程の brew services を使って起動されているはずなので�
 
 として LISTENING になっていれば OK です。
 
+次にデータベースを作成をします。Mac の場合、
+
+`npm run createDB`
+
+としてください。Windows の場合は MySQL を起動して
+
+```
+create database summary;
+create database sp;
+```
+
+としてください。これでデータベースが作成されます。
 次に以下のディレクトリを作成します。
 
 `mkdir -p $GOPATH/src/github.com/mikanfactory`
@@ -143,10 +155,11 @@ $GOPATH/src/github.com/mikanfactory/CanDataAnalyzer
 
 となるように配置してください。次にプロジェクトルートで初期化コマンドを打ちます
 
-`npm run deps`
+`npm run init`
 
 これで初期化は終了です。ちなみにこれを実行すると、必要な Node.js と Go の
 パッケージを取ってくるようになっています。
+
 
 # 3. データの前処理
 まずデータを CanDataAnalyzer/data/original 以下に保存してください。
@@ -295,7 +308,7 @@ result.csv の id はグリッドの右上から数えた際のインデック�
 ひとつだけ保存してください。ここに書かれているグリッドのメタ情報を section 10
 で使います。
 
-なお実際に jupyter notebook を用いて分析したコードが Analysis ディレクトリ
+なお実際に jupyter notebook を用いて分析したコードが analysis ディレクトリ
 以下に保存してあります。そのため jupyter notebook を入れればサンプルコード
 が見れます。良ければ参考にしてください。
 
@@ -329,7 +342,7 @@ switch (true) {
 CanDataAnalyzer/data/output/Result1/Result/risks.csv に保存してください。
 データ形式は clusters.csv と同じで、各グリッドのリスク値を書いてください。
 
-なお、この計算も実際に使用したものが Analysis ディレクトリに入っています。
+なお、この計算も実際に使用したものが analysis ディレクトリに入っています。
 
 # 12 リスクの結果を表示
 メニューバーで "危険度の結果を表示/非表示" とクリックすると、risks.csv に
